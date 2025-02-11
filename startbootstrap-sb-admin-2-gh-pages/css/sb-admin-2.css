@@ -11279,3 +11279,18 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+
+.logo-superior {
+  width: 250px; /* Ajusta el tamaño de la imagen */
+  height: auto; /* Mantiene la proporción */
+  margin-bottom: 10px; /* Espacio debajo de la imagen */
+}
+
+.estado-cuenta-titulo {
+  font-size: 18px; /* Tamaño más grande */
+  font-weight: bold; /* Texto en negrita */
+  color: #333; /* Negro elegante */
+  text-transform: uppercase; /* MAYÚSCULAS para más presencia */
+  padding-bottom: 5px; /* Espacio entre texto y línea */
+}

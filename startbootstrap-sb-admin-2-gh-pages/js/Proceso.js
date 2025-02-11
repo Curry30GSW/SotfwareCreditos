@@ -1,3 +1,18 @@
+document.getElementById("consultar").addEventListener("click", function () {
+    Swal.fire({
+        title: 'Consultando...',
+        text: 'Por favor espere mientras obtenemos la información.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        timer: 3300,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+});
+
+
 document.getElementById('consultar').addEventListener('click', async () => {
     const selectCuenta = document.getElementById('slt-cuenta');
     const cuenta = selectCuenta.value;
@@ -9,8 +24,7 @@ document.getElementById('consultar').addEventListener('click', async () => {
     const fechaHoy = now.toLocaleDateString("es-ES", opcionesFecha)
         .replace(".", "") // Quitar el punto del mes
         .replace(/\b\w/g, (l) => l.toUpperCase());
-    // Extraer el año y el mes
-    const lapso = `${now.getFullYear()} ${String(now.getMonth() + 1).padStart(2, "0")}`;
+
     // Obtener la hora actual en formato HH:MM:SS
     const horaHoy = now.toLocaleTimeString("es-CO", { hour12: false });
     const style = document.createElement("style");
@@ -19,13 +33,36 @@ document.getElementById('consultar').addEventListener('click', async () => {
         font-weight: bold;
         font-size: 16px;
         color: #333;
+        margin-bottom: 2px;
     }
 
     .valor-label {
     color: #333; 
     font-size: 14px; 
     font-weight: normal; 
+    margin-top: 0;
     }
+
+.col {
+    flex: 1;
+    padding: 2px;
+    min-width: 120px;
+}
+    .detalles-header {
+    background-color: #666 !important;
+    color: white !important;
+    font-weight: bold;
+    text-align: center;
+}
+
+.row {
+    margin-bottom: 5px; /* Reduce el espacio entre filas */
+}
+
+.form-group {
+    margin-bottom: 2px; /* Reduce el espacio entre cada grupo */
+}
+
 
     `;
     document.head.appendChild(style);
@@ -64,7 +101,10 @@ document.getElementById('consultar').addEventListener('click', async () => {
             const couCredOrd = Number(result.data.vlrCredCouOrd[0]?.COU_CRED_ORD ?? 0).toLocaleString("es-CO");
             const vrTotalOrd = Number(result.data.vrTotalOrd ?? 0).toLocaleString("es-CO");
             const comprometido = Number(result.data.comprometido ?? 0).toLocaleString("es-CO");
-            const cupo = Number(result.data.cupo ?? 0).toLocaleString("es-CO");
+            const cupo = Number(result.data.cupo ?? 0);
+            const cupoFormato = cupo.toLocaleString("es-CO");
+            const cupoColor = cupo < 0 ? "text-danger" : ""; // Si es negativo, se pone en rojo
+
             const deudatotal = Number(result.data.deudaTotal ?? 0).toLocaleString("es-CO");
 
             // Formateo de fecha distribución de aporte
@@ -73,9 +113,11 @@ document.getElementById('consultar').addEventListener('click', async () => {
             const año = Math.floor(fechaCalculada / 10000);
             const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
             const dia = String(fechaCalculada % 100).padStart(2, '0');
-            const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+            const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
             const mesTexto = meses[mesNumero - 1];
             const fechaFormateada = `${dia} de ${mesTexto} de ${año}`;
+            // Extraer el año y el mes
+            const lapso = `${meses[now.getMonth()]} ${now.getFullYear()}`;
 
             // Formateo de fecha para data.FEVI05
             const rawFechaFEVI = Number(data.FEVI05) || 0;
@@ -93,6 +135,48 @@ document.getElementById('consultar').addEventListener('click', async () => {
             let dsal09 = Number(data.DSAL09 || 0).toLocaleString("es-CO");
 
 
+            let detallesCreditosHTML = "";
+
+            if (result.data.detallesCreditos && result.data.detallesCreditos.length > 0) {
+                if (!document.querySelector("#detallesCreditosContainer .titulo-detalles")) {
+                    detallesCreditosHTML += `<h4 class="titulo text-center my-3 color: #333; ">Detalles de Créditos</h4>`;
+                }
+
+                detallesCreditosHTML += `
+                <div class="container-fluid detalles-creditos">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead class="detalles-header text-center">
+                                <tr>
+                                    <th>Linea</th>
+                                    <th>Crédito</th>
+                                    <th>Garantia</th>
+                                    <th>Sdo Capital</th>
+                                    <th>Vencidos</th>
+                                    <th>Cuota Capital</th>
+                                    <th>Cuota Interés</th>
+                                    <th>Cuota Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="detalles-body">
+                                ${result.data.detallesCreditos.map((credito, index) => `
+                                    <tr class="${index % 2 === 0 ? "even" : "odd"}">
+                                        <td class="valor-label text-center">${credito.TCRE13}</td>
+                                        <td class="valor-label text-center">${credito.NCRE13}</td>
+                                        <td class="valor-label text-center">${credito.MOGA13.trim()}</td>
+                                        <td class="valor-label text-center">$ ${Number(credito.SCAP13).toLocaleString("es-CO")}</td>
+                                        <td class="valor-label text-center">$ ${Number(result.data.vencidos[index]).toLocaleString("es-CO")}</td>
+                                        <td class="valor-label text-center">$ ${Number(credito.CCAP13).toLocaleString("es-CO")}</td>
+                                        <td class="valor-label text-center">$ ${Number(credito.CINT13).toLocaleString("es-CO")}</td>
+                                        <td class="valor-label text-center">$ ${Number(result.data.cuotasTotales[index]).toLocaleString("es-CO")}</td>
+                                    </tr>
+                                `).join("")}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+            }
 
 
             // Validar si `salo` es un número mayor a 0
@@ -107,7 +191,6 @@ document.getElementById('consultar').addEventListener('click', async () => {
         </div>
     `;
             }
-
             const estadoCuentaHTML = `
         <div class="row">
                     <div class="col-md-4">
@@ -234,7 +317,7 @@ document.getElementById('consultar').addEventListener('click', async () => {
             <div class="col-md-3">    
                 <div class="form-group">
                 <label class="d-md-none"><span class="titulo">Aportes Sociales</span></label>
-                <label class="valor-label">${asal09}</label>
+                <label class="valor-label">$ ${asal09}</label>
                 </div>
             </div>
             <div class="col-md-3">    
@@ -246,7 +329,7 @@ document.getElementById('consultar').addEventListener('click', async () => {
             <div class="col-md-3">    
                 <div class="form-group">
                 <label class="d-md-none"><span class="titulo">Cuota Aportes</span></label>
-                <label class="valor-label" >${acuo09}</label>
+                <label class="valor-label" >$ ${acuo09}</label>
                 </div>
             </div> 
         </div>   
@@ -259,7 +342,7 @@ document.getElementById('consultar').addEventListener('click', async () => {
                     <div class="col-md-3">    
                         <div class="form-group">
                         <label class="d-md-none"><span class="titulo">Aportes Ocasionales</span></label>
-                        <label class="valor-label" >${dsal09}</label>
+                        <label class="valor-label" >$ ${dsal09}</label>
                         </div>
                     </div>  
                 </div>
@@ -274,19 +357,19 @@ document.getElementById('consultar').addEventListener('click', async () => {
                     <div class="col-md-3">    
                         <div class="form-group">
                         <label class="d-md-none"><span class="titulo">Cr&eacute;dito Especial</span></label>
-                        <label class="valor-label" >${creditoEspecial}</label>
+                        <label class="valor-label" >$ ${creditoEspecial}</label>
                         </div>
                     </div>
                     <div class="col-md-3">    
                         <div class="form-group">
                         <label class="d-md-none"><span class="titulo">Vencido</span></label>
-                        <label class="valor-label">${vrTotalEsp}</label>
+                        <label class="valor-label">$ ${vrTotalEsp}</label>
                         </div>
                     </div>
                     <div class="col-md-3">    
                         <div class="form-group">
                             <label class="d-md-none"><span class="titulo">Cuota</span></label>
-                        <label class="valor-label" >${couCredEsp}</label>
+                        <label class="valor-label" >$ ${couCredEsp}</label>
                         </div>
                     </div>    
         </div> 
@@ -299,19 +382,19 @@ document.getElementById('consultar').addEventListener('click', async () => {
                     <div class="col-md-3">    
                         <div class="form-group">
                         <label class="d-md-none"><span class="titulo">Cr&eacute;dito Ordinario</span></label>
-                        <label class="valor-label" >${creditoOrdinario}</label>
+                        <label class="valor-label" >$ ${creditoOrdinario}</label>
                         </div>
                     </div>
                     <div class="col-md-3">    
                         <div class="form-group">
                         <label class="d-md-none"><span class="titulo">Vencido</span></label>
-                        <label class="valor-label" >${vrTotalOrd}</label>
+                        <label class="valor-label" >$ ${vrTotalOrd}</label>
                         </div>
                     </div>
                     <div class="col-md-3">    
                         <div class="form-group">
                         <label class="d-md-none"><span class="titulo">Cuota</span></label>
-                        <label class="valor-label" >${couCredOrd}</label>
+                        <label class="valor-label" >$ ${couCredOrd}</label>
                         </div>
                     </div>    
         </div>
@@ -324,7 +407,7 @@ document.getElementById('consultar').addEventListener('click', async () => {
                     <div class="col-md-3">    
                     <div class="form-group">
                     <label class="d-md-none"><span class="titulo">Comprometido</span></label>
-                    <label class= "valor-label">${comprometido}</label>
+                    <label class= "valor-label">$ ${comprometido}</label>
                     </div>
                     </div>
         </div>
@@ -337,7 +420,7 @@ document.getElementById('consultar').addEventListener('click', async () => {
                     <div class="col-md-3">    
                         <div class="form-group">
                         <label class="d-md-none"><span class="titulo">Cupo</span></label>
-                        <label class= "valor-label">${cupo}</label>
+                       <label class="valor-label ${cupoColor}">$ ${cupoFormato}</label>
                         </div>
                     </div>
         </div>
@@ -351,18 +434,26 @@ document.getElementById('consultar').addEventListener('click', async () => {
                 <div class="col-md-3">    
                     <div class="form-group">
                     <label class="d-md-none"><span class="titulo">Deuda Total</span></label>
-                    <label class= "valor-label">${deudatotal}</label>
+                    <label class= "valor-label">$ ${deudatotal}</label>
                     </div>
                 </div>
 
         </div>
+
+     <div class="row">
+    <div class="col-md-12">
+        <div class="table-responsive" style="overflow-x: auto;"> 
+            ${detallesCreditosHTML}
+        </div>
+    </div>    
+</div>
 
         
          `;
 
             document.getElementById('EstadoCta').innerHTML = estadoCuentaHTML;
         } else {
-            document.getElementById('EstadoCta').innerHTML = '<p>No se encontraron datos para esta cuenta.</p>';
+            document.getElementById('EstadoCta').innerHTML = '<p>No se encontraron datos para esta cuenta, por favor salga e ingrese nuevamente.</p>';
         }
     } catch (error) {
         console.error('Error:', error);

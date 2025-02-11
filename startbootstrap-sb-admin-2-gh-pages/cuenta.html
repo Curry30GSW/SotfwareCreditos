@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" href="./img/Logo2.png">
+    <link rel="icon" type="image/png" href="./img/c.png">
     <title>Servicios WEB COOPSERP </title>
 
     <!-- Custom fonts for this template-->
@@ -19,6 +19,7 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/sb-admin-2.css   ">
 
 </head>
 
@@ -198,7 +199,7 @@
                     <div class="row">
 
                         <!-- Area Chart -->
-                        <div class="col-xl-5 col-lg-5">
+                        <div class="col-xl-3 col-lg-5">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
@@ -214,21 +215,19 @@
                                         </select>
 
                                         <label class="mt-2">Servicio a consultar </label>
-                                        <select id="slt-servicio" class="form-control" required disabled>
-                                            <option value="1">Estado de Cuenta</option>
-                                        </select>
+                                        <input id="slt-servicio" class="form-control" value="Estado de Cuenta" readonly>
                                         <div class="pt-4">
                                             <button type="button" id="consultar"
                                                 class="btn btn-success pull-right">Consultar</button>
-                                            <button type="button" class="btn btn-info pull-right"><a style="color:#FFF"
-                                                    class="d-none d-lg-block" href="javascript:void(0)"
-                                                    id="imprime">Imprimir</a></button>
+                                            <button type="button" class="btn btn-info pull-right" id="imprime">
+                                                <span style="color:#FFF" class="d-none d-lg-block">Imprimir</span>
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-7 col-lg-5">
+                        <div class="col-xl-9 col-lg-7">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
@@ -236,12 +235,18 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Estado de cuenta</h6>
                                 </div>
                                 <!-- Card Body -->
-                                <div class="card-body">
+                                <div class="card-body" id="printContent">
                                     <div class="row">
-                                        <div class="col-md-10">
+                                        <div class="col-md-12 position-relative">
+                                            <div class=" d-flex justify-content-between">
+                                                <div id="qrCode"></div>
+                                                <img id="userImage" src="./img/Logo2.png" alt="Imagen de usuario"
+                                                    class="img-fluid logo-superior">
+                                            </div>
+                                            <h3 class="text-center mt-3 estado-cuenta-titulo">Estado de Cuenta</h3>
                                             <div class="form-group" id="EstadoCta">
-                                                <!--Estado Cuenta-->
                                                 <div class="container-fluid">
+                                                    <!-- Contenido del estado de cuenta aquí -->
                                                 </div>
                                             </div>
                                         </div>
@@ -249,7 +254,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
 
@@ -266,7 +270,7 @@
                         <div class="col-lg-4">
                             <h4 class="text-uppercase mb-4">Copyright &copy;</h4>
                             <p class="lead mb-0">COOPSERP
-                                <a href="https://www.coopserp.com">Sin duda somos &Uacute;nicos</a>.
+                                <a href="https://www.coopserp.com" target="_blank">Sin duda somos &Uacute;nicos</a>.
                             </p>
                         </div>
 
@@ -281,15 +285,16 @@
                         <!-- Footer Social Icons -->
                         <div class="col-lg-4 mb-5 mb-lg-0">
                             <h4 class="text-uppercase mb-4">P&aacute;gina Web</h4>
-                            <a class="btn btn-outline-dark btn-social mx-4" href="https://www.coopserp.com">
+                            <a class="btn btn-outline-dark btn-social mx-4" href="https://www.coopserp.com"
+                                target="_blank">
                                 <i class="fab fa-fw fa-dribbble"></i>
                             </a>
                         </div>
 
-
                     </div>
                 </div>
             </footer>
+
 
             <!-- Copyright Section -->
             <section class="copyright py-4 text-center text-white">
@@ -340,6 +345,9 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+
 
     <!-- Page level plugins -->
     <script src="vendor/chart.js/Chart.min.js"></script>
@@ -350,6 +358,10 @@
     <script src="./js/localStorage.js"></script>
     <script src="./js/obtenerCuentas.js"></script>
     <script src="./js/Proceso.js"></script>
+    <script src="./js/imprimirCuenta.js"></script>
+
+
+
 
 
 

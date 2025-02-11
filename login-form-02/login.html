@@ -19,8 +19,9 @@
 
   <!-- Style -->
   <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/png" href="./images/C.png">
 
-  <title>Coopserp Estado Cuenta</title>
+  <title>COOPSERP Servicios WEB</title>
 </head>
 
 <body>
@@ -62,11 +63,16 @@
                 <input type="password" class="form-control" placeholder="Contraseña" id="password" required>
               </div>
 
-              <div class="d-flex mb-3 align-items-center">
-                <span class="ml-auto">
-                  <a href="#" class="forgot-pass" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Olvidé mi
-                    Contraseña</a>
-                </span>
+              <div class="mb-3">
+                <label for="fechaExpedicion" class="form-label">Fecha de Expedición</label>
+                <input type="date" class="form-control" id="fechaExpedicion" required>
+              </div>
+
+              <div class="d-flex mb-3 align-items-center justify-content-between">
+                <a href="#" class="forgot-pass" data-bs-toggle="modal"
+                  data-bs-target="#forgotPasswordModal">Registrarse</a>
+                <a href="#" class="forgot-pass" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">Olvidé mi
+                  Contraseña</a>
               </div>
 
               <input type="button" value="Ingresar" class="btn btn-block btn-outline-success" id="btnLogin">
@@ -88,19 +94,23 @@
                     <form>
                       <div class="mb-3">
                         <label for="cedulaR" class="form-label">Número de Cédula</label>
-                        <input type="text" class="form-control" id="cedulaR" required>
+                        <input type="text" class="form-control " style="border: 2px solid #afafaf;" id="cedulaR"
+                          required>
                       </div>
                       <div class="mb-3">
                         <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" id="fechaNacimiento" required>
+                        <input type="date" class="form-control" style="border: 2px solid #afafaf;" id="fechaNacimiento"
+                          required>
                       </div>
                       <div class="mb-3">
                         <label for="correo" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="correo" required>
+                        <input type="email" class="form-control" style="border: 2px solid #afafaf;" id="correo"
+                          required>
                       </div>
                       <div class="mb-3">
                         <label for="newPassword" class="form-label">Crear Contraseña</label>
-                        <input type="password" class="form-control" id="newPassword" required>
+                        <input type="password" class="form-control" style="border: 2px solid #afafaf;" id="newPassword"
+                          required>
                       </div>
                       <button type="submit" class="btn btn-success w-100">Recuperar</button>
                     </form>

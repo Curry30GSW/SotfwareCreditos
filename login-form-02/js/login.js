@@ -1,6 +1,12 @@
 document.getElementById('btnLogin').addEventListener('click', async function () {
     const cedula = document.getElementById('cedula').value;
     const password = document.getElementById('password').value;
+    let fechaExpedicion = document.getElementById("fechaExpedicion").value;
+    fechaExpedicion = fechaExpedicion.replace(/-/g, '');
+    fechaExpedicion = parseInt(fechaExpedicion, 10);
+
+
+
 
     if (!cedula || !password) {
         Swal.fire({
@@ -17,7 +23,7 @@ document.getElementById('btnLogin').addEventListener('click', async function () 
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ cedula, password })
+            body: JSON.stringify({ cedula, password, fechaExpedicion })
         });
 
         const data = await response.json();
