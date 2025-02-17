@@ -67,8 +67,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Servicio a Consultar:</h6>
-                        <a class="collapse-item" href="cuenta.html">Créditos Sotfware Pagarés</a>
-                        <a class="collapse-item" href="certificado.html">Créditos Plataforma</a>
+                        <a class="collapse-item" href="creditosSotfware.html">Créditos Sotfware Pagarés</a>
+                        <a class="collapse-item" href="creditosAS400.html">Créditos Plataforma</a>
                     </div>
                 </div>
             </li>
@@ -153,6 +153,11 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <div>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#lapsoModal">
+                            Insertar LAPSO
+                        </button>
+                    </div>
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -205,7 +210,7 @@
                                     <h5 class="m-0 font-weight-bold text-primary text-center">
                                         CONCILIACION CREDITOS REGISTRADOS <br> EN EL SOFTWARE
                                     </h5>
-                                </div>                                
+                                </div>
                                 <!-- Card Body -->
                                 <div class="card-body text-center">
                                     <div class="table-responsive d-flex justify-content-center">
@@ -213,7 +218,7 @@
                                             <thead class="table-primary">
                                                 <tr>
                                                     <th class="align-middle">CONCEPTO</th>
-                                                    <th class="align-middle">02 ENERO - 30 <br> ENERO 2025</th>
+                                                    <th class="align-middle" id="conceptoFecha"> <br> </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -230,15 +235,15 @@
                                                     <td>73</td>
                                                 </tr>
                                                 <tr class="table-success">
-                                                    <td>Noviembre-2024</td>
+                                                    <td class="month-3"></td>
                                                     <td>3</td>
                                                 </tr>
                                                 <tr class="table-success">
-                                                    <td>Diciembre-2024</td>
+                                                    <td class="month-2"></td>
                                                     <td>84</td>
                                                 </tr>
                                                 <tr class="table-success">
-                                                    <td>Enero-2025</td>
+                                                    <td class="month-1"></td>
                                                     <td>109</td>
                                                 </tr>
                                                 <tr class="fw-bold">
@@ -247,23 +252,22 @@
                                                 </tr>
                                                 <tr>
                                                     <td>PAGADOS EN PLATAFORMA</td>
-                                                    <td>733</td>
+                                                    <td id="pagadosAS400"><strong></strong></td>
                                                 </tr>
                                                 <tr class="table-primary fw-bold">
-                                                    <td>DIFERENCIA</td>
+                                                    <td><strong>DIFERENCIA</strong></td>
                                                     <td>0</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
                         </div>
                         <div class="col-xl-9 col-lg-7">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
                                     <h3 class="m-0 font-weight-bold text-primary">CRÉDITOS PENDIENTES POR PAGAR</h3>
                                 </div>
                                 <!-- Card Body -->
@@ -297,7 +301,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -340,6 +344,40 @@
                     </div>
                 </div>
             </footer>
+            <!-- Modal para seleccionar el lapso de fechas -->
+            <div class="modal fade" id="lapsoModal" tabindex="-1" role="dialog" aria-labelledby="lapsoModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="lapsoModalLabel">Seleccionar Lapso de Fechas</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Formulario para seleccionar el lapso de fechas -->
+                            <div class="form-group">
+                                <label for="fechaInicio">Fecha de Inicio (Formato: 12412 - Diciembre 2024)</label>
+                                <input type="text" id="fechaInicio" class="form-control" placeholder="Fecha de Inicio"
+                                    maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label for="fechaFin">Fecha de Fin (Formato: 12502 - Febrero 2025)</label>
+                                <input type="text" id="fechaFin" class="form-control" placeholder="Fecha de Fin"
+                                    maxlength="5">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" id="enviarLapso">Insertar LAPSO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
 
             <!-- Copyright Section -->
             <section class="copyright py-4 text-center text-white">
@@ -397,6 +435,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="./js/hora.js"></script>
+    <script src="./js/conciliacion.js"></script>
 </body>
 
 </html>

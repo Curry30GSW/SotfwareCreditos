@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" href="./img/c.png">
-    <title>Créditos Sotfware Pagarés</title>
+    <title>Créditos Plataforma </title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -19,7 +19,8 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/sb-admin-2.css   ">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 </head>
 
@@ -46,7 +47,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-address-card"></i>
-                    <span>Conciliación Créditos</span></a>
+                    <span>Conciliación Créditos </span></a>
             </li>
 
             <!-- Divider -->
@@ -67,73 +68,11 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Servicio a Consultar:</h6>
-                        <a class="collapse-item active" href="cuenta.html">Cuenta</a>
-                        <a class="collapse-item" href="certificado.html">Certificado de Renta</a>
+                        <a class="collapse-item" href="creditosSotfware.html">Créditos Sotfware Pagarés</a>
+                        <a class="collapse-item active" href="creditosAS400.html">Créditos Plataforma</a>
                     </div>
                 </div>
             </li>
-
-            <!-- Nav Item - Utilities Collapse Menu -->
-            <!-- <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
-                </a>
-                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-                    data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
-                        <a class="collapse-item" href="utilities-border.html">Borders</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
-                    </div>
-                </div>
-            </li> -->
-
-            <!-- Divider -->
-            <!-- <hr class="sidebar-divider"> -->
-
-            <!-- Heading -->
-            <!-- <div class="sidebar-heading">
-                Addons
-            </div> -->
-
-            <!-- Nav Item - Pages Collapse Menu -->
-            <!-- <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-                    aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>Pages</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                    <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="login.html">Login</a>
-                        <a class="collapse-item" href="register.html">Register</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
-                    </div>
-                </div>
-            </li> -->
-
-            <!-- Nav Item - Charts -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="charts.html">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
-            </li> -->
-
-            <!-- Nav Item - Tables -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
-            </li> -->
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -190,9 +129,10 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Créditos Sotfware Pagarés</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Créditos Plataforma</h1>
                         <h3 class="p-3 mb-0 text-secondary text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
+
 
                     <!-- Content Row -->
 
@@ -200,11 +140,12 @@
 
                         <!-- Area Chart -->
                         <div class="col-xl-12 col-lg-12">
+                        </div>
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h4 class="m-0 font-weight-bold text-primary">Créditos Sotfware PAGARÉS</h4>
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
+                                    <h4 class="m-0 font-weight-bold text-primary">Créditos Plataforma</h4>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body" id="printContent">
@@ -213,25 +154,26 @@
                                             <div class="form-group" id="EstadoCta">
                                                 <div class="container-fluid">
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered table-striped text-center">
+                                                        <table id="tablaAS400"
+                                                            class="table table-bordered table-striped text-center">
                                                             <thead class="table-dark">
                                                                 <tr>
-                                                                    <th>AGOP13</th>
+                                                                    <th>Agencia</th>
                                                                     <th>Cuenta</th>
-                                                                    <th>Cedúla</th>
+                                                                    <th>Cedula</th>
                                                                     <th>Nombre</th>
-                                                                    <th>FECI13</th>
+                                                                    <th>Fecha Crédito</th>
                                                                     <th>Linea</th>
-                                                                    <th>CPTO13</th>
+                                                                    <th>RL</th>
                                                                     <th>Pagaré</th>
-                                                                    <th>ORSU13</th>
-                                                                    <th>CAPI13</th>
-                                                                    <th>TASA13</th>
-                                                                    <th>TASA</th>
-                                                                    <th>LAPI13</th>
-                                                                    <th>CIUD05</th>
-                                                                    <th>DESC06</th>
-                                                                    <th>CLAS06</th>
+                                                                    <th>Orden Suministro</th>
+                                                                    <th>Capital Inicial</th>
+                                                                    <th>Tasa de Interes</th>
+                                                                    <th>Tasa</th>
+                                                                    <th>Lapso Creación</th>
+                                                                    <th>Ciudad Res</th>
+                                                                    <th>Tipo de Crédito</th>
+                                                                    <th>Clase de Crédito</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -245,9 +187,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>                                
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -264,7 +207,7 @@
                         <div class="col-lg-4">
                             <h4 class="text-uppercase mb-4">Copyright &copy;</h4>
                             <p class="lead mb-0">COOPSERP
-                                <a href="https://www.coopserp.com" target="_blank">Sin duda somos &Uacute;nicos</a>.
+                                <a href="https://www.coopserp.com">Sin duda somos &Uacute;nicos</a>.
                             </p>
                         </div>
 
@@ -279,16 +222,15 @@
                         <!-- Footer Social Icons -->
                         <div class="col-lg-4 mb-5 mb-lg-0">
                             <h4 class="text-uppercase mb-4">P&aacute;gina Web</h4>
-                            <a class="btn btn-outline-dark btn-social mx-4" href="https://www.coopserp.com"
-                                target="_blank">
+                            <a class="btn btn-outline-dark btn-social mx-4" href="https://www.coopserp.com">
                                 <i class="fab fa-fw fa-dribbble"></i>
                             </a>
                         </div>
 
+
                     </div>
                 </div>
             </footer>
-
 
             <!-- Copyright Section -->
             <section class="copyright py-4 text-center text-white">
@@ -333,23 +275,19 @@
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+    <!-- jQuery (necesario para DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-
-
     <!-- Page level plugins -->
     <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script src="./js/hora.js"></script>
-
-
+    <script src="./js/creditosAS400.js"></script>
 
 
 </body>
