@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" href="./img/C.png">
-    <title>Servicios WEB COOPSERP </title>
+    <title>Conciliación Créditos </title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -46,7 +46,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-address-card"></i>
-                    <span>Servicios WEB COOPSERP </span></a>
+                    <span>Conciliación Créditos </span></a>
             </li>
 
             <!-- Divider -->
@@ -67,8 +67,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Servicio a Consultar:</h6>
-                        <a class="collapse-item" href="cuenta.html">Cuenta</a>
-                        <a class="collapse-item" href="certificado.html">Certificado de Renta</a>
+                        <a class="collapse-item" href="cuenta.html">Créditos Sotfware Pagarés</a>
+                        <a class="collapse-item" href="certificado.html">Créditos Plataforma</a>
                     </div>
                 </div>
             </li>
@@ -190,40 +190,114 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-2">
-                        <h1 class="h3 mb-0 text-gray-800">Servicios WEB COOPSERP</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Conciliación Créditos</h1>
                         <h3 class="p-3 mb-0 text-gray-800 text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
 
                     <!-- Content Row -->
-
                     <div class="row">
 
                         <!-- Area Chart -->
-                        <div class="col-xl-12 col-lg-10">
+                        <div class="col-xl-3 col-lg-5">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h2 class="m-0 font-weight-bold text-primary">¡Bienvenido de Nuevo!</h2>
+                                    <h5 class="m-0 font-weight-bold text-primary text-center">
+                                        CONCILIACION CREDITOS REGISTRADOS <br> EN EL SOFTWARE
+                                    </h5>
+                                </div>                                
+                                <!-- Card Body -->
+                                <div class="card-body text-center">
+                                    <div class="table-responsive d-flex justify-content-center">
+                                        <table class="table table-bordered w-auto text-center text-dark">
+                                            <thead class="table-primary">
+                                                <tr>
+                                                    <th class="align-middle">CONCEPTO</th>
+                                                    <th class="align-middle">02 ENERO - 30 <br> ENERO 2025</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>REGISTRADOS EN SOFTWARE</td>
+                                                    <td>796</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>ANULACIÓN CRÉDITO</td>
+                                                    <td>59</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>RECHAZADO</td>
+                                                    <td>73</td>
+                                                </tr>
+                                                <tr class="table-success">
+                                                    <td>Noviembre-2024</td>
+                                                    <td>3</td>
+                                                </tr>
+                                                <tr class="table-success">
+                                                    <td>Diciembre-2024</td>
+                                                    <td>84</td>
+                                                </tr>
+                                                <tr class="table-success">
+                                                    <td>Enero-2025</td>
+                                                    <td>109</td>
+                                                </tr>
+                                                <tr class="fw-bold">
+                                                    <td>PAGADO SOFTWARE</td>
+                                                    <td>733</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>PAGADOS EN PLATAFORMA</td>
+                                                    <td>733</td>
+                                                </tr>
+                                                <tr class="table-primary fw-bold">
+                                                    <td>DIFERENCIA</td>
+                                                    <td>0</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>                                
+                            </div>
+                        </div>
+                        <div class="col-xl-9 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
+                                    <h3 class="m-0 font-weight-bold text-primary">CRÉDITOS PENDIENTES POR PAGAR</h3>
                                 </div>
                                 <!-- Card Body -->
-                                <div
-                                    class="card-body py-3 d-flex flex-column align-items-center justify-content-center mt-2">
-                                    <img id="userImage" src="./img/Logo2.png" alt="Imagen de usuario" class="img-fluid"
-                                        style="max-width: 100%; height: auto; object-fit: cover;">
-                                    <h2 id="nombreUsuario"
-                                        class="font-weight-bold text-dark text-md-center display-sm-3 display-md-2 display-lg-1">
-                                    </h2>
-                                    <!-- Icon Divider -->
-                                    <div class="divider-custom divider-light my-3">
-                                        <div class="divider-custom-icon">
-                                            <span style="font-size: 2rem;">⭐⭐⭐⭐⭐⭐</span>
+                                <div class="card-body" id="printContent">
+                                    <h3 class="text-center mt-3 text-dark">Noviembre-2024</h3>
+                                    <div class="row">
+                                        <div class="col-md-12 position-relative">
+                                            <div class="form-group">
+                                                <div class="container-fluid">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead class="table-dark text-center">
+                                                                <tr>
+                                                                    <th>#</th>
+                                                                    <th>FECHA</th>
+                                                                    <th>AGENCIA</th>
+                                                                    <th>CUENTA</th>
+                                                                    <th>NOMBRE</th>
+                                                                    <th>LINEA</th>
+                                                                    <th>CAPITAL</th>
+                                                                    <th>NOMINA</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <!-- Mostrar la última conexión -->
-                                    <h2 id="ultimoIngreso" class="font-weight-bold text-dark"></h2>
                                 </div>
-
+                                
                             </div>
                         </div>
                     </div>
@@ -323,70 +397,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="./js/hora.js"></script>
-    <script src="./js/verifyToken.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const nombreUsuario = localStorage.getItem('nombreUsuario');
-
-            if (nombreUsuario) {
-                // Selecciona todas las etiquetas con el ID "nombreUsuario" (aunque no debería haber IDs repetidos)
-                document.querySelectorAll("#nombreUsuario").forEach(elemento => {
-                    elemento.textContent = nombreUsuario;
-                });
-            } else {
-                window.location.href = '../login-form-02/login.html'; // Redirige al login
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const nombreUsuario = localStorage.getItem('nombreUsuario');
-            let fechaUltimaConexion = localStorage.getItem('fechaUltimaConexion'); // "2025-02-05 15:17:18.000000"
-            let ipUltimaConexion = localStorage.getItem('ipUltimaConexion');
-
-            function formatearFecha(fechaHora) {
-                if (!fechaHora) return 'Fecha no disponible';
-
-                // Extraer la parte importante (YYYY-MM-DD HH:MM:SS)
-                let fechaLimpia = fechaHora.split('.')[0].replace(' ', 'T'); // "2025-02-05T15:17:18"
-
-                // Convertir a objeto Date sin modificar la zona horaria
-                let fechaObj = new Date(fechaLimpia);
-
-                if (isNaN(fechaObj.getTime())) return 'Fecha inválida';
-
-                // Formatear fecha en el formato requerido
-                const opciones = {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true,
-                    timeZone: 'America/Bogota'  // Garantiza la zona horaria correcta
-                };
-
-                return new Intl.DateTimeFormat('es-CO', opciones).format(fechaObj)
-                    .replace('a. m.', 'AM')
-                    .replace('p. m.', 'PM');
-            }
-
-            const fechaFormateada = formatearFecha(fechaUltimaConexion);
-
-            document.getElementById('nombreUsuario').innerText = nombreUsuario;
-            document.getElementById('ultimoIngreso').innerHTML = `Su último ingreso fue el <strong>${fechaFormateada}</strong> desde la IP <strong>${ipUltimaConexion}</strong>`;
-        });
-
-        // Manejador del evento de cerrar sesión
-        document.getElementById('logout').addEventListener('click', function () {
-            // Elimina todo lo almacenado en el localStorage
-            localStorage.clear();
-
-            // Redirige a la página de login
-            window.location.href = '../login-form-02/login.html';  // Ajusta la URL si es necesario
-        });
-
-
-    </script>
 </body>
 
 </html>

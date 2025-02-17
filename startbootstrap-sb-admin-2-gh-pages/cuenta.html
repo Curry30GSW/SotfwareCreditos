@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" href="./img/c.png">
-    <title>Servicios WEB COOPSERP </title>
+    <title>Créditos Sotfware Pagarés</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -46,7 +46,7 @@
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-address-card"></i>
-                    <span>Servicios WEB COOPSERP </span></a>
+                    <span>Conciliación Créditos</span></a>
             </li>
 
             <!-- Divider -->
@@ -190,7 +190,7 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Servicios WEB COOPSERP</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Créditos Sotfware Pagarés</h1>
                         <h3 class="p-3 mb-0 text-secondary text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
 
@@ -199,59 +199,53 @@
                     <div class="row">
 
                         <!-- Area Chart -->
-                        <div class="col-xl-3 col-lg-5">
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Consultar Cuenta</h6>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <form>
-                                        <label>Seleccione la cuenta</label>
-                                        <select id="slt-cuenta" class="form-control" required>
-
-                                        </select>
-
-                                        <label class="mt-2">Servicio a consultar </label>
-                                        <input id="slt-servicio" class="form-control" value="Estado de Cuenta" readonly>
-                                        <div class="pt-4">
-                                            <button type="button" id="consultar"
-                                                class="btn btn-success pull-right">Consultar</button>
-                                            <button type="button" class="btn btn-info pull-right" id="imprime">
-                                                <span style="color:#FFF" class="d-none d-lg-block">Imprimir</span>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-9 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Estado de cuenta</h6>
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
+                                    <h4 class="m-0 font-weight-bold text-primary">Créditos Sotfware PAGARÉS</h4>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body" id="printContent">
                                     <div class="row">
                                         <div class="col-md-12 position-relative">
-                                            <div class=" d-flex justify-content-between">
-                                                <div id="qrCode"></div>
-                                                <img id="userImage" src="./img/Logo2.png" alt="Imagen de usuario"
-                                                    class="img-fluid logo-superior">
-                                            </div>
-                                            <h3 class="text-center mt-3 estado-cuenta-titulo">Estado de Cuenta</h3>
                                             <div class="form-group" id="EstadoCta">
                                                 <div class="container-fluid">
-                                                    <!-- Contenido del estado de cuenta aquí -->
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered table-striped text-center">
+                                                            <thead class="table-dark">
+                                                                <tr>
+                                                                    <th>AGOP13</th>
+                                                                    <th>Cuenta</th>
+                                                                    <th>Cedúla</th>
+                                                                    <th>Nombre</th>
+                                                                    <th>FECI13</th>
+                                                                    <th>Linea</th>
+                                                                    <th>CPTO13</th>
+                                                                    <th>Pagaré</th>
+                                                                    <th>ORSU13</th>
+                                                                    <th>CAPI13</th>
+                                                                    <th>TASA13</th>
+                                                                    <th>TASA</th>
+                                                                    <th>LAPI13</th>
+                                                                    <th>CIUD05</th>
+                                                                    <th>DESC06</th>
+                                                                    <th>CLAS06</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td colspan="16">No hay datos disponibles</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>                                
                             </div>
                         </div>
                     </div>
@@ -354,13 +348,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="./js/hora.js"></script>
-    <script src="./js/verifyToken.js"></script>
-    <script src="./js/localStorage.js"></script>
-    <script src="./js/obtenerCuentas.js"></script>
-    <script src="./js/Proceso.js"></script>
-    <script src="./js/imprimirCuenta.js"></script>
-
-
 
 
 
