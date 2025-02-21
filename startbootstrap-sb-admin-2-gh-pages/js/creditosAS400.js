@@ -48,22 +48,22 @@ const mostrar = (creditos) => {
 
         resultados +=
             `<tr>
-                <td class="text-center ">${creditos.AGOP13}</td>
-                <td class="text-center ">${creditos.NCTA13}</td>
-                <td class="text-center ">${creditos.NNIT05}</td>
-                <td class="text">${creditos.DESC05}</td>
-                <td class="text">${fechaFormateada}</td> 
-                <td class="text-center ">${creditos.TCRE13}</td>
-                <td class="text-center ">${creditos.CPTO13}</td>
-                <td class="text-center ">${creditos.NCRE13}</td>
-                <td class="text-center ">${creditos.ORSU13}</td>
-                <td class="text-center ">$${capitalInicial}</td>
-                <td class="text-center ">${creditos.TASA13}</td>
-                <td class="text-center ">${tasaFormateada}</td>
-                <td class="text-center ">${creditos.LAPI13}</td>
-                <td class="text-center ">${creditos.CIUD05}</td>
-                <td class="text-center ">${creditos.DESC06}</td>
-                <td class="text-center ">${creditos.CLAS06}</td>
+                <td class="text-center text-dark font-weight-bold">${creditos.AGOP13}</td>
+                <td class="text-center text-dark font-weight-bold ">${creditos.NCTA13}</td>
+                <td class="text-center text-dark font-weight-bold">${creditos.NNIT05}</td>
+                <td class="text-center text-dark font-weight-bold">${creditos.DESC05}</td>
+                <td class="text-center text-dark font-weight-bold">${fechaFormateada}</td> 
+                <td class="text-center text-dark font-weight-bold ">${creditos.TCRE13}</td>
+                <td class="text-center text-dark font-weight-bold ">${creditos.CPTO13}</td>
+                <td class="text-center text-dark font-weight-bold ">${creditos.NCRE13}</td>
+                <td class="text-center text-dark font-weight-bold ">${creditos.ORSU13}</td>
+                <td class="text-center text-dark font-weight-bold ">$${capitalInicial}</td>
+                <td class="text-center text-dark font-weight-bold ">${creditos.TASA13}</td>
+                <td class="text-center text-dark font-weight-bold ">${tasaFormateada}</td>
+                <td class="text-center text-dark font-weight-bold">${creditos.LAPI13}</td>
+                <td class="text-center text-dark font-weight-bold ">${creditos.CIUD05}</td>
+                <td class="text-center text-dark font-weight-bold ">${creditos.DESC06}</td>
+                <td class="text-center text-dark font-weight-bold ">${creditos.CLAS06}</td>
             </tr>`;
     });
     contenedor.innerHTML = resultados;

@@ -23,7 +23,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
 
 
-
 </head>
 
 <body id="page-top">
@@ -79,7 +78,7 @@
             </li>
 
             <li class="nav-item active">
-                <a class="nav-link" href="analisis.html">
+                <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-list"></i>
                     <span>Tabla Analisis </span></a>
             </li>
@@ -210,7 +209,7 @@
                     <div class="row">
 
                         <!-- Area Chart -->
-                        <div class="col-xl-3 col-lg-5">
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
@@ -219,115 +218,42 @@
                                     </h5>
                                 </div>
                                 <!-- Card Body -->
-                                <div class="card-body ">
-                                    <div class="table-responsive d-flex justify-content-center">
-                                        <table class="table table-bordered w-auto  text-dark">
-                                            <thead class="table-primary">
-                                                <tr>
-                                                    <th class="align-middle">CONCEPTO</th>
-                                                    <th class="align-middle" id="conceptoFecha"> <br> </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td class="font-weight-bold">CONSECUTIVO INICIAL</td>
-                                                    <td class="text-center" id="consecutivoInicial"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="font-weight-bold">CONSECUTIVO FINAL</td>
-                                                    <td class="text-center" id="consecutivoFinal"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="font-weight-bold">REGISTRADOS EN SOFTWARE</td>
-                                                    <td class="text-center" id="registradosPagares"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="font-weight-bold">APROBADOS</td>
-                                                    <td class="text-center" id="aprobados"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="font-weight-bold">ANULACIÓN CRÉDITO</td>
-                                                    <td class="text-center" id="anulados"></td>
-                                                </tr>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-striped text-center">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th rowspan="2">C.O.</th>
+                                                        <th rowspan="2">AGENCIA</th>
+                                                        <th colspan="3">ANÁLISIS</th>
+                                                        <th colspan="4">ESTADO</th>
+                                                        <th rowspan="2">VERIFICACIÓN</th>
+                                                        <th rowspan="2">EFECTIVIDAD</th>
+                                                        <th rowspan="2">ANÁLISIS PENDIENTES</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>30-Ene</th>
+                                                        <th>28-Feb</th>
+                                                        <th>Cantidad</th>
+                                                        <th>PROYECCIÓN</th>
+                                                        <th>PAGARÉ</th>
+                                                        <th>ANULADOS</th>
+                                                        <th>GRABADOS</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="analisisResult">
 
-                                                <tr>
-                                                    <td class="font-weight-bold">RECHAZADOS</td>
-                                                    <td class="text-center" id="rechazados"></td>
-                                                </tr>
-                                                <tr class="table-success">
-                                                    <td class="month-3 font-weight-bold"></td>
-                                                    <td class="text-center" id="pendientesPrimerMes"></td>
-                                                </tr>
-                                                <tr class="table-success ">
-                                                    <td class="month-2 font-weight-bold"></td>
-                                                    <td class="text-center" id="pendientesTwoMes"></td>
-                                                </tr>
-                                                <tr class="table-success">
-                                                    <td class="month-1 font-weight-bold"></td>
-                                                    <td class="text-center" id="pendientesTercerMes"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="font-weight-bold">PAGADOS EN PLATAFORMA</td>
-                                                    <td class="text-center" id="pagadosAS400"><strong></strong></td>
-                                                </tr>
-                                                <tr class="fw-bold">
-                                                    <td class="font-weight-bold">PAGADO SOFTWARE</td>
-                                                    <td class="text-center " id="pagadosPagare"></td>
-                                                </tr>
 
-                                                <tr class="table-primary fw-bold">
-                                                    <td><strong>DIFERENCIA</strong></td>
-                                                    <td class="text-center" id="diferenciaPagos"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-9 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h3 class="m-0 font-weight-bold text-primary">CRÉDITOS PENDIENTES POR PAGAR</h3>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body" id="printContent">
-                                    <h3 class="text-center mt-3 text-dark">Noviembre-2024</h3>
-                                    <div class="row">
-                                        <div class="col-md-12 position-relative">
-                                            <div class="form-group">
-                                                <div class="container-fluid">
-                                                    <div class="table-responsive">
-                                                        <table id="tablaPendientes"
-                                                            class="table table-striped table-bordered">
-                                                            <thead class="table-dark text-center">
-                                                                <tr>
-                                                                    <th class="text-center">#</th>
-                                                                    <th class="text-center">FECHA DE ANALISIS
-                                                                    </th>
-                                                                    <th class="text-center">AGENCIA</th>
-                                                                    <th class="text-center">CUENTA</th>
-                                                                    <th class="text-center">NOMBRE</th>
-                                                                    <th class="text-center">LINEA</th>
-                                                                    <th class="text-center">RL</th>
-                                                                    <th class="text-center">CAPITAL</th>
-                                                                    <th class="text-center">NOMINA</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="Resultadopendientes">
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -426,13 +352,15 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="./js/hora.js"></script>
-    <script src="./js/conciliacion.js"></script>
+    <script src="./js/analisis.js"></script>
     <!-- jQuery (necesario para DataTables) -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+
 
 </body>
 

@@ -20,6 +20,8 @@
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/sb-admin-2.css   ">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
 
 </head>
 
@@ -153,6 +155,12 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <!-- Botón que abre el modal -->
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFechas">
+                        Insertar Fecha de Acción
+                    </button>
+
+
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -212,30 +220,33 @@
                                             <div class="form-group" id="EstadoCta">
                                                 <div class="container-fluid">
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered table-striped text-center">
+                                                        <table id="tablaPagares"
+                                                            class="table table-bordered table-striped text-center">
                                                             <thead class="table-dark">
                                                                 <tr>
+                                                                    <th>ID</th>
                                                                     <th>Agencia</th>
-                                                                    <th>Cuenta</th>
-                                                                    <th>Cedula</th>
-                                                                    <th>Nombre</th>
-                                                                    <th>Fecha Crédito</th>
-                                                                    <th>Linea</th>
-                                                                    <th>RL</th>
-                                                                    <th>Pagaré</th>
-                                                                    <th>Orden Suministro</th>
-                                                                    <th>Capital Inicial</th>
-                                                                    <th>Tasa de Interes</th>
+                                                                    <th>CuentaCoop</th>
+                                                                    <th>Cedula_Persona</th>
+                                                                    <th>NombreCompleto</th>
+                                                                    <th>FechaCredito</th>
+                                                                    <th>NoLC</th>
+                                                                    <th>ID_Pagare</th>
+                                                                    <th>Capital</th>
                                                                     <th>Tasa</th>
-                                                                    <th>Lapso Creación</th>
-                                                                    <th>Ciudad Res</th>
-                                                                    <th>Tipo de Crédito</th>
-                                                                    <th>Clase de Crédito</th>
+                                                                    <th>FechaAccion</th>
+                                                                    <th>Direccion</th>
+                                                                    <th>Linea_Credito</th>
+                                                                    <th>GeneradorPagare</th>
+                                                                    <th>CoorAsignada</th>
+                                                                    <th>Nomina</th>
+                                                                    <th>Aprobado</th>
+                                                                    <th>Ordinario</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td colspan="16">No hay datos disponibles</td>
+                                                                    <td colspan="18">No hay datos disponibles</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -328,6 +339,35 @@
         </div>
     </div>
 
+    <!-- Modal para seleccionar las fechas -->
+    <div class="modal fade" id="modalFechas" tabindex="-1" aria-labelledby="modalFechasLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFechasLabel">Seleccionar Fechas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario de fechas -->
+                    <div class="mb-3">
+                        <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+                        <input type="text" class="form-control" id="fechaInicio" placeholder="FEBRERO 01 2025" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fechaFin" class="form-label">Fecha de Fin</label>
+                        <input type="text" class="form-control" id="fechaFin" placeholder="FEBRERO 17 2025" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="buscarBtn">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -347,6 +387,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="./js/hora.js"></script>
+    <script src="./js/creditosSotfware.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.3/js/jquery.dataTables.min.js"></script>
 
 
 
