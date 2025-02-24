@@ -67,29 +67,14 @@ function getMonthYear(date) {
     return `${month}-${year}`;
 }
 
-// Función para obtener el nombre del mes y año en formato "Mes-Año"
-function getMonthYear(date) {
-    const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${month}-${year}`;
-}
 
-// Función para obtener el nombre del mes y año en formato "Mes-Año"
-function getMonthYear(date) {
-    const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${month}-${year}`;
-}
 
 // Función para actualizar los tres meses en los <td> correspondientes
 function updateMonths() {
     // Obtener la fecha actual
     const currentDate = new Date();
 
-    // Modificar el mes para que el primer mes mostrado sea el mes anterior al actual
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 6; i++) {
         const date = new Date(currentDate);
         date.setMonth(currentDate.getMonth() - i); // Restar meses para los tres últimos
 
@@ -149,6 +134,9 @@ const creditosPendientesAS400 = async () => {
     try {
         // Hacer todas las peticiones al mismo tiempo
         const responses = await Promise.all([
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/5'),
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/4'),
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/3'),
             fetch('http://localhost:5000/api/creditos-pendientes/contar/2'),
             fetch('http://localhost:5000/api/creditos-pendientes/contar/1'),
             fetch('http://localhost:5000/api/creditos-pendientes/contar/0')
@@ -158,15 +146,23 @@ const creditosPendientesAS400 = async () => {
         const data = await Promise.all(responses.map(response => response.json()));
 
         // Asignar los valores a cada celda
-        document.getElementById('pendientesPrimerMes').textContent = data[2].total_cuentas || '0';
-        document.getElementById('pendientesTwoMes').textContent = data[1].total_cuentas || '0';
-        document.getElementById('pendientesTercerMes').textContent = data[0].total_cuentas || '0';
+
+        document.getElementById('pendientesSextoMes').textContent = data[0].total_cuentas || '0'; // mes=5
+        document.getElementById('pendientesQuintoMes').textContent = data[1].total_cuentas || '0'; // mes=4
+        document.getElementById('pendientesCuartoMes').textContent = data[2].total_cuentas || '0'; // mes=3
+        document.getElementById('pendientesTercerMes').textContent = data[3].total_cuentas || '0'; // mes=2
+        document.getElementById('pendientesTwoMes').textContent = data[4].total_cuentas || '0'; // mes=1
+        document.getElementById('pendientesPrimerMes').textContent = data[5].total_cuentas || '0'; // mes=0
+
 
     } catch (error) {
         console.error('Error al obtener créditos pendientes:', error);
         document.getElementById('pendientesPrimerMes').textContent = 'Error';
-        document.getElementById('pendientesTwoMes').textContent = 'Error';
+        document.getElementById('pendientesSextoMes').textContent = 'Error';
+        document.getElementById('pendientesQuintoMes').textContent = 'Error';
+        document.getElementById('pendientesCuartoMes').textContent = 'Error';
         document.getElementById('pendientesTercerMes').textContent = 'Error';
+        document.getElementById('pendientesTwoMes').textContent = 'Error';
     }
 };
 
@@ -199,17 +195,17 @@ const mostrar = (creditosPendientes) => {
 
     creditosPendientes.forEach(creditosPendientes => {
         // Convertir fecha de registro a un formato legible
-        const rawFecha = creditosPendientes.FECI26;
+        const rawFecha = creditosPendientes.FECH23;
         const fechaCalculada = rawFecha + 19000000;
         const año = Math.floor(fechaCalculada / 10000);
         const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
         const dia = String(fechaCalculada % 100).padStart(2, '0');
-        const fechaFormateada = `${dia} de ${obtenerNombreMes(mesNumero)} de ${año}`;
+        const fechaFormateada = `${dia} ${obtenerNombreMes(mesNumero)} del ${año}`;
 
         function obtenerNombreMes(mes) {
             const meses = [
-                'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-                'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
             ];
             return meses[mes - 1];
         }
@@ -219,14 +215,19 @@ const mostrar = (creditosPendientes) => {
         resultados +=
             `<tr>
                     <td class="text-center text-dark ">${contador}</td> 
-                    <td class="text-center text-dark ">${fechaFormateada}</td>
+                    <td class="text-dark ">${fechaFormateada}</td>
+                    <td class="text-center text-dark ">${creditosPendientes.NANA26}</td>
+                    <td class="text-center text-dark ">${creditosPendientes.DIRE03}</td>
+                    <td class="text-center text-dark ">${creditosPendientes.DIST03}</td>
                     <td class="text-center text-dark ">${creditosPendientes.DESC03}</td>
                     <td class="text-center text-dark ">${creditosPendientes.NCTA26}</td>
                     <td class="text-center text-dark ">${creditosPendientes.DESC05}</td> 
                     <td class="text-center text-dark ">${creditosPendientes.TCRE26}</td>
                     <td class="text-center text-dark ">${creditosPendientes.CPTO26}</td>
                     <td class="text-center text-dark ">${saldoCapital}</td>
+                    <td class="text-center text-dark ">${creditosPendientes.TASA26} %</td>
                     <td class="text-center text-dark ">${creditosPendientes.DESC04}</td>
+          
                 </tr>`;
 
         contador++; // Aumenta el contador en cada iteración

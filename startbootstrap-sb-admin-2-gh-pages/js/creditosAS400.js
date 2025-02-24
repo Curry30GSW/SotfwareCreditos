@@ -1,26 +1,41 @@
 const contenedor = document.querySelector('tbody');
 let resultados = '';
 
+// Mostrar alerta de carga antes de hacer la petición
+Swal.fire({
+    title: 'Cargando información...',
+    text: 'Por favor, espera mientras se cargan los datos.',
+    allowOutsideClick: false,
+    didOpen: () => {
+        Swal.showLoading();
+    }
+});
 
-//Mostrar Resultados
-fetch('http://localhost:5000/api/creditos', {
-    method: 'GET',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-})
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la solicitud');
-        }
-        return response.json();
+// Cerrar la alerta después de 2 segundos y luego hacer la petición
+setTimeout(() => {
+    Swal.close(); // Cierra la alerta
+
+    // Realizar la petición después de cerrar la alerta
+    fetch('http://localhost:5000/api/creditos', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
     })
-    .then(creditos => {
-        mostrar(creditos);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            return response.json();
+        })
+        .then(creditos => {
+            mostrar(creditos);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+}, 2500);
 
 
 

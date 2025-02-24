@@ -5,7 +5,7 @@ const abrirModalBtn = document.querySelector('[data-bs-target="#modalFechas"]');
 const modalFechas = new bootstrap.Modal(document.getElementById('modalFechas')); // Referencia del modal
 
 abrirModalBtn.addEventListener('click', () => {
-    modalFechas.show(); // Mostrar modal
+    modalFechas.show();
 });
 
 // Función para manejar la acción de búsqueda después de que el usuario seleccione las fechas
@@ -15,13 +15,26 @@ buscarBtn.addEventListener('click', () => {
     const fechaFin = document.getElementById('fechaFin').value;
 
     if (!fechaInicio || !fechaFin) {
-        alert('Por favor, ingresa ambas fechas');
+        Swal.fire({
+            icon: 'warning',
+            title: 'Fechas requeridas',
+            text: 'Por favor, ingresa ambas fechas antes de buscar.',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+
+    if (fechaInicio > fechaFin) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Rango de fechas incorrecto',
+            text: 'La fecha inicial debe ser menor que la fecha final.',
+            confirmButtonText: 'OK'
+        });
         return;
     }
 
 
-    console.log(fechaInicio);
-    console.log(fechaFin);
 
     // Mostrar resultados con las fechas seleccionadas
     fetch(`http://localhost:5000/api/creditos/pagares?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`, {
@@ -97,5 +110,14 @@ const mostrar = (creditosPagares) => {
             }
         },
         "lengthMenu": [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]]
+    });
+};
+
+window.onload = () => {
+    Swal.fire({
+        icon: 'info',
+        title: 'Información',
+        text: 'Debes ingresar la Fecha de Acción antes de continuar.',
+        confirmButtonText: 'Entendido'
     });
 };
