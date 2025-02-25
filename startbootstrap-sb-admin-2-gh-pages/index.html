@@ -141,7 +141,13 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-2">
-                        <h1 class="h3 mb-0 text-gray-800">Conciliación Créditos</h1>
+                        <div class="d-flex align-items-center">
+                            <h1 class="h3 mb-0 text-gray-800">Conciliación Créditos</h1>
+                            <button class="btn btn-lg btn-warning px-3 py-2 ms-3 ml-3" type="button" data-toggle="modal"
+                                data-target="#fechaModal">
+                                <i class="fas fa-calendar-day text-white fs-2"></i>
+                            </button>
+                        </div>
                         <h3 class="p-3 mb-0 text-gray-800 text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
 
@@ -169,15 +175,17 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td class="font-weight-bold">CONSECUTIVO INICIAL</td>
+                                                    <td class="font-weight-bold">CONSECUTIVO INICIAL <span
+                                                            id="mesActual"></span></td>
                                                     <td class="text-center" id="consecutivoInicial"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="font-weight-bold">CONSECUTIVO FINAL</td>
+                                                    <td class="font-weight-bold">CONSECUTIVO FINAL <span
+                                                            id="mesActualFinal"></span></td>
                                                     <td class="text-center" id="consecutivoFinal"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="font-weight-bold">REGISTRADOS EN SOFTWARE</td>
+                                                    <td class="font-weight-bold">REGISTRADO SOFTWARE</td>
                                                     <td class="text-center" id="registradosPagares"></td>
                                                 </tr>
                                                 <tr>
@@ -218,16 +226,16 @@
                                                     <td class="text-center" id="pendientesPrimerMes"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="font-weight-bold">PAGADOS EN PLATAFORMA</td>
+                                                    <td class="font-weight-bold">PAGADOS PLATAFORMA</td>
                                                     <td class="text-center" id="pagadosAS400"><strong></strong></td>
                                                 </tr>
                                                 <tr class="fw-bold">
-                                                    <td class="font-weight-bold">PAGADO SOFTWARE</td>
+                                                    <td class="font-weight-bold">PAGADOS SOFTWARE</td>
                                                     <td class="text-center " id="pagadosPagare"></td>
                                                 </tr>
 
                                                 <tr class="table-primary fw-bold">
-                                                    <td><strong>DIFERENCIA</strong></td>
+                                                    <td><strong>PENDIENTES POR PAGAR</strong></td>
                                                     <td class="text-center" id="diferenciaPagos"></td>
                                                 </tr>
                                             </tbody>
@@ -255,8 +263,8 @@
                                                             <thead class="table-dark text-center">
                                                                 <tr>
                                                                     <th class="text-center">#</th>
-                                                                    <th class="text-center">FECHA DE ANALISIS</th>
-                                                                    <th class="text-center"># ANALISIS</th>
+                                                                    <th class="text-center">F.ANALISIS</th>
+                                                                    <th class="text-center">ANALISIS</th>
                                                                     <th class="text-center">COORDINACIÓN</th>
                                                                     <th class="text-center">C.O.</th>
                                                                     <th class="text-center">AGENCIA</th>
@@ -363,6 +371,76 @@
         </div>
     </div>
 
+    <div class="modal fade" id="fechaModal" tabindex="-1" aria-labelledby="fechaModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fechaModalLabel">Ingresar Lapsos de Fechas</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formFechas">
+                        <div class="form-group">
+                            <label for="fechaInicio">Fecha de Inicio</label>
+                            <input type="date" class="form-control" id="fechaInicio" required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="fechaFin">Fecha de Fin</label>
+                            <input type="date" class="form-control" id="fechaFin" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="guardarFechas">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalPendientes" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content" style="width: 500%;">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title text-dark font-weight-bold" id="detalleModalLabel">Créditos </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table id="tablaDetalles" class="table table-bordered table-striped">
+                            <thead class="table-dark text-center">
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">F.ANALISIS</th>
+                                    <th class="text-center">ANÁLISIS</th>
+                                    <th class="text-center">COOR</th>
+                                    <th class="text-center">C.O.</th>
+                                    <th class="text-center">AGENCIA</th>
+                                    <th class="text-center">CUENTA</th>
+                                    <th class="text-center">NOMBRE</th>
+                                    <th class="text-center">LÍNEA</th>
+                                    <th class="text-center">RL</th>
+                                    <th class="text-center">CAPITAL</th>
+                                    <th class="text-center">TASA</th>
+                                    <th class="text-center">NÓMINA</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="detalleContenido">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger emptydata" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -387,6 +465,11 @@
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <!-- DataTables Buttons -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <!-- JSZip (Necesario para exportar a Excel) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 </body>
 

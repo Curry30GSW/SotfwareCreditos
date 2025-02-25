@@ -1,6 +1,355 @@
 const contenedor = document.querySelector('tbody');
 let resultados = '';
 
+const verDetalleEstadoCero = (AGEN23) => {
+    fetch(`http://localhost:5000/api/detallesAnalisisCero/${AGEN23}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensaje || data.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sin resultados',
+                    text: 'No hay análisis.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+
+
+            if ($.fn.DataTable.isDataTable('#tablaDetalles')) {
+                $('#tablaDetalles').DataTable().clear().destroy();
+            }
+
+            let contenido = '';
+
+
+            data.forEach((detalle, index) => {
+                let fechaFormateada = formatearFecha(detalle.FECH23);
+                contenido += `
+                    <tr>
+                        <td class="text-dark font-weight-bold">${index + 1}</td>
+                        <td class="text-dark font-weight-bold">${fechaFormateada}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
+                        <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.CAPI23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.USER23}</td>
+                    </tr>`;
+            });
+
+            document.getElementById('detalleContenido').innerHTML = contenido;
+
+
+            $('#tablaDetalles').DataTable({
+                destroy: true,
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Datos del _START_ al _END_ para un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "oPaginate": {
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+                },
+                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                dom: '<"top"lfB>rtip',
+                buttons: [],
+            });
+
+            // 4️⃣ Mostrar la modal después de inicializar DataTables
+            let modal = new bootstrap.Modal(document.getElementById('detalleModal'));
+            modal.show();
+        })
+        .catch(error => {
+            console.error('Error al obtener los detalles:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un problema al obtener los datos.',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Cerrar'
+            });
+        });
+};
+
+const verDetalleEstadoUno = (AGEN23) => {
+    fetch(`http://localhost:5000/api/detallesAnalisisUno/${AGEN23}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensaje || data.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sin resultados',
+                    text: 'No hay análisis.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+
+            if ($.fn.DataTable.isDataTable('#tablaDetalles')) {
+                $('#tablaDetalles').DataTable().clear().destroy();
+            }
+
+            let contenido = '';
+
+            data.forEach((detalle, index) => {
+                let fechaFormateada = formatearFecha(detalle.FECH23);
+                contenido += `
+                    <tr>
+                        <td class="text-dark font-weight-bold">${index + 1}</td>
+                        <td class="text-dark font-weight-bold">${fechaFormateada}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
+                        <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.CAPI23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.USER23}</td>
+                    </tr>`;
+            });
+
+            document.getElementById('detalleContenido').innerHTML = contenido;
+            let modal = new bootstrap.Modal(document.getElementById('detalleModal'));
+            modal.show();
+
+            // Inicializar DataTables con exportación a Excel
+            if ($.fn.DataTable.isDataTable('#tablaDetalles')) {
+                $('#tablaDetalles').DataTable().destroy();
+            }
+
+            $('#tablaDetalles').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Datos del _START_ al _END_ para un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "oPaginate": {
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+                },
+                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                dom: '<"top"lfB>rtip',
+                buttons: [],
+            });
+
+        })
+        .catch(error => {
+            console.error('Error al obtener los detalles:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un problema al obtener los datos.',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Cerrar'
+            });
+        });
+};
+
+const verDetalleEstadoDos = (AGEN23) => {
+
+
+    fetch(`http://localhost:5000/api/detallesAnalisisDos/${AGEN23}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensaje || data.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sin resultados',
+                    text: 'No hay analisis.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+            if ($.fn.DataTable.isDataTable('#tablaDetalles')) {
+                $('#tablaDetalles').DataTable().clear().destroy();
+            }
+
+
+            let contenido = '';
+
+            data.forEach((detalle, index) => {
+                let fechaFormateada = formatearFecha(detalle.FECH23);
+                contenido += `
+                    <tr>
+                        <td class="text-dark font-weight-bold">${index + 1}</td>
+                        <td class="text-dark font-weight-bold">${fechaFormateada}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
+                        <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.CAPI23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.USER23}</td>
+                    </tr>`;
+            });
+
+            document.getElementById('detalleContenido').innerHTML = contenido;
+            let modal = new bootstrap.Modal(document.getElementById('detalleModal'));
+            modal.show();
+
+            // Inicializar DataTables con exportación a Excel
+            if ($.fn.DataTable.isDataTable('#tablaDetalles')) {
+                $('#tablaDetalles').DataTable().destroy();
+            }
+
+            $('#tablaDetalles').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Datos del _START_ al _END_ para un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "oPaginate": {
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+                },
+                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                dom: '<"top"lfB>rtip',
+                buttons: [],
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los detalles:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un problema al obtener los datos.',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Cerrar'
+            });
+        });
+};
+const verDetalleEstadoTres = (AGEN23) => {
+
+
+    fetch(`http://localhost:5000/api/detallesAnalisisTres/${AGEN23}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensaje || data.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sin resultados',
+                    text: 'No hay analisis.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+
+            if ($.fn.DataTable.isDataTable('#tablaDetalles')) {
+                $('#tablaDetalles').DataTable().clear().destroy();
+            }
+
+
+            let contenido = '';
+
+            data.forEach((detalle, index) => {
+                let fechaFormateada = formatearFecha(detalle.FECH23);
+                contenido += `
+                    <tr>
+                        <td class="text-dark font-weight-bold">${index + 1}</td>
+                        <td class="text-dark font-weight-bold">${fechaFormateada}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
+                        <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.CAPI23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
+                        <td class="text-center text-dark font-weight-bold">${detalle.USER23}</td>
+                    </tr>`;
+            });
+
+            document.getElementById('detalleContenido').innerHTML = contenido;
+            let modal = new bootstrap.Modal(document.getElementById('detalleModal'));
+            modal.show();
+
+            // Inicializar DataTables con exportación a Excel
+            if ($.fn.DataTable.isDataTable('#tablaDetalles')) {
+                $('#tablaDetalles').DataTable().destroy();
+            }
+
+            $('#tablaDetalles').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Datos del _START_ al _END_ para un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "oPaginate": {
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+                },
+                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                dom: '<"top"lfB>rtip',
+                buttons: [],
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los detalles:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un problema al obtener los datos.',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Cerrar'
+            });
+        });
+};
+
+
+const formatearFecha = (fechaRaw) => {
+    if (!fechaRaw) return "Fecha inválida";
+
+    const fechaCalculada = fechaRaw + 19000000;
+    const año = Math.floor(fechaCalculada / 10000);
+    const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
+    const dia = String(fechaCalculada % 100).padStart(2, '0');
+
+    return `${dia} ${obtenerNombreMes(mesNumero)} del ${año}`;
+};
+
+// Función para obtener el nombre del mes en español
+const obtenerNombreMes = (mes) => {
+    const meses = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return meses[mes - 1];
+};
+
+
+
 Promise.all([
     fetch('http://localhost:5000/api/analisis/ultimo-consecutivo', {
         method: 'GET',
@@ -182,11 +531,12 @@ const mostrar = (analisis) => {
             analisis.ANALISIS_TRES -
             analisis.CANTIDAD_REALIZADA;
 
+        let efectividadValor = analisis.CANTIDAD_REALIZADA !== 0
+            ? (analisis.ANALISIS_TRES / analisis.CANTIDAD_REALIZADA) * 100
+            : 0;
 
-        analisis.efectividad = analisis.CANTIDAD_REALIZADA !== 0
-            ? ((analisis.ANALISIS_TRES / analisis.CANTIDAD_REALIZADA) * 100).toFixed(2) + '%'
-            : '0%';
-
+        analisis.efectividad = efectividadValor.toFixed(2) + '%';
+        analisis.efectividadClass = efectividadValor < 50 ? 'text-danger fw-bold' : 'text-success fw-bold';
     });
 
 
@@ -201,35 +551,32 @@ const mostrar = (analisis) => {
                 <td class="text-center text-dark font-weight-bold">${analisis.CANTIDAD_REALIZADA}</td>
                 <td class="text-center text-dark font-weight-bold">
                     ${analisis.ANALISIS_CERO}
-                    <button class="btn btn-link text-primary" onclick="verDetalle('ANALISIS_CERO', '${analisis.ANALISIS_CERO}')">
+                    <button class="btn btn-link text-primary" onclick="verDetalleEstadoCero('${analisis.AGEN23}')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </td>
                 <td class="text-center text-dark font-weight-bold">
                     ${analisis.ANALISIS_UNO}
-                    <button class="btn btn-link text-primary" onclick="verDetalle('ANALISIS_UNO', '${analisis.ANALISIS_UNO}')">
+                    <button class="btn btn-link text-primary" onclick="verDetalleEstadoUno('${analisis.AGEN23}')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </td>
                 <td class="text-center text-dark font-weight-bold">
                     ${analisis.ANALISIS_DOS}
-                    <button class="btn btn-link text-primary" onclick="verDetalle('ANALISIS_DOS', '${analisis.ANALISIS_DOS}')">
+                    <button class="btn btn-link text-primary" onclick="verDetalleEstadoDos('${analisis.AGEN23}')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </td>
                 <td class="text-center text-dark font-weight-bold">
                     ${analisis.ANALISIS_TRES}
-                    <button class="btn btn-link text-primary" onclick="verDetalle('ANALISIS_TRES', '${analisis.ANALISIS_TRES}')">
+                    <button class="btn btn-link text-primary" onclick="verDetalleEstadoTres('${analisis.AGEN23}')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </td>
                 <td class="text-center text-dark font-weight-bold">${analisis.verificacion}</td>
-                <td class="text-center text-dark font-weight-bold">${analisis.efectividad}</td>
+                <td class="text-center font-weight-bold ${analisis.efectividadClass}">${analisis.efectividad}</td>
                 <td class="text-center text-dark font-weight-bold">
                     ${analisis.analisisPendientes}
-                    <button class="btn btn-link text-primary" onclick="verDetalle('ANÁLISIS PENDIENTES', '${analisis.analisisPendientes}')">
-                        <i class="fas fa-eye"></i>
-                    </button>
                 </td>
             </tr>`;
     });

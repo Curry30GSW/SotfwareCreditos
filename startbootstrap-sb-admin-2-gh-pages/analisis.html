@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
 
 
+
 </head>
 
 <body id="page-top">
@@ -203,9 +204,16 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-2">
-                        <h1 class="h3 mb-0 text-gray-800">Tabla de Analisis</h1>
+                        <div class="d-flex align-items-center">
+                            <h1 class="h3 mb-0 text-gray-800 me-2">Conceptos de Análisis</h1>
+                            <button class="btn btn-lg p-0 ms-3 ml-3" type="button" data-toggle="modal"
+                                data-target="#infoModal">
+                                <i class="fas fa-info-circle text-dark fs-5"></i>
+                            </button>
+                        </div>
                         <h3 class="p-3 mb-0 text-gray-800 text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
+
 
                     <!-- Content Row -->
                     <div class="row">
@@ -233,7 +241,9 @@
                                                         <th colspan="4" class="text-center ">ESTADO</th>
                                                         <th rowspan="2" class="text-center">VERIFICACIÓN</th>
                                                         <th rowspan="2" class="text-center">EFECTIVIDAD</th>
-                                                        <th rowspan="2" class="text-center">ANÁLISIS PENDIENTES</th>
+                                                        <th rowspan="2" class="text-center" style="width: 130px;">
+                                                            ANÁLISIS PDTE</th>
+
                                                     </tr>
                                                     <tr>
                                                         <th id="corte" class="text-center  text-white"></th>
@@ -320,7 +330,7 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
+    <!-- Modales -->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -333,12 +343,114 @@
                 </div>
                 <div class="modal-body">¿Estás seguro que deseas cerrar sesión?</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">Cancelar</button>
                     <a class="btn btn-danger" href="../login-form-02/login.html" id="logout">Cerrar Sesión</a>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title text-dark font-weight-bold" id="detalleModalLabel">Análisis Estado: </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table id="tablaDetalles" class="table table-bordered table-striped">
+                            <thead class="table-dark text-center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Fecha Análisis</th>
+                                    <th># Análisis</th>
+                                    <th>Cuenta</th>
+                                    <th>Asociado</th>
+                                    <th>Capital Inicial</th>
+                                    <th>Línea</th>
+                                    <th>C.O</th>
+                                    <th>Agencia</th>
+                                    <th>Nomina</th>
+                                    <th>Usuario</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detalleContenido">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title text-dark font-weight-bold" id="infoModalLabel">Información de Analisis</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ESTADO</th>
+                                    <th>CONCEPTO</th>
+                                    <th>DESCRIPCIÓN DEL ESTADO</th>
+                                    <th>TRANSICIÓN</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-dark font-weight-bold">
+                                <tr>
+                                    <td>0</td>
+                                    <td>Proyección</td>
+                                    <td>Cuando el asociado realiza la solicitud de crédito y se analizan las condiciones
+                                        del crédito, capacidad, monto, tasa y cuota.</td>
+                                    <td>0 a 1 / 0 a 2</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>Pagaré</td>
+                                    <td>Cuando asociado acepta los términos del crédito a colocar y se generan pagares
+                                        para realizar respectivas firmas.</td>
+                                    <td>1 a 2 / 1 a 3</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>Anulado</td>
+                                    <td>Cuando el asociado desiste voluntariamente del crédito o en su defecto la nómina
+                                        rechaza la libranza por capacidad de descuento negativa.</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>Grabado</td>
+                                    <td>Cuando se realiza el desembolso del crédito al asociado mediante cheque,
+                                        efectivo o transferencia.</td>
+                                    <td>3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="mt-3 p-2 border rounded bg-light text-dark">
+                            <strong>NOTA:</strong> LAS TRANSICIONES SE HACEN DE FORMA ASCENDENTE, NO SE PUEDE REALIZAR
+                            DE 3 A 2; 3 A 1 Y 3 A 0.<br>
+                            <strong>EFECTIVIDAD =</strong> CANTIDAD DE ANÁLISIS GRABADOS / CANTIDAD DE ANÁLISIS
+                            REALIZADOS.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 
 

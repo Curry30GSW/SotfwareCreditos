@@ -26,6 +26,86 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 });
 
+const creditoPendienteMes = (mes) => {
+    console.log(`Consultando mes: ${mes}`);
+    fetch(`http://localhost:5000/api/creditos-pendientes/${mes}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.mensaje || data.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sin resultados',
+                    text: 'No hay análisis para este mes.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+
+            let contenido = '';
+
+            data.forEach((detalle, index) => {
+                let saldoCapital = Number(detalle.SCAP26 || 0).toLocaleString("es-CO");
+                let fechaFormateada = formatearFecha(detalle.FECH23);
+                contenido += `
+                    <tr>
+                        <td class="text-dark font-weight-bold">${index + 1}</td>
+                        <td class="text-dark font-weight-bold">${fechaFormateada}</td>
+                        <td class="text-center text-dark ">${detalle.NANA26}</td>
+                        <td class="text-center text-dark ">${detalle.DIRE03}</td>
+                        <td class="text-center text-dark ">${detalle.DIST03}</td>
+                        <td class="text-center text-dark ">${detalle.DESC03}</td>
+                        <td class="text-center text-dark ">${detalle.NCTA26}</td>
+                        <td class="text-center text-dark ">${detalle.DESC05}</td> 
+                        <td class="text-center text-dark ">${detalle.TCRE26}</td>
+                        <td class="text-center text-dark "> ${detalle.CPTO26}</td>
+                        <td class="text-dark ">$${saldoCapital}</td>
+                        <td class="text-center text-dark ">${detalle.TASA26} %</td>
+                        <td class="text-center text-dark ">${detalle.DESC04}</td>
+                    </tr>`;
+            });
+
+            // Asegurar que la tabla se limpie antes de agregar nuevos datos
+            let table = $('#tablaDetalles').DataTable();
+            table.clear().destroy();
+
+            document.getElementById('detalleContenido').innerHTML = contenido;
+
+            let modal = new bootstrap.Modal(document.getElementById('modalPendientes'));
+            modal.show();
+
+            $('#tablaDetalles').DataTable({
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Datos del _START_ al _END_ para un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "oPaginate": {
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+                },
+                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                dom: '<"top"lfB>rtip',
+                buttons: [],
+            });
+        })
+        .catch(error => {
+            console.error('Error al obtener los detalles:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un problema al obtener los datos.',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Cerrar'
+            });
+        });
+};
+
 
 
 
@@ -42,20 +122,32 @@ function obtenerMesNombre(mesNumero) {
 // Función para actualizar el concepto
 function actualizarConcepto() {
     const fechaHoy = new Date();
-    const diaHoy = fechaHoy.getDate();
     const mesHoy = fechaHoy.getMonth();
     const anioHoy = fechaHoy.getFullYear();
 
     const primerDiaMes = "01";
+    const mesNombre = obtenerMesNombre(mesHoy);
 
     // Formato: 01 Febrero - 17 Febrero 2025
-    const fechaFormateada = `${primerDiaMes} ${obtenerMesNombre(mesHoy)} - ${String(diaHoy).padStart(2, '0')} ${obtenerMesNombre(mesHoy)} ${anioHoy}`;
+    const fechaFormateada = `${primerDiaMes} ${mesNombre} - ${fechaHoy.getDate()} ${mesNombre} ${anioHoy}`;
 
     // Actualizar la celda con el concepto
     document.getElementById('conceptoFecha').innerHTML = fechaFormateada;
+
+    // Actualizar los spans en la tabla
+    document.getElementById('mesActual').innerText = `(${mesNombre})`;
+    document.getElementById('mesActualFinal').innerText = `(${mesNombre})`;
 }
 
-// Llamamos a la función para actualizar el concepto
+// Función auxiliar para obtener el nombre del mes
+function obtenerMesNombre(mes) {
+    const meses = [
+        "Ene", "Feb", "Mar", "Abr", "May", "Jun",
+        "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"
+    ];
+    return meses[mes];
+}
+
 actualizarConcepto();
 
 
@@ -69,21 +161,41 @@ function getMonthYear(date) {
 
 
 
-// Función para actualizar los tres meses en los <td> correspondientes
+// Función para actualizar los seis meses en los <td> correspondientes
 function updateMonths() {
-    // Obtener la fecha actual
     const currentDate = new Date();
 
     for (let i = 1; i <= 6; i++) {
         const date = new Date(currentDate);
-        date.setMonth(currentDate.getMonth() - i); // Restar meses para los tres últimos
+        date.setMonth(currentDate.getMonth() - i);
 
-        const monthYear = getMonthYear(date); // Obtener el formato "Mes-Año"
+        const monthYear = getMonthYear(date);
+        const tdElement = document.getElementsByClassName('month-' + i)[0];
 
-        // Actualizar el contenido del <td> correspondiente
-        document.getElementsByClassName('month-' + i)[0].textContent = monthYear;
+        const button = document.createElement("button");
+        button.className = "btn btn-link text-primary p-0 ms-2 ml-3";
+        button.innerHTML = '<i class="fas fa-eye"></i>';
+
+
+        // Usamos una función anónima para evitar el problema del closure
+        button.onclick = ((mes) => () => creditoPendienteMes(mes))(i - 1);
+
+        tdElement.innerHTML = "";
+        tdElement.appendChild(document.createTextNode(monthYear));
+        tdElement.appendChild(button);
     }
 }
+
+
+
+
+
+// Función auxiliar para obtener el nombre del mes y año
+function getMonthYear(date) {
+    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+    return `${meses[date.getMonth()]}-${date.getFullYear()}`;
+}
+
 
 // Llamar a la función cuando la página cargue
 document.addEventListener('DOMContentLoaded', () => {
@@ -223,8 +335,8 @@ const mostrar = (creditosPendientes) => {
                     <td class="text-center text-dark ">${creditosPendientes.NCTA26}</td>
                     <td class="text-center text-dark ">${creditosPendientes.DESC05}</td> 
                     <td class="text-center text-dark ">${creditosPendientes.TCRE26}</td>
-                    <td class="text-center text-dark ">${creditosPendientes.CPTO26}</td>
-                    <td class="text-center text-dark ">${saldoCapital}</td>
+                    <td class="text-center text-dark "> ${creditosPendientes.CPTO26}</td>
+                    <td class="text-dark ">$${saldoCapital}</td>
                     <td class="text-center text-dark ">${creditosPendientes.TASA26} %</td>
                     <td class="text-center text-dark ">${creditosPendientes.DESC04}</td>
           
@@ -257,4 +369,23 @@ const mostrar = (creditosPendientes) => {
         },
         "lengthMenu": [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]]
     });
+};
+
+const formatearFecha = (fechaRaw) => {
+    if (!fechaRaw) return "Fecha inválida";
+
+    const fechaCalculada = fechaRaw + 19000000;
+    const año = Math.floor(fechaCalculada / 10000);
+    const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
+    const dia = String(fechaCalculada % 100).padStart(2, '0');
+
+    return `${dia} ${obtenerNombreMes(mesNumero)} del ${año}`;
+};
+// Función para obtener el nombre del mes en español
+const obtenerNombreMes = (mes) => {
+    const meses = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    return meses[mes - 1];
 };
