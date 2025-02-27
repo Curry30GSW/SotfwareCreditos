@@ -59,6 +59,11 @@ const creditoPendienteMes = (mes) => {
                         <td class="text-center text-dark ">${detalle.DESC05}</td> 
                         <td class="text-center text-dark ">${detalle.TCRE26}</td>
                         <td class="text-center text-dark "> ${detalle.CPTO26}</td>
+                        <td class="text-center font-weight-bold 
+                        ${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'text-warning' :
+                        detalle.Score < 650 ? 'text-danger' : 'text-primary'}">
+                        ${detalle.Score}
+                        </td>
                         <td class="text-dark ">$${saldoCapital}</td>
                         <td class="text-center text-dark ">${detalle.TASA26} %</td>
                         <td class="text-center text-dark ">${detalle.DESC04}</td>
@@ -180,9 +185,14 @@ function updateMonths() {
         // Usamos una función anónima para evitar el problema del closure
         button.onclick = ((mes) => () => creditoPendienteMes(mes))(i - 1);
 
+
         tdElement.innerHTML = "";
         tdElement.appendChild(document.createTextNode(monthYear));
         tdElement.appendChild(button);
+
+        if (i === 6) {
+            document.getElementById("monthCinco").textContent = `${monthYear}`;
+        }
     }
 }
 
@@ -282,7 +292,7 @@ const creditosPendientesAS400 = async () => {
 
 
 //Mostrar Resultados
-fetch('http://localhost:5000/api/creditos-pendientes/2', {
+fetch('http://localhost:5000/api/creditos-pendientes/5', {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
@@ -336,13 +346,18 @@ const mostrar = (creditosPendientes) => {
                     <td class="text-center text-dark ">${creditosPendientes.DESC05}</td> 
                     <td class="text-center text-dark ">${creditosPendientes.TCRE26}</td>
                     <td class="text-center text-dark "> ${creditosPendientes.CPTO26}</td>
+                    <td class="text-center font-weight-bold" 
+                        style="${creditosPendientes.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                creditosPendientes.Score < 650 ? 'color:red' : 'color:#007bff'}">
+                        ${creditosPendientes.Score}
+                    </td>
                     <td class="text-dark ">$${saldoCapital}</td>
                     <td class="text-center text-dark ">${creditosPendientes.TASA26} %</td>
                     <td class="text-center text-dark ">${creditosPendientes.DESC04}</td>
           
                 </tr>`;
 
-        contador++; // Aumenta el contador en cada iteración
+        contador++;
     });
 
     contenedor.innerHTML = resultados;
