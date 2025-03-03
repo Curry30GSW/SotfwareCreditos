@@ -24,8 +24,10 @@ const verDetalleEstadoCero = (AGEN23) => {
             let contenido = '';
 
 
+
             data.forEach((detalle, index) => {
                 let fechaFormateada = formatearFecha(detalle.FECH23);
+                let saldoCapital = Number(detalle.CAPI23 || 0).toLocaleString("es-CO");
                 contenido += `
                     <tr>
                         <td class="text-dark font-weight-bold">${index + 1}</td>
@@ -33,8 +35,13 @@ const verDetalleEstadoCero = (AGEN23) => {
                         <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
                         <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.CAPI23}</td>
+                        <td class="text-center text-dark font-weight-bold">$${saldoCapital}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center font-weight-bold" 
+                            style="${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                        detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
+                            ${detalle.Score}
+                        </td>
                         <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
@@ -105,6 +112,7 @@ const verDetalleEstadoUno = (AGEN23) => {
 
             data.forEach((detalle, index) => {
                 let fechaFormateada = formatearFecha(detalle.FECH23);
+                let saldoCapital = Number(detalle.CAPI23 || 0).toLocaleString("es-CO");
                 contenido += `
                     <tr>
                         <td class="text-dark font-weight-bold">${index + 1}</td>
@@ -112,8 +120,13 @@ const verDetalleEstadoUno = (AGEN23) => {
                         <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
                         <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.CAPI23}</td>
+                        <td class="text-center text-dark font-weight-bold">${saldoCapital}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center font-weight-bold" 
+                            style="${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                        detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
+                            ${detalle.Score}
+                        </td>
                         <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
@@ -188,6 +201,7 @@ const verDetalleEstadoDos = (AGEN23) => {
 
             data.forEach((detalle, index) => {
                 let fechaFormateada = formatearFecha(detalle.FECH23);
+                let saldoCapital = Number(detalle.CAPI23 || 0).toLocaleString("es-CO");
                 contenido += `
                     <tr>
                         <td class="text-dark font-weight-bold">${index + 1}</td>
@@ -195,8 +209,13 @@ const verDetalleEstadoDos = (AGEN23) => {
                         <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
                         <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.CAPI23}</td>
+                        <td class="text-center text-dark font-weight-bold">${saldoCapital}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center font-weight-bold" 
+                            style="${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                        detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
+                            ${detalle.Score}
+                        </td>
                         <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
@@ -270,6 +289,7 @@ const verDetalleEstadoTres = (AGEN23) => {
 
             data.forEach((detalle, index) => {
                 let fechaFormateada = formatearFecha(detalle.FECH23);
+                let saldoCapital = Number(detalle.CAPI23 || 0).toLocaleString("es-CO");
                 contenido += `
                     <tr>
                         <td class="text-dark font-weight-bold">${index + 1}</td>
@@ -277,8 +297,13 @@ const verDetalleEstadoTres = (AGEN23) => {
                         <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
                         <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.CAPI23}</td>
+                        <td class="text-center text-dark font-weight-bold">${saldoCapital}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center font-weight-bold" 
+                            style="${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                        detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
+                            ${detalle.Score}
+                        </td>
                         <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
                         <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>

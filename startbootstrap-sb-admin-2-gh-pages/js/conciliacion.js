@@ -59,11 +59,11 @@ const creditoPendienteMes = (mes) => {
                         <td class="text-center text-dark ">${detalle.DESC05}</td> 
                         <td class="text-center text-dark ">${detalle.TCRE26}</td>
                         <td class="text-center text-dark "> ${detalle.CPTO26}</td>
-                        <td class="text-center font-weight-bold 
-                        ${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'text-warning' :
-                        detalle.Score < 650 ? 'text-danger' : 'text-primary'}">
+                            <td class="text-center font-weight-bold" 
+                        style="${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                        detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
                         ${detalle.Score}
-                        </td>
+                    </td>
                         <td class="text-dark ">$${saldoCapital}</td>
                         <td class="text-center text-dark ">${detalle.TASA26} %</td>
                         <td class="text-center text-dark ">${detalle.DESC04}</td>
@@ -96,7 +96,21 @@ const creditoPendienteMes = (mes) => {
                 },
                 "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
                 dom: '<"top"lfB>rtip',
-                buttons: [],
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i> Exportar a Excel',
+                        title: 'Créditos Pendientes Por Pagar',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        className: 'btn-success' // Aplicamos Bootstrap directamente
+                    }
+                ],
+                initComplete: function () {
+                    // Asegurarnos de que el botón tome el estilo correctamente
+                    $('.dt-buttons button').removeClass('dt-button').addClass('btn btn-success btn-m text-white');
+                }
             });
         })
         .catch(error => {
@@ -170,7 +184,7 @@ function getMonthYear(date) {
 function updateMonths() {
     const currentDate = new Date();
 
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 7; i++) {
         const date = new Date(currentDate);
         date.setMonth(currentDate.getMonth() - i);
 
@@ -190,7 +204,7 @@ function updateMonths() {
         tdElement.appendChild(document.createTextNode(monthYear));
         tdElement.appendChild(button);
 
-        if (i === 6) {
+        if (i === 7) {
             document.getElementById("monthCinco").textContent = `${monthYear}`;
         }
     }
@@ -256,6 +270,7 @@ const creditosPendientesAS400 = async () => {
     try {
         // Hacer todas las peticiones al mismo tiempo
         const responses = await Promise.all([
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/6'),
             fetch('http://localhost:5000/api/creditos-pendientes/contar/5'),
             fetch('http://localhost:5000/api/creditos-pendientes/contar/4'),
             fetch('http://localhost:5000/api/creditos-pendientes/contar/3'),
@@ -268,13 +283,13 @@ const creditosPendientesAS400 = async () => {
         const data = await Promise.all(responses.map(response => response.json()));
 
         // Asignar los valores a cada celda
-
-        document.getElementById('pendientesSextoMes').textContent = data[0].total_cuentas || '0'; // mes=5
-        document.getElementById('pendientesQuintoMes').textContent = data[1].total_cuentas || '0'; // mes=4
-        document.getElementById('pendientesCuartoMes').textContent = data[2].total_cuentas || '0'; // mes=3
-        document.getElementById('pendientesTercerMes').textContent = data[3].total_cuentas || '0'; // mes=2
-        document.getElementById('pendientesTwoMes').textContent = data[4].total_cuentas || '0'; // mes=1
-        document.getElementById('pendientesPrimerMes').textContent = data[5].total_cuentas || '0'; // mes=0
+        document.getElementById('pendientesSeptimoMes').textContent = data[0].total_cuentas || '0'; // mes=5
+        document.getElementById('pendientesSextoMes').textContent = data[1].total_cuentas || '0'; // mes=5
+        document.getElementById('pendientesQuintoMes').textContent = data[2].total_cuentas || '0'; // mes=4
+        document.getElementById('pendientesCuartoMes').textContent = data[3].total_cuentas || '0'; // mes=3
+        document.getElementById('pendientesTercerMes').textContent = data[4].total_cuentas || '0'; // mes=2
+        document.getElementById('pendientesTwoMes').textContent = data[5].total_cuentas || '0'; // mes=1
+        document.getElementById('pendientesPrimerMes').textContent = data[6].total_cuentas || '0'; // mes=0
 
 
     } catch (error) {
@@ -285,6 +300,7 @@ const creditosPendientesAS400 = async () => {
         document.getElementById('pendientesCuartoMes').textContent = 'Error';
         document.getElementById('pendientesTercerMes').textContent = 'Error';
         document.getElementById('pendientesTwoMes').textContent = 'Error';
+        document.getElementById('pendientesSeptimoMes').textContent = 'Error';
     }
 };
 
