@@ -210,6 +210,10 @@
                                 data-target="#infoModal">
                                 <i class="fas fa-info-circle text-dark fs-5"></i>
                             </button>
+                            <button class="btn btn-lg btn-warning px-3 py-2 ms-3 ml-3" type="button" data-toggle="modal"
+                                data-target="#fechaModal">
+                                <i class="fas fa-calendar-day text-white fs-2"></i>
+                            </button>
                         </div>
                         <h3 class="p-3 mb-0 text-gray-800 text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
@@ -223,9 +227,9 @@
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h5 class="m-0 font-weight-bold text-primary text-center">
+                                    <h3 class="m-0 font-weight-bold text-primary text-center">
                                         CONCILIACIÓN TABLA DE ANALISIS
-                                    </h5>
+                                    </h3>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card">
@@ -451,6 +455,37 @@
         </div>
     </div>
 
+    <div class="modal fade" id="fechaModal" tabindex="-1" aria-labelledby="fechaModalLabel" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold text-dark text-center" id="fechaModalLabel">Ingresar Lapsos
+                        de Fechas
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formFechas">
+                        <div class="form-group">
+                            <label class="text-dark font-weight-bold" for="fechaInicio">Fecha de Inicio</label>
+                            <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label class="text-dark font-weight-bold" for="fechaFin">Fecha de Fin</label>
+                            <input type="date" class="form-control" id="fechaFin" name="fechaFin" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="guardarFechas">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -484,6 +519,20 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <!-- JSZip (Necesario para exportar a Excel) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                title: '¡Información!',
+                html: 'En el botón de la parte superior. Por favor selecciona las <b>FECHAS</b> en las cual quieres consultar la tabla de analisis.',
+                icon: 'info',
+                allowOutsideClick: false,
+                confirmButtonText: "Aceptar",
+            });
+        })
+
+
+    </script>
 
 
 

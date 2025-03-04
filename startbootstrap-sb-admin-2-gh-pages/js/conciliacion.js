@@ -1,30 +1,50 @@
+// document.addEventListener('DOMContentLoaded', async function () {
+//     try {
+//         // Obtener el total de créditos pagados en plataforma
+//         const responsePlataforma = await fetch('http://localhost:5000/api/creditos/count');
+//         const responseSoftware = await fetch('http://localhost:5000/api/pagados/creditos');
+
+//         if (responsePlataforma.ok && responseSoftware.ok) {
+//             const resultPlataforma = await responsePlataforma.json();
+//             const resultSoftware = await responseSoftware.json();
+
+//             const pagadosPlataforma = resultPlataforma.total || 0;
+//             const pagadosSoftware = resultSoftware.pagados || 0;
+
+//             // Calcular la diferencia
+//             const diferencia = pagadosPlataforma - pagadosSoftware;
+
+//             // Mostrar los valores en el frontend
+//             document.getElementById('pagadosAS400').innerHTML = `<strong>${pagadosPlataforma}</strong>`;
+//             document.getElementById('pagadosPagare').innerHTML = `<strong>${pagadosSoftware}</strong>`;
+//             document.getElementById('diferenciaPagos').innerHTML = `<strong>${diferencia}</strong>`;
+//         } else {
+//             console.error('❌ Error al obtener los datos de los pagos.');
+//         }
+//     } catch (error) {
+//         console.error('❌ Error al obtener los datos:', error);
+//     }
+// });
+
 document.addEventListener('DOMContentLoaded', async function () {
     try {
-        // Obtener el total de créditos pagados en plataforma
-        const responsePlataforma = await fetch('http://localhost:5000/api/creditos/count');
+        // Obtener el total de créditos pagados en el software
         const responseSoftware = await fetch('http://localhost:5000/api/pagados/creditos');
 
-        if (responsePlataforma.ok && responseSoftware.ok) {
-            const resultPlataforma = await responsePlataforma.json();
+        if (responseSoftware.ok) {
             const resultSoftware = await responseSoftware.json();
-
-            const pagadosPlataforma = resultPlataforma.total || 0;
             const pagadosSoftware = resultSoftware.pagados || 0;
 
-            // Calcular la diferencia
-            const diferencia = pagadosPlataforma - pagadosSoftware;
-
-            // Mostrar los valores en el frontend
-            document.getElementById('pagadosAS400').innerHTML = `<strong>${pagadosPlataforma}</strong>`;
-            document.getElementById('pagadosPagare').innerHTML = `<strong>${pagadosSoftware}</strong>`;
-            document.getElementById('diferenciaPagos').innerHTML = `<strong>${diferencia}</strong>`;
+            // Mostrar solo los créditos pagados en el software
+            document.getElementById('pagadosAS400').innerHTML = `<strong>${pagadosSoftware}</strong>`;
         } else {
-            console.error('❌ Error al obtener los datos de los pagos.');
+            console.error('❌ Error al obtener los datos de los pagos en el software.');
         }
     } catch (error) {
         console.error('❌ Error al obtener los datos:', error);
     }
 });
+
 
 const creditoPendienteMes = (mes) => {
     console.log(`Consultando mes: ${mes}`);
@@ -59,11 +79,12 @@ const creditoPendienteMes = (mes) => {
                         <td class="text-center text-dark ">${detalle.DESC05}</td> 
                         <td class="text-center text-dark ">${detalle.TCRE26}</td>
                         <td class="text-center text-dark "> ${detalle.CPTO26}</td>
-                            <td class="text-center font-weight-bold" 
-                        style="${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                      <td class="text-center font-weight-bold" 
+                        style="${detalle.Score === 'F/D' || detalle.Score === 'S/E' ? 'color:#fd7e14' :
                         detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
                         ${detalle.Score}
-                    </td>
+                            </td>
+                        <td class="text-center text-dark">${calcularEdad(detalle.FECN05)}</td>
                         <td class="text-dark ">$${saldoCapital}</td>
                         <td class="text-center text-dark ">${detalle.TASA26} %</td>
                         <td class="text-center text-dark ">${detalle.DESC04}</td>
@@ -150,13 +171,46 @@ function actualizarConcepto() {
     // Formato: 01 Febrero - 17 Febrero 2025
     const fechaFormateada = `${primerDiaMes} ${mesNombre} - ${fechaHoy.getDate()} ${mesNombre} ${anioHoy}`;
 
-    // Actualizar la celda con el concepto
-    document.getElementById('conceptoFecha').innerHTML = fechaFormateada;
+    // Obtener la fecha y hora actual
+    const fechaHoraActual = obtenerFechaHoraActual();
+
+    // Actualizar la celda con el concepto y la fecha/hora actual
+    document.getElementById('conceptoFecha').innerHTML = `${fechaFormateada} <br> <b>${fechaHoraActual}</b>`;
 
     // Actualizar los spans en la tabla
     document.getElementById('mesActual').innerText = `(${mesNombre})`;
     document.getElementById('mesActualFinal').innerText = `(${mesNombre})`;
 }
+
+// Función para obtener la fecha y hora en formato "03-Mar-25 17:00:00"
+function obtenerFechaHoraActual() {
+    const fechaHoy = new Date();
+
+
+    // Formatear la hora
+    let horas = fechaHoy.getHours();
+    const minutos = String(fechaHoy.getMinutes()).padStart(2, '0');
+    const segundos = String(fechaHoy.getSeconds()).padStart(2, '0');
+    const periodo = horas >= 12 ? "P.M" : "A.M";
+
+    horas = horas % 12 || 12;
+
+    // Concatenar en el formato requerido
+    return `${horas}:${minutos}:${segundos} ${periodo}`;
+}
+
+// Función para obtener el nombre abreviado del mes
+function obtenerMesAbreviado(mes) {
+    const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+    return meses[mes];
+}
+
+
+setInterval(actualizarConcepto, 1000);
+
+
+actualizarConcepto();
+
 
 // Función auxiliar para obtener el nombre del mes
 function obtenerMesNombre(mes) {
@@ -238,7 +292,7 @@ const obtenerConsecutivos = async () => {
         if (data.MinimoID && data.MaximoID) {
             const consecutivoInicial = data.MinimoID;
             const consecutivoFinal = data.MaximoID;
-            const registradosPagares = consecutivoFinal - consecutivoInicial;
+            const registradosPagares = consecutivoFinal - consecutivoInicial + 1;
             const creditosAnulados = data.Anulados;
             const creditosRechazados = data.Rechazados
             const creditosAprobados = data.Aprobados
@@ -328,6 +382,7 @@ fetch('http://localhost:5000/api/creditos-pendientes/5', {
     });
 
 const mostrar = (creditosPendientes) => {
+
     let resultados = '';
     let contador = 1;
 
@@ -359,14 +414,15 @@ const mostrar = (creditosPendientes) => {
                     <td class="text-center text-dark ">${creditosPendientes.DIST03}</td>
                     <td class="text-center text-dark ">${creditosPendientes.DESC03}</td>
                     <td class="text-center text-dark ">${creditosPendientes.NCTA26}</td>
-                    <td class="text-center text-dark ">${creditosPendientes.DESC05}</td> 
+                    <td class="text-dark ">${creditosPendientes.DESC05}</td> 
                     <td class="text-center text-dark ">${creditosPendientes.TCRE26}</td>
                     <td class="text-center text-dark "> ${creditosPendientes.CPTO26}</td>
                     <td class="text-center font-weight-bold" 
-                        style="${creditosPendientes.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                        style="${creditosPendientes.Score === 'F/D' || creditosPendientes.Score === 'S/E' ? 'color:#fd7e14' :
                 creditosPendientes.Score < 650 ? 'color:red' : 'color:#007bff'}">
-                        ${creditosPendientes.Score}
-                    </td>
+                                    ${creditosPendientes.Score}
+                        </td>
+                    <td class="text-center text-dark">${calcularEdad(creditosPendientes.FECN05)}</td> 
                     <td class="text-dark ">$${saldoCapital}</td>
                     <td class="text-center text-dark ">${creditosPendientes.TASA26} %</td>
                     <td class="text-center text-dark ">${creditosPendientes.DESC04}</td>
@@ -398,7 +454,23 @@ const mostrar = (creditosPendientes) => {
                 "sPrevious": "Anterior"
             }
         },
-        "lengthMenu": [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]]
+        "lengthMenu": [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]],
+        dom: '<"top"lfB>rtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="fas fa-file-excel"></i> Exportar a Excel',
+                title: 'Creditos Pendientes Por Pagar',
+                exportOptions: {
+                    columns: ':visible'
+                },
+                className: 'btn-success' // Aplicamos Bootstrap directamente
+            }
+        ],
+        initComplete: function () {
+            // Asegurarnos de que el botón tome el estilo correctamente
+            $('.dt-buttons button').removeClass('dt-button').addClass('btn btn-success btn-m text-white');
+        }
     });
 };
 
@@ -420,3 +492,39 @@ const obtenerNombreMes = (mes) => {
     ];
     return meses[mes - 1];
 };
+
+
+function calcularEdad(fechaNacimiento) {
+    if (!fechaNacimiento) return 'N/A'; // Validar si el dato es nulo o vacío
+
+    // Convertir a cadena y asegurarse de que tenga 8 caracteres
+    fechaNacimiento = fechaNacimiento.toString().trim();
+
+    if (fechaNacimiento.length !== 8) {
+        console.warn('Formato incorrecto de fecha:', fechaNacimiento);
+        return 'N/A';
+    }
+
+    const hoy = new Date();
+
+    // Extraer año, mes y día desde el formato YYYYMMDD
+    const año = parseInt(fechaNacimiento.substring(0, 4), 10);
+    const mes = parseInt(fechaNacimiento.substring(4, 6), 10) - 1; // Mes en JS va de 0 a 11
+    const dia = parseInt(fechaNacimiento.substring(6, 8), 10);
+
+    // Validar que los valores extraídos sean correctos
+    if (isNaN(año) || isNaN(mes) || isNaN(dia)) {
+        console.warn('Fecha con valores inválidos:', fechaNacimiento);
+        return 'N/A';
+    }
+
+    const fechaNac = new Date(año, mes, dia);
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+
+    // Ajustar si aún no ha cumplido años en este año
+    if (hoy.getMonth() < mes || (hoy.getMonth() === mes && hoy.getDate() < dia)) {
+        edad--;
+    }
+
+    return edad >= 0 ? edad : 'N/A';
+}

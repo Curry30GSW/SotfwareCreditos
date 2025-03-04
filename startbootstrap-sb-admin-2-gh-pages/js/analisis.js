@@ -88,7 +88,6 @@ const verDetalleEstadoCero = (AGEN23) => {
             });
         });
 };
-
 const verDetalleEstadoUno = (AGEN23) => {
     fetch(`http://localhost:5000/api/detallesAnalisisUno/${AGEN23}`)
         .then(response => response.json())
@@ -175,7 +174,6 @@ const verDetalleEstadoUno = (AGEN23) => {
             });
         });
 };
-
 const verDetalleEstadoDos = (AGEN23) => {
 
 
@@ -364,7 +362,7 @@ const formatearFecha = (fechaRaw) => {
     return `${dia} ${obtenerNombreMes(mesNumero)} del ${año}`;
 };
 
-// Función para obtener el nombre del mes en español
+
 const obtenerNombreMes = (mes) => {
     const meses = [
         'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -372,6 +370,27 @@ const obtenerNombreMes = (mes) => {
     ];
     return meses[mes - 1];
 };
+
+document.getElementById("formFechas").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const fechaInicio = document.getElementById("fechaInicio").value;
+    const fechaFin = document.getElementById("fechaFin").value;
+
+    fetch("/api/analisis", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ fechaInicio, fechaFin })
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Datos recibidos:", data);
+            // Aquí puedes actualizar la tabla con los nuevos datos
+        })
+        .catch(error => console.error("Error:", error));
+});
 
 
 
@@ -660,16 +679,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const mesActual = hoy.getMonth(); // Mes actual (0 = enero, 11 = diciembre)
     const añoActual = hoy.getFullYear();
 
-    // Obtener el 30 del mes anterior
-    let mesAnterior = mesActual - 1;
-    let añoAnterior = añoActual;
-
-    if (mesAnterior < 0) {
-        mesAnterior = 11; // Si estamos en enero, el mes anterior es diciembre
-        añoAnterior--; // Y el año anterior también cambia
-    }
-
-    const fechaCorte = new Date(añoAnterior, mesAnterior, 30);
+    // Obtener el 1 del mes actual
+    const fechaCorte = new Date(añoActual, mesActual, 1);
     const fechaActual = hoy; // Fecha actual
 
     // Array con nombres de los meses
@@ -682,7 +693,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return `${dia}-${mesNombre}`;
     };
 
-    thCorte.textContent = `${formatoFecha(fechaCorte)}`;
-    thActual.textContent = `${formatoFecha(fechaActual)}`;
+    thCorte.textContent = formatoFecha(fechaCorte);
+    thActual.textContent = formatoFecha(fechaActual);
 });
 
