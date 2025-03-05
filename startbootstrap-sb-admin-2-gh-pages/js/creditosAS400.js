@@ -57,9 +57,10 @@ const mostrar = (creditos) => {
             return meses[mes - 1]; // Meses están indexados desde 0, así que restamos 1
         }
         let capitalInicial = Number(creditos.CAPI13 || 0).toLocaleString("es-CO");
+        let ordenSuministro = Number(creditos.ORSU13 || 0).toLocaleString("es-CO");
 
 
-        const tasaFormateada = creditos.TASA13 > 0 ? "Tasa>0" : "Tasa=0";
+        const tasaFormateada = creditos.TASA13 > 0 ? "Tasa > 0" : "Tasa = 0";
 
         resultados +=
             `<tr>
@@ -71,10 +72,10 @@ const mostrar = (creditos) => {
                 <td class="text-center text-dark font-weight-bold ">${creditos.TCRE13}</td>
                 <td class="text-center text-dark font-weight-bold ">${creditos.CPTO13}</td>
                 <td class="text-center text-dark font-weight-bold ">${creditos.NCRE13}</td>
-                <td class="text-center text-dark font-weight-bold ">${creditos.ORSU13}</td>
+                <td class="text-center text-dark font-weight-bold ">$${ordenSuministro}</td>
                 <td class="text-center text-dark font-weight-bold ">$${capitalInicial}</td>
-                <td class="text-center text-dark font-weight-bold ">${creditos.TASA13}</td>
                 <td class="text-center text-dark font-weight-bold ">${tasaFormateada}</td>
+                <td class="text-center text-dark font-weight-bold ">${creditos.TASA13} %</td>
                 <td class="text-center text-dark font-weight-bold">${creditos.LAPI13}</td>
                 <td class="text-center text-dark font-weight-bold ">${creditos.CIUD05}</td>
                 <td class="text-center text-dark font-weight-bold ">${creditos.DESC06}</td>
@@ -103,7 +104,7 @@ const mostrar = (creditos) => {
                 "sPrevious": "Anterior"
             }
         },
-        "lengthMenu": [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]]
+        "lengthMenu": [[10, 15, 20, 25], [10, 15, 20, 25]]
     });
 };
 

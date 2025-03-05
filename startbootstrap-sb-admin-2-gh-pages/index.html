@@ -147,6 +147,9 @@
                                 data-target="#fechaModal">
                                 <i class="fas fa-calendar-day text-white fs-2"></i>
                             </button> -->
+                            <button id="refreshBtn" class="btn btn-lg btn-primary px-1 py-1 ms-3 ml-3" type="button">
+                                REFRESH <i class="fas fa-sync-alt fs-2"></i>
+                            </button>
                         </div>
                         <h3 class="p-3 mb-0 text-gray-800 text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
@@ -479,6 +482,11 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <!-- JSZip (Necesario para exportar a Excel) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        document.getElementById("refreshBtn").addEventListener("click", function () {
+            location.reload(); // Recarga la página
+        });
+    </script>
 
 </body>
 
