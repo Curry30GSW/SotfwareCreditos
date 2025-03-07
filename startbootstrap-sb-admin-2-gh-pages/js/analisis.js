@@ -1,8 +1,17 @@
+const token = sessionStorage.getItem('token');
+
 const contenedor = document.querySelector('tbody');
 let resultados = '';
 
 const verDetalleEstadoCero = (AGEN23) => {
-    fetch(`http://localhost:5000/api/detallesAnalisisCero/${AGEN23}`)
+    fetch(`http://localhost:5000/api/detallesAnalisisCero/${AGEN23}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+
+    })
         .then(response => response.json())
         .then(data => {
             if (data.mensaje || data.length === 0) {
@@ -89,7 +98,14 @@ const verDetalleEstadoCero = (AGEN23) => {
         });
 };
 const verDetalleEstadoUno = (AGEN23) => {
-    fetch(`http://localhost:5000/api/detallesAnalisisUno/${AGEN23}`)
+    fetch(`http://localhost:5000/api/detallesAnalisisUno/${AGEN23}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+
+    })
         .then(response => response.json())
         .then(data => {
             if (data.mensaje || data.length === 0) {
@@ -177,7 +193,14 @@ const verDetalleEstadoUno = (AGEN23) => {
 const verDetalleEstadoDos = (AGEN23) => {
 
 
-    fetch(`http://localhost:5000/api/detallesAnalisisDos/${AGEN23}`)
+    fetch(`http://localhost:5000/api/detallesAnalisisDos/${AGEN23}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+
+    })
         .then(response => response.json())
         .then(data => {
             if (data.mensaje || data.length === 0) {
@@ -264,7 +287,14 @@ const verDetalleEstadoDos = (AGEN23) => {
 const verDetalleEstadoTres = (AGEN23) => {
 
 
-    fetch(`http://localhost:5000/api/detallesAnalisisTres/${AGEN23}`)
+    fetch(`http://localhost:5000/api/detallesAnalisisTres/${AGEN23}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+
+    })
         .then(response => response.json())
         .then(data => {
             if (data.mensaje || data.length === 0) {
@@ -380,7 +410,8 @@ document.getElementById("formFechas").addEventListener("submit", function (e) {
     fetch("/api/analisis", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ fechaInicio, fechaFin })
     })
@@ -394,10 +425,18 @@ document.getElementById("formFechas").addEventListener("submit", function (e) {
 
 
 
+
+if (!token) {
+    window.location.href = '../../SotfwareCreditos/login-form-02/login.html';
+}
+
 Promise.all([
     fetch('http://localhost:5000/api/analisis/ultimo-consecutivo', {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
     }).then(response => {
         if (!response.ok) throw new Error('Error en la solicitud 1');
         return response.json();
@@ -405,7 +444,10 @@ Promise.all([
 
     fetch('http://localhost:5000/api/analisis/ultimo-consecutivo/mes-actual', {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
     }).then(response => {
         if (!response.ok) throw new Error('Error en la solicitud 2');
         return response.json();
@@ -413,7 +455,10 @@ Promise.all([
 
     fetch('http://localhost:5000/api/analisis-cero', {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
     }).then(response => {
         if (!response.ok) throw new Error('Error en la solicitud 2');
         return response.json();
@@ -421,7 +466,10 @@ Promise.all([
 
     fetch('http://localhost:5000/api/analisis-uno', {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
     }).then(response => {
         if (!response.ok) throw new Error('Error en la solicitud 3');
         return response.json();
@@ -429,7 +477,10 @@ Promise.all([
 
     fetch('http://localhost:5000/api/analisis-dos', {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
     }).then(response => {
         if (!response.ok) throw new Error('Error en la solicitud 4');
         return response.json();
@@ -437,7 +488,10 @@ Promise.all([
 
     fetch('http://localhost:5000/api/analisis-tres', {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
     }).then(response => {
         if (!response.ok) throw new Error('Error en la solicitud 5');
         return response.json();
@@ -457,6 +511,27 @@ Promise.all([
 
     })
     .catch(error => console.error('Error:', error));
+
+function manejarRespuesta(response, mensajeError) {
+    if (response.status === 401) {
+        mostrarAlertaSesionExpirada();
+        throw new Error("Token inválido o expirado, redirigiendo...");
+    }
+    if (!response.ok) throw new Error(mensajeError);
+    return response.json();
+}
+
+function mostrarAlertaSesionExpirada() {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Sesión expirada',
+        text: 'Por favor, inicie sesión nuevamente.',
+        confirmButtonText: 'OK'
+    }).then(() => {
+        sessionStorage.removeItem('token');
+        window.location.href = '../../SotfwareCreditos/login-form-02/login.html';
+    });
+}
 
 
 
@@ -697,3 +772,24 @@ document.addEventListener('DOMContentLoaded', function () {
     thActual.textContent = formatoFecha(fechaActual);
 });
 
+function confirmLogout() {
+    Swal.fire({
+        title: '¿Cerrar sesión?',
+        text: '¿Estás seguro que deseas cerrar tu sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            sessionStorage.clear();
+
+            setTimeout(() => {
+                window.location.href = '../../../SotfwareCreditos/login-form-02/login.html';
+            }, 500);
+        }
+    });
+}

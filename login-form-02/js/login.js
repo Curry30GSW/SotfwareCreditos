@@ -1,14 +1,8 @@
 document.getElementById('btnLogin').addEventListener('click', async function () {
-    const cedula = document.getElementById('cedula').value;
+    const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    let fechaExpedicion = document.getElementById("fechaExpedicion").value;
-    fechaExpedicion = fechaExpedicion.replace(/-/g, '');
-    fechaExpedicion = parseInt(fechaExpedicion, 10);
 
-
-
-
-    if (!cedula || !password) {
+    if (!email || !password) {
         Swal.fire({
             icon: 'warning',
             title: 'Campos vacíos',
@@ -18,12 +12,11 @@ document.getElementById('btnLogin').addEventListener('click', async function () 
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/login', {
+        const response = await fetch('http://localhost:5000/auth/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ cedula, password, fechaExpedicion })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+            credentials: 'include'
         });
 
         const data = await response.json();
@@ -37,41 +30,24 @@ document.getElementById('btnLogin').addEventListener('click', async function () 
             return;
         }
 
-        if (data.success && data.token) {
-            localStorage.removeItem('jwt');
-            localStorage.setItem('jwt', data.token);
+        if (data.token) {
+            const nombreUsuario = data.name.trim().toUpperCase();
 
-            const nombreUsuario = data.user.descripcion.trim().toUpperCase();
-            const fechaUltimaConexion = data.user.ultimaConexionFecha; // Ya viene como "2025-02-05"
+            sessionStorage.setItem('nombreUsuario', nombreUsuario);
+            sessionStorage.setItem('token', data.token);
 
-            const fechaHoraUltimaConexion = `${fechaUltimaConexion}`; // Unir la fecha con la hora
-
-            const ipUltimaConexion = data.user.ultimaConexionIP;
-
-
-            // Guarda el nombre de usuario y los datos en localStorage
-            localStorage.setItem('nombreUsuario', nombreUsuario);
-            localStorage.setItem('fechaUltimaConexion', fechaHoraUltimaConexion);
-            localStorage.setItem('ipUltimaConexion', ipUltimaConexion);
-            localStorage.setItem('cedula', data.user.nnit);
 
             Swal.fire({
                 icon: 'success',
                 title: 'Bienvenido',
-                text: `Inicio de sesión exitoso, ${nombreUsuario}.`,
-                timer: 1500,
+                html: `Inicio de sesión exitoso, <b>${nombreUsuario}</b>.`,
+                timer: 2000,
                 showConfirmButton: false,
             }).then(() => {
-                window.location.href = '../../startbootstrap-sb-admin-2-gh-pages/index.html';
+                window.location.href = '../../../SotfwareCreditos/startbootstrap-sb-admin-2-gh-pages/index.html';
             });
         }
-        else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: data.message || 'Credenciales incorrectas.',
-            });
-        }
+
     } catch (error) {
         console.error('Error en el login:', error);
         Swal.fire({
@@ -80,4 +56,24 @@ document.getElementById('btnLogin').addEventListener('click', async function () 
             text: 'Ocurrió un error al intentar ingresar. Intente nuevamente.',
         });
     }
+});
+
+
+history.pushState(null, null, location.href);
+window.onpopstate = function () {
+    history.go(1);
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("loginForm");
+    const btnLogin = document.getElementById("btnLogin");
+
+    form.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // Evita que el formulario se recargue
+            btnLogin.click(); // Dispara el evento de clic en el botón de login
+        }
+    });
+
+
 });

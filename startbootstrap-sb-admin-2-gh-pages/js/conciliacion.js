@@ -26,16 +26,36 @@
 //     }
 // });
 
+const token = sessionStorage.getItem('token');
+
 document.addEventListener('DOMContentLoaded', async function () {
     try {
-        // Obtener el total de créditos pagados en el software
-        const responseSoftware = await fetch('http://localhost:5000/api/pagados/creditos');
+
+        if (!token) {
+            window.location.href = '../../SotfwareCreditos/login-form-02/login.html';
+            return;
+        }
+
+
+        const responseSoftware = await fetch('http://localhost:5000/api/pagados/creditos', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+
+        });
+
+        if (responseSoftware.status === 401) {
+            const data = await responseSoftware.json();
+            window.location.href = data.redirect || '../../SotfwareCreditos/login-form-02/login.html';
+            return;
+        }
 
         if (responseSoftware.ok) {
             const resultSoftware = await responseSoftware.json();
             const pagadosSoftware = resultSoftware.pagados || 0;
 
-            // Mostrar solo los créditos pagados en el software
             document.getElementById('pagadosAS400').innerHTML = `<strong>${pagadosSoftware}</strong>`;
         } else {
             console.error('❌ Error al obtener los datos de los pagos en el software.');
@@ -46,9 +66,15 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 
+
 const creditoPendienteMes = (mes) => {
-    console.log(`Consultando mes: ${mes}`);
-    fetch(`http://localhost:5000/api/creditos-pendientes/${mes}`)
+    fetch(`http://localhost:5000/api/creditos-pendientes/${mes}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Enviar el token en la cabecera
+        }
+    })
         .then(response => response.json())
         .then(data => {
             if (data.mensaje || data.length === 0) {
@@ -286,7 +312,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const obtenerConsecutivos = async () => {
     try {
-        const response = await fetch('http://localhost:5000/api/conciliacion/primer-credito');
+        const response = await fetch('http://localhost:5000/api/conciliacion/primer-credito', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Incluir el token en la cabecera
+            }
+        });
         const data = await response.json();
 
         if (data.MinimoID && data.MaximoID) {
@@ -322,16 +354,59 @@ document.addEventListener('DOMContentLoaded', obtenerConsecutivos);
 
 const creditosPendientesAS400 = async () => {
     try {
-        // Hacer todas las peticiones al mismo tiempo
+
         const responses = await Promise.all([
-            fetch('http://localhost:5000/api/creditos-pendientes/contar/6'),
-            fetch('http://localhost:5000/api/creditos-pendientes/contar/5'),
-            fetch('http://localhost:5000/api/creditos-pendientes/contar/4'),
-            fetch('http://localhost:5000/api/creditos-pendientes/contar/3'),
-            fetch('http://localhost:5000/api/creditos-pendientes/contar/2'),
-            fetch('http://localhost:5000/api/creditos-pendientes/contar/1'),
-            fetch('http://localhost:5000/api/creditos-pendientes/contar/0')
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/6', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }),
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/5', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }),
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/4', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }),
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/3', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }),
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/2', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }),
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/1', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            }),
+            fetch('http://localhost:5000/api/creditos-pendientes/contar/0', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
         ]);
+
 
         // Convertir todas las respuestas a JSON
         const data = await Promise.all(responses.map(response => response.json()));
@@ -366,6 +441,7 @@ fetch('http://localhost:5000/api/creditos-pendientes/5', {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
     },
 })
     .then(response => {
@@ -527,4 +603,27 @@ function calcularEdad(fechaNacimiento) {
     }
 
     return edad >= 0 ? edad : 'N/A';
+}
+
+
+function confirmLogout() {
+    Swal.fire({
+        title: '¿Cerrar sesión?',
+        text: '¿Estás seguro que deseas cerrar tu sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            sessionStorage.clear();
+
+            setTimeout(() => {
+                window.location.href = '../../../SotfwareCreditos/login-form-02/login.html';
+            }, 500);
+        }
+    });
 }

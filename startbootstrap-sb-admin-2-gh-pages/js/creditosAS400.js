@@ -1,3 +1,4 @@
+const token = sessionStorage.getItem('token');
 const contenedor = document.querySelector('tbody');
 let resultados = '';
 
@@ -11,15 +12,19 @@ Swal.fire({
     }
 });
 
-// Cerrar la alerta después de 2 segundos y luego hacer la petición
-setTimeout(() => {
-    Swal.close(); // Cierra la alerta
+if (!token) {
+    window.location.href = '../../SotfwareCreditos/login-form-02/login.html';
+}
 
-    // Realizar la petición después de cerrar la alerta
+
+setTimeout(() => {
+    Swal.close();
+
     fetch('http://localhost:5000/api/creditos', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
         },
     })
         .then(response => {
@@ -36,6 +41,27 @@ setTimeout(() => {
         });
 
 }, 2500);
+
+function manejarRespuesta(response, mensajeError) {
+    if (response.status === 401) {
+        mostrarAlertaSesionExpirada();
+        throw new Error("Token inválido o expirado, redirigiendo...");
+    }
+    if (!response.ok) throw new Error(mensajeError);
+    return response.json();
+}
+
+function mostrarAlertaSesionExpirada() {
+    Swal.fire({
+        icon: 'warning',
+        title: 'Sesión expirada',
+        text: 'Por favor, inicie sesión nuevamente.',
+        confirmButtonText: 'OK'
+    }).then(() => {
+        sessionStorage.removeItem('token');
+        window.location.href = '../../SotfwareCreditos/login-form-02/login.html';
+    });
+}
 
 
 
@@ -108,3 +134,24 @@ const mostrar = (creditos) => {
     });
 };
 
+function confirmLogout() {
+    Swal.fire({
+        title: '¿Cerrar sesión?',
+        text: '¿Estás seguro que deseas cerrar tu sesión?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            sessionStorage.clear();
+
+            setTimeout(() => {
+                window.location.href = '../../../SotfwareCreditos/login-form-02/login.html';
+            }, 500);
+        }
+    });
+}

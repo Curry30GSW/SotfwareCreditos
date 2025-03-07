@@ -53,9 +53,8 @@
             <p class="mb-4" style="color: seagreen;"><strong> SOFTWARE CONCILIACION DE CRÉDITOS </p> <strong></strong>
             <form id="loginForm">
               <div class="form-group first">
-                <label for="correo">Correo Electrónico</label>
-                <input type="text" class="form-control" placeholder="Ingrese el Correo Electrónico" id="cedula"
-                  required>
+                <label for="email">Correo Electrónico</label>
+                <input type="text" class="form-control" placeholder="Ingrese el Correo Electrónico" id="email" required>
               </div>
 
               <div class="form-group last mb-3">
@@ -122,24 +121,6 @@
 
 
   </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.getElementById("loginForm");
-      const btnLogin = document.getElementById("btnLogin");
-
-      form.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-          event.preventDefault(); // Evita que el formulario se recargue
-          btnLogin.click(); // Dispara el evento de clic en el botón de login
-        }
-      });
-
-      // btnLogin.addEventListener("click", function () {
-      //   console.log("Intentando iniciar sesión...");
-      // });
-    });
-
-  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
