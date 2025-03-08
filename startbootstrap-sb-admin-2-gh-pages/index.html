@@ -143,10 +143,10 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-2">
                         <div class="d-flex align-items-center">
                             <h1 class="h3 mb-0 text-gray-800">Conciliación Créditos</h1>
-                            <!-- <button class="btn btn-lg btn-warning px-3 py-2 ms-3 ml-3" type="button" data-toggle="modal"
+                            <button class="btn btn-lg btn-warning px-3 py-2 ms-3 ml-3" type="button" data-toggle="modal"
                                 data-target="#fechaModal">
                                 <i class="fas fa-calendar-day text-white fs-2"></i>
-                            </button> -->
+                            </button>
                             <button id="refreshBtn" class="btn btn-lg btn-primary px-1 py-1 ms-3 ml-3" type="button">
                                 REFRESH <i class="fas fa-sync-alt fs-2"></i>
                             </button>
@@ -365,7 +365,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="fechaModalLabel">Ingresar Lapsos de Fechas</h5>
+                    <h5 class="modal-title text-dark" id="fechaModalLabel"><b>Ingresar Lapsos de Fechas</b></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -390,7 +390,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalPendientes" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+    <!-- Modal sin responsive -->
+    <!-- <div class="modal fade" id="modalPendientes" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content" style="width: 500%;">
                 <div class="modal-header justify-content-center">
@@ -430,7 +431,51 @@
                 </div>
             </div>
         </div>
+    </div> -->
+
+    <!-- Modal Responsive -->
+    <div class="modal fade" id="modalPendientes" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title text-dark font-weight-bold" id="detalleModalLabel">Créditos</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table id="tablaDetalles" class="table table-bordered table-striped">
+                            <thead class="table-dark text-center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>F.ANALISIS</th>
+                                    <th>ANALISIS</th>
+                                    <th>COOR</th>
+                                    <th>C.O.</th>
+                                    <th>AGENCIA</th>
+                                    <th>CUENTA</th>
+                                    <th>NOMBRE</th>
+                                    <th>LINEA</th>
+                                    <th>RL</th>
+                                    <th>SCORE</th>
+                                    <th>EDAD</th>
+                                    <th>CAPITAL</th>
+                                    <th>TASA</th>
+                                    <th>NOMINA</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detalleContenido"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger emptydata" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
     </div>
+
 
 
 

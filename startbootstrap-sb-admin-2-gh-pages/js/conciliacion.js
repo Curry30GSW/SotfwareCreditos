@@ -28,42 +28,81 @@
 
 const token = sessionStorage.getItem('token');
 
+
 document.addEventListener('DOMContentLoaded', async function () {
-    try {
-
-        if (!token) {
-            window.location.href = '../../SotfwareCreditos/login-form-02/login.html';
-            return;
-        }
-
-
-        const responseSoftware = await fetch('http://localhost:5000/api/pagados/creditos', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-
-        });
-
-        if (responseSoftware.status === 401) {
-            const data = await responseSoftware.json();
-            window.location.href = data.redirect || '../../SotfwareCreditos/login-form-02/login.html';
-            return;
-        }
-
-        if (responseSoftware.ok) {
-            const resultSoftware = await responseSoftware.json();
-            const pagadosSoftware = resultSoftware.pagados || 0;
-
-            document.getElementById('pagadosAS400').innerHTML = `<strong>${pagadosSoftware}</strong>`;
-        } else {
-            console.error('❌ Error al obtener los datos de los pagos en el software.');
-        }
-    } catch (error) {
-        console.error('❌ Error al obtener los datos:', error);
+    if (!token) {
+        window.location.href = '../../SotfwareCreditos/login-form-02/login.html';
+        return;
     }
+
+    // Obtener la fecha actual
+    const hoy = new Date();
+    const primerDiaMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+
+    // Formatear las fechas en formato YYYY-MM-DD para los inputs
+    const formatoFecha = (fecha) => fecha.toISOString().split('T')[0];
+
+    // Asignar fechas por defecto
+    document.getElementById('fechaInicio').value = formatoFecha(primerDiaMes);
+    document.getElementById('fechaFin').value = formatoFecha(hoy);
+
+    // Función para hacer la petición con las fechas actuales
+    async function obtenerDatos(fechaInicio, fechaFin) {
+        try {
+            const url = `http://localhost:5000/api/pagados/creditos?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+
+            const responseSoftware = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            if (responseSoftware.status === 401) {
+                const data = await responseSoftware.json();
+                window.location.href = data.redirect || '../../SotfwareCreditos/login-form-02/login.html';
+                return;
+            }
+
+            if (responseSoftware.ok) {
+                const resultSoftware = await responseSoftware.json();
+                const pagadosSoftware = resultSoftware.pagados || 0;
+
+                document.getElementById('pagadosAS400').innerHTML = `<strong>${pagadosSoftware}</strong>`;
+            } else {
+                console.error('❌ Error al obtener los datos de los pagos en el software.');
+            }
+        } catch (error) {
+            console.error('❌ Error al obtener los datos:', error);
+        }
+    }
+
+    // Hacer la consulta con las fechas predeterminadas al cargar la página
+    await obtenerDatos(formatoFecha(primerDiaMes), formatoFecha(hoy));
+
+    // Evento cuando el usuario presiona "Guardar" para hacer otra consulta
+    document.getElementById('guardarFechas').addEventListener('click', async function () {
+        const fechaInicio = document.getElementById('fechaInicio').value;
+        const fechaFin = document.getElementById('fechaFin').value;
+
+        if (!fechaInicio || !fechaFin) {
+            alert("Por favor, selecciona ambas fechas antes de continuar.");
+            return;
+        }
+
+        await obtenerDatos(fechaInicio, fechaFin);
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito ✅',
+            text: 'Fechas enviadas correctamente.',
+            confirmButtonColor: '#3085d6'
+        });
+    });
 });
+
+
 
 
 
@@ -179,36 +218,6 @@ const contenedor = document.querySelector('#Resultadopendientes');
 
 
 
-// Función para obtener el nombre del mes
-function obtenerMesNombre(mesNumero) {
-    const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    return meses[mesNumero];
-}
-
-// Función para actualizar el concepto
-function actualizarConcepto() {
-    const fechaHoy = new Date();
-    const mesHoy = fechaHoy.getMonth();
-    const anioHoy = fechaHoy.getFullYear();
-
-    const primerDiaMes = "01";
-    const mesNombre = obtenerMesNombre(mesHoy);
-
-    // Formato: 01 Febrero - 17 Febrero 2025
-    const fechaFormateada = `${primerDiaMes} ${mesNombre} - ${fechaHoy.getDate()} ${mesNombre} ${anioHoy}`;
-
-    // Obtener la fecha y hora actual
-    const fechaHoraActual = obtenerFechaHoraActual();
-
-    // Actualizar la celda con el concepto y la fecha/hora actual
-    document.getElementById('conceptoFecha').innerHTML = `${fechaFormateada} <br> <b>${fechaHoraActual}</b>`;
-
-    // Actualizar los spans en la tabla
-    document.getElementById('mesActual').innerText = `(${mesNombre})`;
-    document.getElementById('mesActualFinal').innerText = `(${mesNombre})`;
-}
-
-// Función para obtener la fecha y hora en formato "03-Mar-25 17:00:00"
 function obtenerFechaHoraActual() {
     const fechaHoy = new Date();
 
@@ -250,15 +259,6 @@ function obtenerMesNombre(mes) {
 actualizarConcepto();
 
 
-// Función para obtener el nombre del mes y año en formato "Mes-Año"
-function getMonthYear(date) {
-    const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${month}-${year}`;
-}
-
-
 
 // Función para actualizar los seis meses en los <td> correspondientes
 function updateMonths() {
@@ -290,10 +290,6 @@ function updateMonths() {
     }
 }
 
-
-
-
-
 // Función auxiliar para obtener el nombre del mes y año
 function getMonthYear(date) {
     const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -308,48 +304,148 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+document.addEventListener('DOMContentLoaded', () => {
+    const fechaInicioInput = document.getElementById('fechaInicio');
+    const fechaFinInput = document.getElementById('fechaFin');
 
+    const hoy = new Date();
+    const primerDiaMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1).toISOString().split('T')[0];
+    const fechaActual = hoy.toISOString().split('T')[0];
 
-const obtenerConsecutivos = async () => {
+    // Si los campos están vacíos, asignar las fechas predeterminadas
+    if (!fechaInicioInput.value) fechaInicioInput.value = primerDiaMes;
+    if (!fechaFinInput.value) fechaFinInput.value = fechaActual;
+
+    // Llamar a la función para actualizar el concepto solo al cargar la página
+    actualizarConcepto(fechaInicioInput.value, fechaFinInput.value);
+    obtenerConsecutivos(fechaInicioInput.value, fechaFinInput.value);
+});
+
+// Al hacer clic en "Guardar", actualizar concepto y obtener consecutivos
+document.getElementById('guardarFechas').addEventListener('click', () => {
+    const fechaInicio = document.getElementById('fechaInicio').value;
+    const fechaFin = document.getElementById('fechaFin').value;
+    const hoy = new Date().toISOString().split('T')[0];
+
+    if (fechaInicio > fechaFin) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Fechas inválidas ❌',
+            html: 'La fecha de inicio no puede ser mayor que la fecha final.',
+            confirmButtonColor: '#d33'
+        });
+        return;
+    }
+
+    if (fechaInicio > hoy || fechaFin > hoy) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Fechas inválidas ❌',
+            html: 'Por favor usa fechas correctas. No puedes seleccionar <b>Fechas Futuras</b>.',
+            confirmButtonColor: '#d33'
+        });
+        return;
+    }
+
+    // Ahora sí actualizar el concepto y obtener los consecutivos
+    actualizarConcepto(fechaInicio, fechaFin);
+    obtenerConsecutivos(fechaInicio, fechaFin);
+});
+
+function actualizarConcepto(fechaInicio, fechaFin) {
+    if (!fechaInicio || !fechaFin) return; // Evita errores si las fechas están vacías
+
+    const fechaInicioObj = new Date(fechaInicio + "T00:00:00");
+    const fechaFinObj = new Date(fechaFin + "T00:00:00");
+
+    const diaInicio = fechaInicioObj.getDate().toString().padStart(2, '0');
+    const mesInicio = obtenerMesNombre(fechaInicioObj.getMonth());
+    const diaFin = fechaFinObj.getDate();
+    const mesFin = obtenerMesNombre(fechaFinObj.getMonth());
+    const anioFin = fechaFinObj.getFullYear();
+
+    // Formato: 01 Febrero - 17 Febrero 2025
+    const fechaFormateada = `${diaInicio} ${mesInicio} - ${diaFin} ${mesFin} ${anioFin}`;
+
+    // Obtener la fecha y hora actual
+    const fechaHoraActual = obtenerFechaHoraActual();
+
+    // Actualizar la celda con el concepto y la fecha/hora actual
+    document.getElementById('conceptoFecha').innerHTML = `${fechaFormateada} <br> <span id="horaActual"><b>${fechaHoraActual}</b></span>`;
+
+    // Actualizar los spans en la tabla
+    document.getElementById('mesActual').innerText = `(${mesInicio})`;
+    document.getElementById('mesActualFinal').innerText = `(${mesFin})`;
+}
+function actualizarHoraEnTiempoReal() {
+    setInterval(() => {
+        const fechaHoraActual = obtenerFechaHoraActual();
+        document.getElementById('horaActual').innerHTML = `<b>${fechaHoraActual}</b>`;
+    }, 1000); // Se ejecuta cada segundo
+}
+
+// Llamar a la función cuando se cargue la página
+document.addEventListener('DOMContentLoaded', () => {
+    actualizarHoraEnTiempoReal();
+});
+
+const fechaModal = $('#fechaModal');
+
+const obtenerConsecutivos = async (fechaInicio, fechaFin) => {
+    const url = `http://localhost:5000/api/conciliacion/primer-credito?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+
     try {
-        const response = await fetch('http://localhost:5000/api/conciliacion/primer-credito', {
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Incluir el token en la cabecera
+                'Authorization': `Bearer ${token}`
             }
         });
+
         const data = await response.json();
 
-        if (data.MinimoID && data.MaximoID) {
-            const consecutivoInicial = data.MinimoID;
-            const consecutivoFinal = data.MaximoID;
-            const registradosPagares = consecutivoFinal - consecutivoInicial + 1;
-            const creditosAnulados = data.Anulados;
-            const creditosRechazados = data.Rechazados
-            const creditosAprobados = data.Aprobados
+        if (response.ok) {
+            fechaModal.modal('hide');
 
-            document.getElementById('consecutivoInicial').textContent = consecutivoInicial;
-            document.getElementById('consecutivoFinal').textContent = consecutivoFinal;
-            document.getElementById('registradosPagares').textContent = registradosPagares;
-            document.getElementById('anulados').textContent = creditosAnulados;
-            document.getElementById('rechazados').textContent = creditosRechazados;
-            document.getElementById('aprobados').textContent = creditosAprobados;
+            fechaModal.on('hidden.bs.modal', function () {
+
+            });
 
 
+            if (data.MinimoID && data.MaximoID) {
+                document.getElementById('consecutivoInicial').textContent = data.MinimoID;
+                document.getElementById('consecutivoFinal').textContent = data.MaximoID;
+                document.getElementById('registradosPagares').textContent = data.MaximoID - data.MinimoID + 1;
+                document.getElementById('anulados').textContent = data.Anulados;
+                document.getElementById('rechazados').textContent = data.Rechazados;
+                document.getElementById('aprobados').textContent = data.Aprobados;
+            } else {
+                document.getElementById('consecutivoInicial').textContent = 'No disponible';
+                document.getElementById('consecutivoFinal').textContent = 'No disponible';
+                document.getElementById('registradosPagares').textContent = 'No disponible';
+                document.getElementById('anulados').textContent = 'No disponible';
+                document.getElementById('rechazados').textContent = 'No disponible';
+                document.getElementById('aprobados').textContent = 'No disponible';
+            }
         } else {
-            document.getElementById('consecutivoInicial').textContent = 'No disponible';
-            document.getElementById('consecutivoFinal').textContent = 'No disponible';
-            document.getElementById('registradosPagares').textContent = 'No disponible';
-            document.getElementById('anulados').textContent = 'No disponible';
-            document.getElementById('aprobados').textContent = 'No disponible';
+            Swal.fire({
+                icon: 'error',
+                title: 'Error ❌',
+                text: data.mensaje || 'No se pudo obtener la información.',
+                confirmButtonColor: '#d33'
+            });
         }
     } catch (error) {
-        console.error('❌ Error al obtener los consecutivos:', error);
+        console.error(' Error al obtener los consecutivos:', error);
+        Swal.fire({
+            icon: 'error',
+            title: ' Error de conexión ❌',
+            text: 'No se pudo conectar con el servidor.',
+            confirmButtonColor: '#d33'
+        });
     }
 };
-// 🔹 Ejecutar función al cargar la página
-document.addEventListener('DOMContentLoaded', obtenerConsecutivos);
+
 
 
 const creditosPendientesAS400 = async () => {

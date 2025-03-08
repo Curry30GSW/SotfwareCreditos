@@ -87,6 +87,23 @@ const mostrar = (creditosPagares) => {
     let resultados = '';
     creditosPagares.forEach(creditosPagares => {
 
+        // Determinar el estado según el valor de Aprobado
+        let estado = '';
+        switch (creditosPagares.Aprobado) {
+            case 1:
+                estado = 'APROBADO';
+                break;
+            case 0:
+                estado = 'RECHAZADO';
+                break;
+            case 4:
+                estado = 'ANULADO';
+                break;
+            default:
+                estado = 'DESCONOCIDO';
+        }
+        let saldoCapital = Number(creditosPagares.Capital || 0).toLocaleString("es-CO");
+
         resultados +=
             `<tr>
                 <td class="text-center text-dark font-weight-bold">${creditosPagares.ID}</td>
@@ -97,19 +114,18 @@ const mostrar = (creditosPagares) => {
                 <td class="text-center text-uppercase text-dark font-weight-bold">${creditosPagares.FechaCredito}</td>
                 <td class="text-center text-dark font-weight-bold">${creditosPagares.NoLC}</td>
                 <td class="text-center text-dark font-weight-bold">${creditosPagares.ID_Pagare}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.Capital}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.Tasa}</td>
-                <td class="text-center text-uppercase text-dark font-weight-bold">${creditosPagares.FechaAccion}</td>
+                <td class="text-center text-dark font-weight-bold">$${saldoCapital}</td>
+                <td class="text-center text-dark font-weight-bold">${creditosPagares.Tasa}%</td>
                 <td class="text-center text-dark font-weight-bold">${creditosPagares.Direccion}</td>
                 <td class="text-center text-dark font-weight-bold">${creditosPagares.Linea_Credito}</td>
                 <td class="text-center text-dark font-weight-bold">${creditosPagares.GeneradorPagare}</td>
                 <td class="text-center text-dark font-weight-bold">${creditosPagares.CoorAsignada}</td>
                 <td class="text-center text-dark font-weight-bold">${creditosPagares.Nomina}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.Aprobado}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.Ordinario}</td>
+                <td class="text-center text-dark font-weight-bold">${estado}</td>
             </tr>`;
     });
     contenedor.innerHTML = resultados;
+
 
     // Inicializar DataTables
     if ($.fn.DataTable.isDataTable('#tablaPagares')) {
@@ -139,7 +155,7 @@ window.onload = () => {
     Swal.fire({
         icon: 'info',
         title: 'Información',
-        text: 'Debes ingresar la Fecha de Acción antes de continuar.',
+        html: 'Debes ingresar la <b>Fecha de Crédito</b> antes de continuar.',
         confirmButtonText: 'Entendido'
     });
 };
