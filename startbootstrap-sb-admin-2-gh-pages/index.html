@@ -64,12 +64,13 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-                    aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseConsulta"
+                    aria-expanded="true" aria-controls="collapseConsulta">
                     <i class="fas fa-search fa-sm"></i>
                     <span>Consultar</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseConsulta" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Servicio a Consultar:</h6>
                         <a class="collapse-item" href="creditosSotfware.html">Créditos Sotfware Pagarés</a>
@@ -77,16 +78,36 @@
                     </div>
                 </div>
             </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
             <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAnalisis"
+                    aria-expanded="true" aria-controls="collapseAnalisis">
+                    <i class="fas fa-fw fa-list"></i>
+                    <span>Tabla Análisis</span>
+                </a>
+                <div id="collapseAnalisis" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Tabla a Consultar:</h6>
+                        <a class="collapse-item" href="analisis.html">Tabla Análisis X Agencia</a>
+                        <a class="collapse-item" href="analisisResumenMes.html">Tabla Análisis - Resumen</a>
+                    </div>
+                </div>
+            </li>
+
+
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="analisis.html">
                     <i class="fas fa-fw fa-list"></i>
                     <span>Tabla Analisis </span></a>
-            </li>
+            </li> -->
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
+
+
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -142,7 +163,7 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-2">
                         <div class="d-flex align-items-center">
-                            <h1 class="h3 mb-0 text-gray-800">Conciliación Créditos</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Conciliación Analisis de Créditos</h1>
                             <button class="btn btn-lg btn-warning px-3 py-2 ms-3 ml-3" type="button" data-toggle="modal"
                                 data-target="#fechaModal">
                                 <i class="fas fa-calendar-day text-white fs-2"></i>
@@ -163,7 +184,7 @@
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
                                     <h5 class="m-0 font-weight-bold text-primary text-center">
-                                        CONCILIACION CREDITOS REGISTRADOS <br> EN EL SOFTWARE
+                                        CONCILIACION ANALISIS DE CREDITOS REGISTRADOS <br> EN EL SOFTWARE
                                     </h5>
                                 </div>
                                 <!-- Card Body -->
@@ -391,7 +412,7 @@
     </div>
 
     <!-- Modal sin responsive -->
-    <!-- <div class="modal fade" id="modalPendientes" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalPendientesPC" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content" style="width: 500%;">
                 <div class="modal-header justify-content-center">
@@ -431,7 +452,7 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
     <!-- Modal Responsive -->
     <div class="modal fade" id="modalPendientes" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">

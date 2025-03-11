@@ -2,8 +2,8 @@ const token = sessionStorage.getItem('token');
 const contenedor = document.querySelector('tbody');
 
 // Abre el modal cuando el usuario hace clic en el botón para abrir el modal de fechas
-const abrirModalBtn = document.querySelector('[data-bs-target="#modalFechas"]'); // Selecciona el botón que abre el modal
-const modalFechas = new bootstrap.Modal(document.getElementById('modalFechas')); // Referencia del modal
+const abrirModalBtn = document.querySelector('[data-bs-target="#modalFechas"]');
+const modalFechas = new bootstrap.Modal(document.getElementById('modalFechas'));
 
 abrirModalBtn.addEventListener('click', () => {
     modalFechas.show();
@@ -14,6 +14,7 @@ const buscarBtn = document.getElementById('buscarBtn');
 buscarBtn.addEventListener('click', () => {
     const fechaInicio = document.getElementById('fechaInicio').value;
     const fechaFin = document.getElementById('fechaFin').value;
+    const hoy = new Date().toISOString().split('T')[0];
 
     if (!fechaInicio || !fechaFin) {
         Swal.fire({
@@ -29,7 +30,17 @@ buscarBtn.addEventListener('click', () => {
         Swal.fire({
             icon: 'error',
             title: 'Rango de fechas incorrecto',
-            text: 'La fecha inicial debe ser menor que la fecha final.',
+            html: 'La <b>Fecha Inicial</b> debe ser menor que la fecha final.',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+
+    if (fechaFin > hoy) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Fecha fuera de rango',
+            html: 'La <b>Fecha Final</b> no puede ser mayor al día actual.',
             confirmButtonText: 'OK'
         });
         return;
@@ -74,8 +85,8 @@ buscarBtn.addEventListener('click', () => {
             return response.json();
         })
         .then(data => {
-            mostrar(data.data);  // Pasa 'data.data' al método mostrar
-            modalFechas.hide(); // Cerrar modal después de la búsqueda
+            mostrar(data.data);
+            modalFechas.hide();
         })
         .catch(error => {
             console.error('Error:', error);

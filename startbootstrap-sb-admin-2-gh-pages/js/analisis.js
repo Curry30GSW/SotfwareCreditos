@@ -658,8 +658,6 @@ const mostrar = (analisis) => {
         analisis.efectividadClass = efectividadValor < 50 ? 'text-danger fw-bold' : 'text-success fw-bold';
     });
 
-
-
     Object.values(agrupados).forEach(analisis => {
         resultados += `
             <tr>
@@ -732,7 +730,7 @@ const mostrar = (analisis) => {
                 exportOptions: {
                     columns: ':visible'
                 },
-                className: 'btn-success' // Aplicamos Bootstrap directamente
+                className: 'btn-success text-dark fw-bold' // Aplicamos Bootstrap directamente
             }
         ],
         initComplete: function () {

@@ -162,8 +162,12 @@ const creditoPendienteMes = (mes) => {
 
             document.getElementById('detalleContenido').innerHTML = contenido;
 
-            let modal = new bootstrap.Modal(document.getElementById('modalPendientes'));
-            modal.show();
+            // Detectar si es móvil o PC y abrir la modal correspondiente
+            if (window.innerWidth <= 850) {
+                new bootstrap.Modal(document.getElementById('modalPendientes')).show();
+            } else {
+                new bootstrap.Modal(document.getElementById('modalPendientesPC')).show();
+            }
 
             $('#tablaDetalles').DataTable({
                 language: {
@@ -210,6 +214,7 @@ const creditoPendienteMes = (mes) => {
             });
         });
 };
+
 
 
 
@@ -533,7 +538,7 @@ const creditosPendientesAS400 = async () => {
 
 
 //Mostrar Resultados
-fetch('http://localhost:5000/api/creditos-pendientes/5', {
+fetch('http://localhost:5000/api/creditos-pendientes/6', {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
@@ -565,12 +570,12 @@ const mostrar = (creditosPendientes) => {
         const año = Math.floor(fechaCalculada / 10000);
         const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
         const dia = String(fechaCalculada % 100).padStart(2, '0');
-        const fechaFormateada = `${dia} ${obtenerNombreMes(mesNumero)} del ${año}`;
+        const fechaFormateada = `${dia} ${obtenerNombreMes(mesNumero)}  ${año}`;
 
         function obtenerNombreMes(mes) {
             const meses = [
-                'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+                'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
             ];
             return meses[mes - 1];
         }
@@ -636,7 +641,7 @@ const mostrar = (creditosPendientes) => {
                 exportOptions: {
                     columns: ':visible'
                 },
-                className: 'btn-success' // Aplicamos Bootstrap directamente
+                className: 'btn-success text-dark fw-bold'
             }
         ],
         initComplete: function () {
@@ -723,3 +728,12 @@ function confirmLogout() {
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    Swal.fire({
+        icon: 'info',
+        title: 'Módulo de Conciliación Créditos',
+        html: 'Este es el módulo de conciliación de crédito. En el botón <b>Amarillo</b>. podrás cambiar las fechas para consultar los resultados que necesites.',
+        confirmButtonColor: '#3085d6'
+    });
+});

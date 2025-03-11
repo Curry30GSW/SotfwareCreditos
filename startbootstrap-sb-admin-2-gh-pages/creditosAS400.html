@@ -77,10 +77,20 @@
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
-            <li class="nav-item ">
-                <a class="nav-link" href="analisis.html">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAnalisis"
+                    aria-expanded="true" aria-controls="collapseAnalisis">
                     <i class="fas fa-fw fa-list"></i>
-                    <span>Tabla Analisis </span></a>
+                    <span>Tabla Análisis</span>
+                </a>
+                <div id="collapseAnalisis" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Tabla a Consultar:</h6>
+                        <a class="collapse-item" href="analisis.html">Tabla Análisis X Agencia</a>
+                        <a class="collapse-item" href="analisisResumenMes.html">Tabla Análisis - Resumen</a>
+                    </div>
+                </div>
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

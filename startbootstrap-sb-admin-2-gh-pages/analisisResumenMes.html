@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" href="./img/C.png">
-    <title>Tabla Analisis-Agencia </title>
+    <title>Tabla de Analisis - Resumen </title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -93,8 +93,8 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Tabla a Consultar:</h6>
-                        <a class="collapse-item active" href="analisis.html">Tabla Análisis X Agencia</a>
-                        <a class="collapse-item" href="analisisResumenMes.html">Tabla Análisis - Resumen</a>
+                        <a class="collapse-item" href="analisis.html">Tabla Análisis X Agencia</a>
+                        <a class="collapse-item active" href="analisisResumenMes.html">Tabla Análisis - Resumen</a>
                     </div>
                 </div>
             </li>
@@ -158,7 +158,7 @@
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-2">
                         <div class="d-flex align-items-center">
-                            <h1 class="h3 mb-0 text-gray-800 me-2">Conceptos de Análisis - Agencias</h1>
+                            <h1 class="h3 mb-0 text-gray-800 me-2">Conceptos de Análisis - Resumen x Mes</h1>
                             <button class="btn btn-lg p-0 ms-3 ml-3" type="button" data-toggle="modal"
                                 data-target="#infoModal">
                                 <i class="fas fa-info-circle text-dark fs-5"></i>
@@ -181,42 +181,70 @@
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
                                     <h3 class="m-0 font-weight-bold text-primary text-center">
-                                        CONCILIACIÓN TABLA DE ANALISIS - AGENCIAS
+                                        CONCILIACIÓN TABLA DE ANALISIS - MES
                                     </h3>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table id="tablaAnalisis" class="table table-bordered table-striped">
-                                                <thead class="table-dark">
-                                                    <tr>
-                                                        <th rowspan="2" class="text-center">C.O.</th>
-                                                        <th rowspan="2" class="text-center">AGENCIA</th>
-                                                        <th colspan="3" class="text-center  text-white">
-                                                            ANÁLISIS</th>
-                                                        <th colspan="4" class="text-center ">ESTADO</th>
-                                                        <th rowspan="2" class="text-center">VERIFICACIÓN</th>
-                                                        <th rowspan="2" class="text-center">EFECTIVIDAD</th>
-                                                        <th rowspan="2" class="text-center" style="width: 130px;">
-                                                            ANÁLISIS PDTE</th>
-
+                                            <table id="tablaResumenAnalisis" class="table table-bordered table-striped">
+                                                <thead class="table-dark text-center">
+                                                    <tr class="text-center">
+                                                        <th colspan="2"></th>
+                                                        <th colspan="3" class="text-center"
+                                                            style="background-color: #FFA725;">Febrero</th>
+                                                        <th colspan="3" class="text-center"
+                                                            style="background-color: #D4E157;">Enero</th>
+                                                        <th colspan="3" class="text-center"
+                                                            style="background-color: #FFAB91;">Diciembre
+                                                        </th>
+                                                        <th colspan="3" class="text-center"
+                                                            style="background-color: #81D4FA;">Noviembre
+                                                        </th>
+                                                        <th colspan="3" class="text-center"
+                                                            style="background-color: #B39DDB;">Octubre</th>
+                                                        <th colspan="3" class="text-center"
+                                                            style="background-color: #FF8A80;">Septiembre
+                                                        </th>
+                                                        <th colspan="5" class="text-center"
+                                                            style="background-color: #AED581;">Agosto</th>
                                                     </tr>
                                                     <tr>
-                                                        <th id="corte" class="text-center  text-white"></th>
-                                                        <th id="actual" class="text-center  text-white"></th>
-                                                        <th class="text-center text-center  text-white">
-                                                            Cantidad</th>
-                                                        <th class="text-center ">PROYECCIÓN (0)</th>
-                                                        <th class="text-center ">PAGARÉ (1)</th>
-                                                        <th class="text-center ">ANULADOS (2)</th>
-                                                        <th class="text-center ">GRABADOS (3)</th>
+                                                        <th>C.O</th>
+                                                        <th>Agencia</th>
+
+                                                        <th># C. I.</th>
+                                                        <th># C. F.</th>
+                                                        <th>Cantidad</th>
+
+                                                        <th># C. I.</th>
+                                                        <th># C. F.</th>
+                                                        <th>Cantidad</th>
+
+                                                        <th># C. I.</th>
+                                                        <th># C. F.</th>
+                                                        <th>Cantidad</th>
+
+                                                        <th># C. I.</th>
+                                                        <th># C. F.</th>
+                                                        <th>Cantidad</th>
+
+                                                        <th># C. I.</th>
+                                                        <th># C. F.</th>
+                                                        <th>Cantidad</th>
+
+                                                        <th># C. I.</th>
+                                                        <th># C. F.</th>
+                                                        <th>Cantidad</th>
+
+                                                        <th># C. I.</th>
+                                                        <th># C. F.</th>
+                                                        <th>Cantidad</th>
                                                     </tr>
                                                 </thead>
+                                                <tbody id="resumenAnalisis">
 
-
-
-                                                <tbody id="tbodyAnalisis">
                                                 </tbody>
                                             </table>
                                         </div>
@@ -459,7 +487,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="./js/hora.js"></script>
-    <script src="./js/analisis.js"></script>
+    <!-- <script src="./js/analisis.js"></script> -->
 
     <!-- jQuery (necesario para DataTables) -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -472,17 +500,8 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <!-- JSZip (Necesario para exportar a Excel) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="./js/analisisResumen.js"></script>
     <script>
-
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     Swal.fire({
-        //         title: '¡Información!',
-        //         html: 'En el botón de la parte superior. Por favor selecciona las <b>FECHAS</b> en las cual quieres consultar la tabla de analisis.',
-        //         icon: 'info',
-        //         allowOutsideClick: false,
-        //         confirmButtonText: "Aceptar",
-        //     });
-        // })
 
         document.addEventListener('DOMContentLoaded', function () {
             const nombreUsuario = sessionStorage.getItem('nombreUsuario');
