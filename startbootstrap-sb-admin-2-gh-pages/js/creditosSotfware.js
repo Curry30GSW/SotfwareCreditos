@@ -117,22 +117,22 @@ const mostrar = (creditosPagares) => {
 
         resultados +=
             `<tr>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.ID}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.NoAgencia}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.CuentaCoop}</td>
-                <td class="text text-dark font-weight-bold">${creditosPagares.Cedula_Persona}</td>
-                <td class="text text-dark font-weight-bold">${creditosPagares.NombreCompleto}</td>
-                <td class="text-center text-uppercase text-dark font-weight-bold">${creditosPagares.FechaCredito}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.NoLC}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.ID_Pagare}</td>
-                <td class="text-center text-dark font-weight-bold">$${saldoCapital}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.Tasa}%</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.Direccion}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.Linea_Credito}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.GeneradorPagare}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.CoorAsignada}</td>
-                <td class="text-center text-dark font-weight-bold">${creditosPagares.Nomina}</td>
-                <td class="text-center text-dark font-weight-bold">${estado}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.ID}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.NoAgencia}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.CuentaCoop}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.Cedula_Persona}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.NombreCompleto}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.FechaCredito}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.NoLC}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.ID_Pagare}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${saldoCapital}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.Tasa}%</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.Direccion}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.Linea_Credito}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.GeneradorPagare}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.CoorAsignada}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPagares.Nomina}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${estado}</td>
             </tr>`;
     });
     contenedor.innerHTML = resultados;

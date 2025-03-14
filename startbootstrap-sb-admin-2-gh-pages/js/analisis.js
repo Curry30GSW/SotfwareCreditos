@@ -39,22 +39,22 @@ const verDetalleEstadoCero = (AGEN23) => {
                 let saldoCapital = Number(detalle.CAPI23 || 0).toLocaleString("es-CO");
                 contenido += `
                     <tr>
-                        <td class="text-dark font-weight-bold">${index + 1}</td>
-                        <td class="text-dark font-weight-bold">${fechaFormateada}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
-                        <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
-                        <td class="text-center text-dark font-weight-bold">$${saldoCapital}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${index + 1}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NANA23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCTA23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${saldoCapital}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TCRE23}</td>
                         <td class="text-center font-weight-bold" 
-                            style="${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                            style="${detalle.Score === 'F/D' ? 'color:#fd7e14' :
                         detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
                             ${detalle.Score}
                         </td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.USER23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.AGEN23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC03}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC04}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.USER23}</td>
                     </tr>`;
             });
 
@@ -130,22 +130,22 @@ const verDetalleEstadoUno = (AGEN23) => {
                 let saldoCapital = Number(detalle.CAPI23 || 0).toLocaleString("es-CO");
                 contenido += `
                     <tr>
-                        <td class="text-dark font-weight-bold">${index + 1}</td>
-                        <td class="text-dark font-weight-bold">${fechaFormateada}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
-                        <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
-                        <td class="text-center text-dark font-weight-bold">${saldoCapital}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${index + 1}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NANA23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCTA23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${saldoCapital}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TCRE23}</td>
                         <td class="text-center font-weight-bold" 
-                            style="${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                            style="${detalle.Score === 'F/D' ? 'color:#fd7e14' :
                         detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
                             ${detalle.Score}
                         </td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.USER23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.AGEN23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC03}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC04}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.USER23}</td>
                     </tr>`;
             });
 
@@ -225,22 +225,22 @@ const verDetalleEstadoDos = (AGEN23) => {
                 let saldoCapital = Number(detalle.CAPI23 || 0).toLocaleString("es-CO");
                 contenido += `
                     <tr>
-                        <td class="text-dark font-weight-bold">${index + 1}</td>
-                        <td class="text-dark font-weight-bold">${fechaFormateada}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
-                        <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
-                        <td class="text-center text-dark font-weight-bold">${saldoCapital}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${index + 1}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NANA23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCTA23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${saldoCapital}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TCRE23}</td>
                         <td class="text-center font-weight-bold" 
-                            style="${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                            style="${detalle.Score === 'F/D' ? 'color:#fd7e14' :
                         detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
                             ${detalle.Score}
                         </td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.USER23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.AGEN23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC03}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC04}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.USER23}</td>
                     </tr>`;
             });
 
@@ -320,22 +320,22 @@ const verDetalleEstadoTres = (AGEN23) => {
                 let saldoCapital = Number(detalle.CAPI23 || 0).toLocaleString("es-CO");
                 contenido += `
                     <tr>
-                        <td class="text-dark font-weight-bold">${index + 1}</td>
-                        <td class="text-dark font-weight-bold">${fechaFormateada}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.NANA23}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.NCTA23}</td>
-                        <td class="text-dark font-weight-bold">${detalle.DESC05}</td>
-                        <td class="text-center text-dark font-weight-bold">${saldoCapital}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.TCRE23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${index + 1}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NANA23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCTA23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${saldoCapital}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TCRE23}</td>
                         <td class="text-center font-weight-bold" 
-                            style="${detalle.Score === 'NO TIENE CONSULTA REALIZADA' ? 'color:#fd7e14' :
+                            style="${detalle.Score === 'F/D' ? 'color:#fd7e14' :
                         detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
                             ${detalle.Score}
                         </td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.AGEN23}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.DESC03}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.DESC04}</td>
-                        <td class="text-center text-dark font-weight-bold">${detalle.USER23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.AGEN23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC03}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC04}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.USER23}</td>
                     </tr>`;
             });
 
@@ -610,7 +610,7 @@ const mostrar = (analisis) => {
         }
 
         if (analisis.origen === 'General') {
-            agrupados[agencia].ULTIMO_CONSECUTIVO = analisis.ULTIMO_CONSECUTIVO;
+            agrupados[agencia].ULTIMO_CONSECUTIVO = analisis.ULTIMO_CONSECUTIVO + 1;
         }
 
         if (analisis.origen === 'MesActual') {
@@ -637,7 +637,7 @@ const mostrar = (analisis) => {
 
 
     Object.keys(agrupados).forEach(agencia => {
-        agrupados[agencia].CANTIDAD_REALIZADA = agrupados[agencia].ULTIMO_CONSECUTIVONOW - agrupados[agencia].ULTIMO_CONSECUTIVO;
+        agrupados[agencia].CANTIDAD_REALIZADA = agrupados[agencia].ULTIMO_CONSECUTIVONOW - agrupados[agencia].ULTIMO_CONSECUTIVO + 1;
         agrupados[agencia].analisisPendientes = agrupados[agencia].ANALISIS_CERO + agrupados[agencia].ANALISIS_UNO;
     });
 
@@ -661,38 +661,38 @@ const mostrar = (analisis) => {
     Object.values(agrupados).forEach(analisis => {
         resultados += `
             <tr>
-                <td class="text-center text-dark font-weight-bold">${analisis.AGEN23}</td>
-                <td class="text-dark font-weight-bold">${analisis.nombreCiudad}</td>
-                <td class="text-center text-dark font-weight-bold">${analisis.ULTIMO_CONSECUTIVO}</td>
-                <td class="text-center text-dark font-weight-bold">${analisis.ULTIMO_CONSECUTIVONOW}</td>
-                <td class="text-center text-dark font-weight-bold">${analisis.CANTIDAD_REALIZADA}</td>
-                <td class="text-center text-dark font-weight-bold">
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${analisis.AGEN23}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${analisis.nombreCiudad}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${analisis.ULTIMO_CONSECUTIVO}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${analisis.ULTIMO_CONSECUTIVONOW}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${analisis.CANTIDAD_REALIZADA}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">
                     ${analisis.ANALISIS_CERO}
                     <button class="btn btn-link text-primary" onclick="verDetalleEstadoCero('${analisis.AGEN23}')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </td>
-                <td class="text-center text-dark font-weight-bold">
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">
                     ${analisis.ANALISIS_UNO}
                     <button class="btn btn-link text-primary" onclick="verDetalleEstadoUno('${analisis.AGEN23}')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </td>
-                <td class="text-center text-dark font-weight-bold">
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">
                     ${analisis.ANALISIS_DOS}
                     <button class="btn btn-link text-primary" onclick="verDetalleEstadoDos('${analisis.AGEN23}')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </td>
-                <td class="text-center text-dark font-weight-bold">
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">
                     ${analisis.ANALISIS_TRES}
                     <button class="btn btn-link text-primary" onclick="verDetalleEstadoTres('${analisis.AGEN23}')">
                         <i class="fas fa-eye"></i>
                     </button>
                 </td>
-                <td class="text-center text-dark font-weight-bold">${analisis.verificacion}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${analisis.verificacion}</td>
                 <td class="text-center font-weight-bold ${analisis.efectividadClass}">${analisis.efectividad}</td>
-                <td class="text-center text-dark font-weight-bold">
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">
                     ${analisis.analisisPendientes}
                 </td>
             </tr>`;
@@ -726,11 +726,11 @@ const mostrar = (analisis) => {
             {
                 extend: 'excelHtml5',
                 text: '<i class="fas fa-file-excel"></i> Exportar a Excel',
-                title: 'Reporte_Analisis',
+                title: 'Reporte_Analisis_Mes',
                 exportOptions: {
                     columns: ':visible'
                 },
-                className: 'btn-success text-dark fw-bold' // Aplicamos Bootstrap directamente
+                className: 'btn-success text-dark fw-bold'
             }
         ],
         initComplete: function () {

@@ -90,22 +90,22 @@ const mostrar = (creditos) => {
 
         resultados +=
             `<tr>
-                <td class="text-center text-dark font-weight-bold">${creditos.AGOP13}</td>
-                <td class="text-center text-dark font-weight-bold ">${creditos.NCTA13}</td>
-                <td class="text-center text-dark font-weight-bold">${creditos.NNIT05}</td>
-                <td class="text-center text-dark font-weight-bold">${creditos.DESC05}</td>
-                <td class="text-center text-dark font-weight-bold">${fechaFormateada}</td> 
-                <td class="text-center text-dark font-weight-bold ">${creditos.TCRE13}</td>
-                <td class="text-center text-dark font-weight-bold ">${creditos.CPTO13}</td>
-                <td class="text-center text-dark font-weight-bold ">${creditos.NCRE13}</td>
-                <td class="text-center text-dark font-weight-bold ">$${ordenSuministro}</td>
-                <td class="text-center text-dark font-weight-bold ">$${capitalInicial}</td>
-                <td class="text-center text-dark font-weight-bold ">${tasaFormateada}</td>
-                <td class="text-center text-dark font-weight-bold ">${creditos.TASA13} %</td>
-                <td class="text-center text-dark font-weight-bold">${creditos.LAPI13}</td>
-                <td class="text-center text-dark font-weight-bold ">${creditos.CIUD05}</td>
-                <td class="text-center text-dark font-weight-bold ">${creditos.DESC06}</td>
-                <td class="text-center text-dark font-weight-bold ">${creditos.CLAS06}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.AGOP13}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NCTA13}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NNIT05}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.DESC05}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td> 
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.TCRE13}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.CPTO13}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NCRE13}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${ordenSuministro}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${capitalInicial}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${tasaFormateada}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.TASA13} %</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.LAPI13}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.CIUD05}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.DESC06}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.CLAS06}</td>
             </tr>`;
     });
     contenedor.innerHTML = resultados;

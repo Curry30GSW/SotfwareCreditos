@@ -191,55 +191,59 @@
                                             <table id="tablaResumenAnalisis" class="table table-bordered table-striped">
                                                 <thead class="table-dark text-center">
                                                     <tr class="text-center">
-                                                        <th colspan="2"></th>
+                                                        <th colspan="2" class="text-center">Concepto</th>
                                                         <th colspan="3" class="text-center"
-                                                            style="background-color: #FFA725;">Febrero</th>
-                                                        <th colspan="3" class="text-center"
-                                                            style="background-color: #D4E157;">Enero</th>
-                                                        <th colspan="3" class="text-center"
-                                                            style="background-color: #FFAB91;">Diciembre
+                                                            style="color: #000 !important; font-weight: 525 !important">
                                                         </th>
                                                         <th colspan="3" class="text-center"
-                                                            style="background-color: #81D4FA;">Noviembre
+                                                            style="color: #000 !important; font-weight: 525 !important">
                                                         </th>
                                                         <th colspan="3" class="text-center"
-                                                            style="background-color: #B39DDB;">Octubre</th>
+                                                            style="color: #000 !important; font-weight: 525 !important">
+                                                        </th>
                                                         <th colspan="3" class="text-center"
-                                                            style="background-color: #FF8A80;">Septiembre
+                                                            style="color: #000 !important; font-weight: 525 !important">
+                                                        </th>
+                                                        <th colspan="3" class="text-center"
+                                                            style="color: #000 !important; font-weight: 525 !important">
+                                                        </th>
+                                                        <th colspan="3" class="text-center"
+                                                            style="color: #000 !important; font-weight: 525 !important">
                                                         </th>
                                                         <th colspan="5" class="text-center"
-                                                            style="background-color: #AED581;">Agosto</th>
+                                                            style="color: #000 !important; font-weight: 525 !important">
+                                                        </th>
                                                     </tr>
                                                     <tr>
                                                         <th>C.O</th>
                                                         <th>Agencia</th>
 
-                                                        <th># C. I.</th>
-                                                        <th># C. F.</th>
+                                                        <th>Inicio</th>
+                                                        <th>Fin</th>
                                                         <th>Cantidad</th>
 
-                                                        <th># C. I.</th>
-                                                        <th># C. F.</th>
+                                                        <th>Inicio</th>
+                                                        <th>Fin</th>
                                                         <th>Cantidad</th>
 
-                                                        <th># C. I.</th>
-                                                        <th># C. F.</th>
+                                                        <th>Inicio</th>
+                                                        <th>Fin</th>
                                                         <th>Cantidad</th>
 
-                                                        <th># C. I.</th>
-                                                        <th># C. F.</th>
+                                                        <th>Inicio</th>
+                                                        <th>Fin</th>
                                                         <th>Cantidad</th>
 
-                                                        <th># C. I.</th>
-                                                        <th># C. F.</th>
+                                                        <th>Inicio</th>
+                                                        <th>Fin</th>
                                                         <th>Cantidad</th>
 
-                                                        <th># C. I.</th>
-                                                        <th># C. F.</th>
+                                                        <th>Inicio</th>
+                                                        <th>Fin</th>
                                                         <th>Cantidad</th>
 
-                                                        <th># C. I.</th>
-                                                        <th># C. F.</th>
+                                                        <th>Inicio</th>
+                                                        <th>Fin</th>
                                                         <th>Cantidad</th>
                                                     </tr>
                                                 </thead>
@@ -339,36 +343,32 @@
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content" style="width: 110%;">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title text-dark font-weight-bold" id="detalleModalLabel">Análisis Estado: </h5>
+                    <h5 class="modal-title text-dark font-weight-bold" id="detalleModalLabel"></h5>
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table id="tablaDetalles" class="table table-bordered table-striped">
+                        <table id="tablaDetallesAnalisis" class="table table-bordered table-striped">
                             <thead class="table-dark text-center">
                                 <tr>
-                                    <th>#</th>
-                                    <th>Fecha Análisis</th>
-                                    <th>#Análisis</th>
-                                    <th>Cuenta</th>
-                                    <th>Asociado</th>
-                                    <th>Capital Inicial</th>
-                                    <th>Línea</th>
-                                    <th class="text-center">Score</th>
-                                    <th class="text-center">C.O</th>
-                                    <th class="text-center">Agencia</th>
-                                    <th class="text-center">Nomina</th>
-                                    <th class="text-center">Usuario</th>
+                                    <th class="text-center ">PROYECCIÓN (0)</th>
+                                    <th class="text-center ">PAGARÉ (1)</th>
+                                    <th class="text-center ">ANULADOS (2)</th>
+                                    <th class="text-center ">GRABADOS (3)</th>
                                 </tr>
                             </thead>
-                            <tbody id="detalleContenido">
+                            <tbody id="detalleContenidoResumen">
 
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <div class="d-flex justify-content-between w-100 ">
+                        <h4 id="totalAnalisis" class="mb-0 text-dark font-weight-bold">Total:</h4>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -467,7 +467,34 @@
         </div>
     </div>
 
+    <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content" style="width: 110%;">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title text-dark font-weight-bold" id="detalleModalAnalisisLabel">Análisis Estado:
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table id="tablaDetallesAnalisis" class="table table-bordered table-striped">
+                            <thead class="table-dark text-center">
+                                <tr>
+                                    <th>Estado</th>
+                                    <th>Agencia</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detalleContenidoResumen">
 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 

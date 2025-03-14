@@ -28,6 +28,36 @@
 
 const token = sessionStorage.getItem('token');
 
+document.addEventListener("DOMContentLoaded", function () {
+    const fechaInicio = document.getElementById("fechaInicio");
+    const fechaFin = document.getElementById("fechaFin");
+    const fechaInicioLabel = document.getElementById("fechaInicioLabel");
+    const fechaFinLabel = document.getElementById("fechaFinLabel");
+
+    // Formatear y mostrar la fecha seleccionada
+    fechaInicio.addEventListener("change", function () {
+        fechaInicioLabel.textContent = formatearFecha(this.value);
+    });
+
+    fechaFin.addEventListener("change", function () {
+        fechaFinLabel.textContent = formatearFecha(this.value);
+    });
+
+    // Función para formatear fecha
+    function formatearFecha(fecha) {
+        if (!fecha) return "Seleccione una fecha";
+
+        const meses = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        let partes = fecha.split("-");
+        let año = partes[0];
+        let mes = meses[parseInt(partes[1]) - 1];
+        let dia = partes[2];
+
+        return `${dia}/${mes}/${año}`;
+    }
+});
+
+
 
 document.addEventListener('DOMContentLoaded', async function () {
     if (!token) {
@@ -134,25 +164,25 @@ const creditoPendienteMes = (mes) => {
                 let fechaFormateada = formatearFecha(detalle.FECH23);
                 contenido += `
                     <tr>
-                        <td class="text-dark font-weight-bold">${index + 1}</td>
-                        <td class="text-dark font-weight-bold">${fechaFormateada}</td>
-                        <td class="text-center text-dark ">${detalle.NANA26}</td>
-                        <td class="text-center text-dark ">${detalle.DIRE03}</td>
-                        <td class="text-center text-dark ">${detalle.DIST03}</td>
-                        <td class="text-center text-dark ">${detalle.DESC03}</td>
-                        <td class="text-center text-dark ">${detalle.NCTA26}</td>
-                        <td class="text-center text-dark ">${detalle.DESC05}</td> 
-                        <td class="text-center text-dark ">${detalle.TCRE26}</td>
-                        <td class="text-center text-dark "> ${detalle.CPTO26}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${index + 1}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NANA26}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DIRE03}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DIST03}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC03}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCTA26}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td> 
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TCRE26}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important"> ${detalle.CPTO26}</td>
                       <td class="text-center font-weight-bold" 
                         style="${detalle.Score === 'F/D' || detalle.Score === 'S/E' ? 'color:#fd7e14' :
                         detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
                         ${detalle.Score}
                             </td>
-                        <td class="text-center text-dark">${calcularEdad(detalle.FECN05)}</td>
-                        <td class="text-dark ">$${saldoCapital}</td>
-                        <td class="text-center text-dark ">${detalle.TASA26} %</td>
-                        <td class="text-center text-dark ">${detalle.DESC04}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${calcularEdad(detalle.FECN05)}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${saldoCapital}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TASA26} %</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC04}</td>
                     </tr>`;
             });
 
@@ -584,25 +614,25 @@ const mostrar = (creditosPendientes) => {
 
         resultados +=
             `<tr>
-                    <td class="text-center text-dark ">${contador}</td> 
-                    <td class="text-dark ">${fechaFormateada}</td>
-                    <td class="text-center text-dark ">${creditosPendientes.NANA26}</td>
-                    <td class="text-center text-dark ">${creditosPendientes.DIRE03}</td>
-                    <td class="text-center text-dark ">${creditosPendientes.DIST03}</td>
-                    <td class="text-center text-dark ">${creditosPendientes.DESC03}</td>
-                    <td class="text-center text-dark ">${creditosPendientes.NCTA26}</td>
-                    <td class="text-dark ">${creditosPendientes.DESC05}</td> 
-                    <td class="text-center text-dark ">${creditosPendientes.TCRE26}</td>
-                    <td class="text-center text-dark "> ${creditosPendientes.CPTO26}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${contador}</td> 
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPendientes.NANA26}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPendientes.DIRE03}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPendientes.DIST03}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPendientes.DESC03}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPendientes.NCTA26}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPendientes.DESC05}</td> 
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPendientes.TCRE26}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important"> ${creditosPendientes.CPTO26}</td>
                     <td class="text-center font-weight-bold" 
                         style="${creditosPendientes.Score === 'F/D' || creditosPendientes.Score === 'S/E' ? 'color:#fd7e14' :
                 creditosPendientes.Score < 650 ? 'color:red' : 'color:#007bff'}">
                                     ${creditosPendientes.Score}
                         </td>
-                    <td class="text-center text-dark">${calcularEdad(creditosPendientes.FECN05)}</td> 
-                    <td class="text-dark ">$${saldoCapital}</td>
-                    <td class="text-center text-dark ">${creditosPendientes.TASA26} %</td>
-                    <td class="text-center text-dark ">${creditosPendientes.DESC04}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${calcularEdad(creditosPendientes.FECN05)}</td> 
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${saldoCapital}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPendientes.TASA26} %</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditosPendientes.DESC04}</td>
           
                 </tr>`;
 
