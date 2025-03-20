@@ -95,6 +95,7 @@
                         <h6 class="collapse-header">Tabla a Consultar:</h6>
                         <a class="collapse-item" href="analisis.html">Tabla Análisis X Agencia</a>
                         <a class="collapse-item active" href="analisisResumenMes.html">Tabla Análisis - Resumen</a>
+                        <a class="collapse-item" href="creditosNoRegistrados.html">Créditos NO Registrados</a>
                     </div>
                 </div>
             </li>
@@ -188,29 +189,27 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table id="tablaResumenAnalisis" class="table table-bordered table-striped">
+                                            <table id="tablaResumenAnalisis"
+                                                class="table table-bordered table-striped nowrap" style="width: 100%;">
                                                 <thead class="table-dark text-center">
                                                     <tr class="text-center">
                                                         <th colspan="2" class="text-center">Concepto</th>
-                                                        <th colspan="3" class="text-center"
+                                                        <th colspan="4" class="text-center"
                                                             style="color: #000 !important; font-weight: 525 !important">
                                                         </th>
-                                                        <th colspan="3" class="text-center"
+                                                        <th colspan="4" class="text-center"
                                                             style="color: #000 !important; font-weight: 525 !important">
                                                         </th>
-                                                        <th colspan="3" class="text-center"
+                                                        <th colspan="4" class="text-center"
                                                             style="color: #000 !important; font-weight: 525 !important">
                                                         </th>
-                                                        <th colspan="3" class="text-center"
+                                                        <th colspan="4" class="text-center"
                                                             style="color: #000 !important; font-weight: 525 !important">
                                                         </th>
-                                                        <th colspan="3" class="text-center"
+                                                        <th colspan="4" class="text-center"
                                                             style="color: #000 !important; font-weight: 525 !important">
                                                         </th>
-                                                        <th colspan="3" class="text-center"
-                                                            style="color: #000 !important; font-weight: 525 !important">
-                                                        </th>
-                                                        <th colspan="5" class="text-center"
+                                                        <th colspan="4" class="text-center"
                                                             style="color: #000 !important; font-weight: 525 !important">
                                                         </th>
                                                     </tr>
@@ -221,32 +220,35 @@
                                                         <th>Inicio</th>
                                                         <th>Fin</th>
                                                         <th>Cantidad</th>
+                                                        <th>Acciones</th>
 
                                                         <th>Inicio</th>
                                                         <th>Fin</th>
                                                         <th>Cantidad</th>
+                                                        <th>Acciones</th>
 
                                                         <th>Inicio</th>
                                                         <th>Fin</th>
                                                         <th>Cantidad</th>
+                                                        <th>Acciones</th>
 
                                                         <th>Inicio</th>
                                                         <th>Fin</th>
                                                         <th>Cantidad</th>
+                                                        <th>Acciones</th>
 
                                                         <th>Inicio</th>
                                                         <th>Fin</th>
                                                         <th>Cantidad</th>
+                                                        <th>Acciones</th>
 
                                                         <th>Inicio</th>
                                                         <th>Fin</th>
                                                         <th>Cantidad</th>
-
-                                                        <th>Inicio</th>
-                                                        <th>Fin</th>
-                                                        <th>Cantidad</th>
+                                                        <th>Acciones</th>
                                                     </tr>
                                                 </thead>
+
                                                 <tbody id="resumenAnalisis">
 
                                                 </tbody>
@@ -492,6 +494,51 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="MostrarModal" tabindex="-1" aria-labelledby="detalleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content" style="width: 110%;">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title text-dark font-weight-bold" id="detalleModalLabel1"></h5>
+
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table id="tablaDetallesAnalisisRes" class="table table-bordered table-striped ">
+                            <thead class="table-dark text-center">
+                                <tr>
+                                    <!-- <th class="text-center">#</th> -->
+                                    <th class="text-center ">CU</th>
+                                    <th class="text-center ">AGENCIA</th>
+                                    <th class="text-center ">F.ANALISIS </th>
+                                    <th class="text-center ">ANALISIS</th>
+                                    <th class="text-center ">CUENTA </th>
+                                    <th class="text-center ">NOMBRE</th>
+                                    <th class="text-center ">CEDULA</th>
+                                    <th class="text-center ">T.CRED </th>
+                                    <th class="text-center ">CAPITAL </th>
+                                    <th class="text-center ">USUARIO </th>
+                                    <th class="text-center ">ESTADO </th>
+                                    <th class="text-center ">NOMINA </th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="detallesContenidoResumenCompleto">
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="d-flex justify-content-between w-100 ">
+                        <!-- <h4 id="totalAnalisis" class="mb-0 text-dark font-weight-bold">Total:</h4> -->
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

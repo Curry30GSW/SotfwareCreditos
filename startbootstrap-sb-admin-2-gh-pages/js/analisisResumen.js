@@ -80,21 +80,9 @@ Promise.all([
     }).then(response => {
         if (!response.ok) throw new Error('Error en la solicitud 5');
         return response.json().then(data => data.consecutivos || []);
-    }),
-
-    //agosto
-    fetch(`http://localhost:5000/api/analisis/ultimo-consecutivo/6`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-    }).then(response => {
-        if (!response.ok) throw new Error('Error en la solicitud 6');
-        return response.json().then(data => data.consecutivos || []);
     })
 ])
-    .then(([analisis0, analisis1, analisis2, analisis3, analisis4, analisis5, analisis6]) => {
+    .then(([analisis0, analisis1, analisis2, analisis3, analisis4, analisis5]) => {
 
         // Si no es un array, conviértelo en un array vacío para evitar errores
         analisis0 = Array.isArray(analisis0) ? analisis0 : [];
@@ -103,9 +91,7 @@ Promise.all([
         analisis3 = Array.isArray(analisis3) ? analisis3 : [];
         analisis4 = Array.isArray(analisis4) ? analisis4 : [];
         analisis5 = Array.isArray(analisis5) ? analisis5 : [];
-        analisis6 = Array.isArray(analisis6) ? analisis6 : [];
 
-        console.log("Datos crudos:", { analisis0, analisis1, analisis2, analisis3, analisis4, analisis5, analisis6 });
 
 
         const datosCombinados = [
@@ -114,8 +100,7 @@ Promise.all([
             ...analisis2.map(d => ({ ...d, origen: 2 })),
             ...analisis3.map(d => ({ ...d, origen: 3 })),
             ...analisis4.map(d => ({ ...d, origen: 4 })),
-            ...analisis5.map(d => ({ ...d, origen: 5 })),
-            ...analisis6.map(d => ({ ...d, origen: 6 }))
+            ...analisis5.map(d => ({ ...d, origen: 5 }))
         ];
 
         mostrar(datosCombinados);
@@ -130,7 +115,6 @@ const getColorPorOrigen = (origen) => {
         3: 'background-color: #EEF1DA;', // Noviembre - Azul celeste
         4: 'background-color: #D5E5D5;', // Octubre - Morado pastel
         5: 'background-color: #C7D9DD;', // Septiembre - Rojo claro
-        6: 'background-color: #B3D8A8;'  // Otro - Verde claro 
     };
     return colores[origen] || 'background-color: #E0E0E0;'; // Color por defecto (gris)
 };
@@ -144,7 +128,7 @@ const mostrar = (analisisResumenMes) => {
 
     // Filtrar los datos por origen para cada mes
     const datosPorMes = {};
-    for (let i = 0; i <= 6; i++) {
+    for (let i = 0; i <= 5; i++) {
         datosPorMes[i] = analisisResumenMes.filter(a => a.origen === i);
     }
 
@@ -174,7 +158,7 @@ const mostrar = (analisisResumenMes) => {
         `;
 
         // Recorrer los meses en orden descendente (6 → 5 → 4 → ... → 0)
-        for (let origen = 6; origen >= 0; origen--) {
+        for (let origen = 5; origen >= 0; origen--) {
             let analisis = datosPorMes[origen].find(a => a.AGEN23 === agencia);
 
             if (!analisis) {
@@ -191,10 +175,16 @@ const mostrar = (analisisResumenMes) => {
             resultados += `
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important; ${getColorPorOrigen(origen)}">${analisis.primer_consecutivoMes || ''}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important; ${getColorPorOrigen(origen)}">${analisis.ultimo_consecutivoMes || ''}</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important; ${getColorPorOrigen(origen)}">${cantidadRealizada}
-                <button class="btn btn-link text-primary" onclick="verDetalleEstado(${origen}, ${agencia})">
-                    <i class="fas fa-eye"></i>
-                </button>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important; ${getColorPorOrigen(origen)}">${cantidadRealizada}</td>
+                <td style="color: #000 !important; font-weight: 525 !important; ${getColorPorOrigen(origen)}">
+                    <div class="d-flex w-100 justify-content-between">
+                        <button class="btn btn-link text-primary p-0" onclick="verDetalleEstado(${origen}, ${agencia})">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn btn-link text-secondary p-0" onclick="mostraInfo(${origen}, ${agencia})">
+                            <i class="fas fa-question-circle"></i>
+                        </button>
+                    </div>
                 </td>
 
 
@@ -236,7 +226,7 @@ const mostrar = (analisisResumenMes) => {
                 exportOptions: {
                     columns: ':visible'
                 },
-                className: 'btn-success text-dark fw-bold' // Aplicamos Bootstrap directamente
+                className: 'btn-success text-dark fw-bold'
             }
         ],
         initComplete: function () {
@@ -334,6 +324,7 @@ const verDetalleEstado = (mes, agencia) => {
 
             document.getElementById('detalleContenidoResumen').innerHTML = contenido;
             // Calcular el total de análisis
+            // Calcular el total de análisis
             let totalAnalisis = Object.values(dataEstructurada).reduce((total, detalle) => {
                 return total + detalle.PROYECCION + detalle.PAGARE + detalle.ANULADOS + detalle.GRABADOS;
             }, 0);
@@ -386,6 +377,157 @@ const verDetalleEstado = (mes, agencia) => {
 };
 
 
+const mostraInfo = (mes, agencia) => {
+    const estados = [0, 1, 2, 3];
+
+    const peticionesDetalle = estados.map(estado =>
+        fetch(`http://localhost:5000/api/analisis/${estado}/${mes}/${agencia}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => response.ok ? response.json() : [])
+            .then(data => {
+                return {
+                    estado,
+                    data: data.length > 0 ? data.map(item => ({
+                        AGEN23: item.AGEN23,
+                        DESC03: item.DESC03.trim(),
+                        FECH23: item.FECH23,
+                        NANA23: item.NANA23,
+                        NCTA23: item.NCTA23,
+                        DESC05: item.DESC05.trim(),
+                        NNIT05: item.NNIT05.trim(),
+                        CAPI23: item.CAPI23,
+                        TCRE23: item.TCRE23,
+                        USER23: item.USER23.trim(),
+                        STAT23: item.STAT23,
+                        DESC04: item.DESC04.trim(),
+                    })) : []
+                };
+            })
+            .catch(error => {
+                console.error(`Error con el estado ${estado}:`, error);
+                return { estado, data: [] };
+            })
+    );
+
+    Promise.all(peticionesDetalle)
+        .then(resultados => {
+            let dataEstructuradaDetalle = [];
+
+            // Acumular correctamente los datos de cada estado
+            resultados.forEach(({ data }) => {
+                dataEstructuradaDetalle = dataEstructuradaDetalle.concat(data);
+            });
+
+            if (dataEstructuradaDetalle.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sin resultados',
+                    text: 'No hay análisis para la agencia seleccionada.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+
+            if ($.fn.DataTable.isDataTable('#tablaDetallesAnalisisRes')) {
+                $('#tablaDetallesAnalisisRes').DataTable().clear().destroy();
+            }
+
+            let contenido = '';
+
+            // Recorrer la data acumulada y llenar la tabla
+            dataEstructuradaDetalle.forEach(detalle => {
+                let fechaFormateada = formatearFecha(detalle.FECH23);
+                let saldoCapital = Number(detalle.CAPI23 || 0).toLocaleString("es-CO");
+                contenido += `
+                    <tr>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important" >${detalle.AGEN23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC03}</td>
+                        <td style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NANA23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCTA23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NNIT05}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important" >${detalle.TCRE23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important" >$${saldoCapital}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.USER23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.STAT23}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important" >${detalle.DESC04}</td>
+                    </tr>`;
+            });
+
+            document.getElementById('detallesContenidoResumenCompleto').innerHTML = contenido;
+
+            // Obtener el nombre y agencia (asumiendo que solo hay una agencia en la data)
+            const nombreAgencia = dataEstructuradaDetalle[0]?.DESC03?.trim() || agencia;
+
+            document.getElementById('detalleModalLabel1').innerHTML = `${agencia} - ${nombreAgencia}`;
+
+            $('#tablaDetallesAnalisisRes').DataTable({
+                destroy: true,
+                responsive: true,
+                order: [[3, 'asc']],
+
+                // fixedHeader: true,  
+                // scrollY: "400px",   
+                // scrollX: true,
+
+                // fixedColumns: {
+                //     leftColumns: 2  
+                // },
+
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Datos del _START_ al _END_ para un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "oPaginate": {
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+                },
+                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                dom: '<"top"lfB>rtip',
+                buttons: [
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i> Exportar a Excel',
+                        title: 'Reporte_Analisis_Detallado',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        className: 'btn-success text-dark fw-bold' // Aplicamos Bootstrap directamente
+                    }
+                ],
+                initComplete: function () {
+                    // Asegurarnos de que el botón tome el estilo correctamente
+                    $('.dt-buttons button').removeClass('dt-button').addClass('btn btn-success btn-m text-white');
+                }
+            });
+
+            let modal = new bootstrap.Modal(document.getElementById('MostrarModal'));
+            modal.show();
+        })
+        .catch(error => {
+            console.error('Error al obtener los detalles:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un problema al obtener los datos.',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Cerrar'
+            });
+        });
+};
 
 
 
@@ -405,21 +547,21 @@ function confirmLogout() {
             sessionStorage.clear();
 
             setTimeout(() => {
-                window.location.href = '../../../SotfwareCreditos/login-form-02/login.html';
+                window.location.href = '../../SotfwareCreditos/login-form-02/login.html';
             }, 500);
         }
     });
 }
 
 const actualizarEncabezadoMeses = () => {
-    const colores = ["#B3D8A8", "#C7D9DD", "#D5E5D5", "#EEF1DA", "#F2E2B1", "#D5C7A3", "#BDB395"];
+    const colores = ["#C7D9DD", "#D5E5D5", "#EEF1DA", "#F2E2B1", "#D5C7A3", "#BDB395"];
     const mesesElementos = document.querySelectorAll("tr.text-center th.text-center");
 
     // Obtener los últimos 6 meses más el actual con su año
     let fechaActual = new Date();
     let meses = [];
 
-    for (let i = 7; i >= 0; i--) {
+    for (let i = 6; i >= 0; i--) {
         let fecha = new Date(fechaActual.getFullYear(), fechaActual.getMonth() - i, 1);
         let nombreMes = fecha.toLocaleString('es-ES', { month: 'long' }); // Nombre del mes en español
         let año = fecha.getFullYear(); // Año correspondiente
@@ -428,12 +570,12 @@ const actualizarEncabezadoMeses = () => {
 
     // Asignar los meses dinámicamente a los <th>
     let index = 1; // Saltamos los primeros dos <th> (Concepto)
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 6; i++) {
         mesesElementos[index].style.backgroundColor = colores[i];
         mesesElementos[index].textContent = meses[i];
 
         // Ajustar colspan, el último mes (mes actual) tiene colspan 5
-        mesesElementos[index].setAttribute("colspan", i === 6 ? "5" : "3");
+        mesesElementos[index].setAttribute("colspan", i === 5 ? "5" : "4");
 
         index++;
     }
@@ -441,3 +583,23 @@ const actualizarEncabezadoMeses = () => {
 
 // Llamar a la función al cargar la página
 actualizarEncabezadoMeses();
+
+
+const formatearFecha = (fechaRaw) => {
+    if (!fechaRaw) return "Fecha inválida";
+
+    const fechaCalculada = fechaRaw + 19000000;
+    const año = Math.floor(fechaCalculada / 10000);
+    const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
+    const dia = String(fechaCalculada % 100).padStart(2, '0');
+
+    return `${dia} ${obtenerNombreMes(mesNumero)} ${año}`;
+};
+
+const obtenerNombreMes = (mes) => {
+    const meses = [
+        'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+    ];
+    return meses[mes - 1];
+};

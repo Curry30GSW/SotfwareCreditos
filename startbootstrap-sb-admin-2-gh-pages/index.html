@@ -75,6 +75,7 @@
                         <h6 class="collapse-header">Servicio a Consultar:</h6>
                         <a class="collapse-item" href="creditosSotfware.html">Créditos Sotfware Pagarés</a>
                         <a class="collapse-item" href="creditosAS400.html">Créditos Plataforma</a>
+                        <a class="collapse-item" href="creditosNoRegistrados.html">Créditos NO Registrados</a>
                     </div>
                 </div>
             </li>
@@ -418,11 +419,11 @@
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content" style="width: 500%;">
                 <div class="modal-header justify-content-center">
-                    <h5 class="modal-title text-dark font-weight-bold" id="detalleModalLabel">Créditos </h5>
+                    <h5 class="modal-title text-dark font-weight-bold" id="detalleModalLabel">Créditos Pendientes</h5>
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table id="tablaDetalles" class="table table-bordered table-striped">
+                        <table id="tablaDetallesPC" class="table table-bordered table-striped">
                             <thead class="table-dark text-center">
                                 <tr>
                                     <th class="text-center">#</th>
@@ -442,10 +443,7 @@
                                     <th class="text-center">NOMINA</th>
                                 </tr>
                             </thead>
-
-                            <tbody id="detalleContenido">
-
-                            </tbody>
+                            <tbody id="detalleContenidoPC"></tbody> <!-- ID único para PC -->
                         </table>
                     </div>
                 </div>
@@ -468,7 +466,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table id="tablaDetalles" class="table table-bordered table-striped">
+                        <table id="tablaDetallesMovil" class="table table-bordered table-striped">
                             <thead class="table-dark text-center">
                                 <tr>
                                     <th>#</th>
@@ -488,7 +486,7 @@
                                     <th>NOMINA</th>
                                 </tr>
                             </thead>
-                            <tbody id="detalleContenido"></tbody>
+                            <tbody id="detalleContenidoMovil"></tbody> <!-- ID único para móvil -->
                         </table>
                     </div>
                 </div>
@@ -498,6 +496,8 @@
             </div>
         </div>
     </div>
+
+
 
 
 

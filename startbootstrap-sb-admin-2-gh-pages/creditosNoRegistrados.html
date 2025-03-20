@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" type="image/png" href="./img/c.png">
-    <title>Créditos Sotfware Pagarés</title>
+    <title>Créditos Plataforma </title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -19,9 +19,8 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="./css/sb-admin-2.css   ">
-    <!-- DataTables con Bootstrap 5 -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
 </head>
 
@@ -45,10 +44,10 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item ">
+            <li class="nav-item">
                 <a class="nav-link" href="index.html">
                     <i class="fas fa-fw fa-address-card"></i>
-                    <span>Conciliación Créditos</span></a>
+                    <span>Conciliación Créditos </span></a>
             </li>
 
             <!-- Divider -->
@@ -69,12 +68,13 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Servicio a Consultar:</h6>
-                        <a class="collapse-item active" href="creditosSotfware.html">Créditos Sotfware Pagarés</a>
-                        <a class="collapse-item" href="creditosAS400.html">Créditos Plataforma</a>
+                        <a class="collapse-item" href="creditosSotfware.html">Créditos Sotfware Pagarés</a>
+                        <a class="collapse-item active" href="creditosAS400.html">Créditos Plataforma</a>
                         <a class="collapse-item" href="creditosNoRegistrados.html">Créditos NO Registrados</a>
                     </div>
                 </div>
             </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -93,7 +93,6 @@
                     </div>
                 </div>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -112,12 +111,6 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-                    <!-- Botón que abre el modal -->
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalFechas">
-                        Insertar Fecha de Crédito
-                    </button>
-
-
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -155,9 +148,10 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Créditos Sotfware Pagarés</h1>
+                        <h1 class="h3 mb-0 text-gray-800">Créditos NO Registrados En El Sotfware</h1>
                         <h3 class="p-3 mb-0 text-secondary text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
+
 
                     <!-- Content Row -->
 
@@ -165,10 +159,12 @@
 
                         <!-- Area Chart -->
                         <div class="col-xl-12 col-lg-12">
+                        </div>
+                        <div class="col-xl-12 col-lg-12">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h4 class="m-0 font-weight-bold text-primary">Créditos Sotfware PAGARÉS</h4>
+                                    <h4 class="m-0 font-weight-bold text-primary">Créditos NO Registrados</h4>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body" id="printContent">
@@ -177,31 +173,30 @@
                                             <div class="form-group" id="EstadoCta">
                                                 <div class="container-fluid">
                                                     <div class="table-responsive">
-                                                        <table id="tablaPagares"
+                                                        <table id="tablaAS400"
                                                             class="table table-bordered table-striped text-center">
                                                             <thead class="table-dark">
                                                                 <tr>
-                                                                    <th>ID</th>
-                                                                    <th>Agencia</th>
-                                                                    <th>CuentaCoop</th>
-                                                                    <th>Cedula_Persona</th>
-                                                                    <th>NombreCompleto</th>
-                                                                    <th>FechaCredito</th>
-                                                                    <th>NoLC</th>
-                                                                    <th>ID_Pagare</th>
-                                                                    <th>Capital</th>
-                                                                    <th>Tasa</th>
-                                                                    <th>Direccion</th>
-                                                                    <th>Linea_Credito</th>
-                                                                    <th>GeneradorPagare</th>
-                                                                    <th>CoorAsignada</th>
-                                                                    <th>Nomina</th>
-                                                                    <th>Aprobado</th>
+                                                                    <th class="text-center">#</th>
+                                                                    <th class="text-center">FECHA ANALISIS</th>
+                                                                    <th class="text-center">ANALISIS</th>
+                                                                    <th class="text-center">COOR</th>
+                                                                    <th class="text-center">C.O.</th>
+                                                                    <th class="text-center">AGENCIA</th>
+                                                                    <th class="text-center">CUENTA</th>
+                                                                    <th class="text-center">NOMBRE</th>
+                                                                    <th class="text-center">LINEA</th>
+                                                                    <th class="text-center">RL</th>
+                                                                    <th class="text-center">SCORE</th>
+                                                                    <th class="text-center">EDAD</th>
+                                                                    <th class="text-center">CAPITAL</th>
+                                                                    <th class="text-center">TASA</th>
+                                                                    <th class="text-center">NOMINA</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td colspan="18">No hay datos disponibles</td>
+                                                                    <td colspan="16">No hay datos disponibles</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -213,6 +208,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -229,7 +225,7 @@
                         <div class="col-lg-4">
                             <h4 class="text-uppercase mb-4">Copyright &copy;</h4>
                             <p class="lead mb-0">COOPSERP
-                                <a href="https://www.coopserp.com" target="_blank">Sin duda somos &Uacute;nicos</a>.
+                                <a href="https://www.coopserp.com">Sin duda somos &Uacute;nicos</a>.
                             </p>
                         </div>
 
@@ -244,16 +240,15 @@
                         <!-- Footer Social Icons -->
                         <div class="col-lg-4 mb-5 mb-lg-0">
                             <h4 class="text-uppercase mb-4">P&aacute;gina Web</h4>
-                            <a class="btn btn-outline-dark btn-social mx-4" href="https://www.coopserp.com"
-                                target="_blank">
+                            <a class="btn btn-outline-dark btn-social mx-4" href="https://www.coopserp.com">
                                 <i class="fab fa-fw fa-dribbble"></i>
                             </a>
                         </div>
 
+
                     </div>
                 </div>
             </footer>
-
 
             <!-- Copyright Section -->
             <section class="copyright py-4 text-center text-white">
@@ -294,67 +289,24 @@
         </div>
     </div>
 
-    <!-- Modal para seleccionar las fechas -->
-    <div class="modal fade" id="modalFechas" tabindex="-1" aria-labelledby="modalFechasLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalFechasLabel">Seleccionar Fechas</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!-- Formulario de fechas -->
-                    <div class="mb-3">
-                        <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
-                        <input type="date" class="form-control" id="fechaInicio" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="fechaFin" class="form-label">Fecha de Fin</label>
-                        <input type="date" class="form-control" id="fechaFin" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" id="buscarBtn">Buscar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+    <!-- jQuery (necesario para DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-
-
     <!-- Page level plugins -->
     <script src="vendor/chart.js/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script src="./js/hora.js"></script>
-    <script src="./js/creditosSotfware.js"></script>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-    <!-- DataTables Buttons -->
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-    <!-- JSZip (Necesario para exportar a Excel) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>>
+    <script src="./js/creditosNoRegistrados.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const nombreUsuario = sessionStorage.getItem('nombreUsuario');
@@ -363,8 +315,6 @@
 
         });
     </script>
-
-
 
 
 </body>

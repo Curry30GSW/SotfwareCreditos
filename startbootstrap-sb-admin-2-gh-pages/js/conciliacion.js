@@ -141,7 +141,7 @@ const creditoPendienteMes = (mes) => {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Enviar el token en la cabecera
+            'Authorization': `Bearer ${token}`
         }
     })
         .then(response => response.json())
@@ -163,43 +163,44 @@ const creditoPendienteMes = (mes) => {
                 let saldoCapital = Number(detalle.SCAP26 || 0).toLocaleString("es-CO");
                 let fechaFormateada = formatearFecha(detalle.FECH23);
                 contenido += `
-                    <tr>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${index + 1}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NANA26}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DIRE03}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DIST03}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC03}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCTA26}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td> 
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TCRE26}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important"> ${detalle.CPTO26}</td>
-                      <td class="text-center font-weight-bold" 
-                        style="${detalle.Score === 'F/D' || detalle.Score === 'S/E' ? 'color:#fd7e14' :
-                        detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
+                <tr>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${index + 1}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NANA26}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DIRE03}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DIST03}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC03}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCTA26}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td> 
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TCRE26}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.CPTO26}</td>
+                    <td class="text-center" style="color:${detalle.Score < 650 ? 'red' : '#007bff'}">
                         ${detalle.Score}
-                            </td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${calcularEdad(detalle.FECN05)}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${saldoCapital}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TASA26} %</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC04}</td>
-                    </tr>`;
+                    </td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${calcularEdad(detalle.FECN05)}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${saldoCapital}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TASA26} %</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC04}</td>
+                </tr>`;
             });
 
+            // Detectar si es móvil o PC
+            let esMovil = window.innerWidth <= 850;
+            let tablaId = esMovil ? 'tablaDetallesMovil' : 'tablaDetallesPC';
+            let tbodyId = esMovil ? 'detalleContenidoMovil' : 'detalleContenidoPC';
+
             // Asegurar que la tabla se limpie antes de agregar nuevos datos
-            let table = $('#tablaDetalles').DataTable();
+            let table = $(`#${tablaId}`).DataTable();
             table.clear().destroy();
 
-            document.getElementById('detalleContenido').innerHTML = contenido;
+            document.getElementById(tbodyId).innerHTML = contenido;
 
-            // Detectar si es móvil o PC y abrir la modal correspondiente
-            if (window.innerWidth <= 850) {
-                new bootstrap.Modal(document.getElementById('modalPendientes')).show();
-            } else {
-                new bootstrap.Modal(document.getElementById('modalPendientesPC')).show();
-            }
+            // Mostrar la modal correspondiente
+            let modalId = esMovil ? 'modalPendientes' : 'modalPendientesPC';
+            new bootstrap.Modal(document.getElementById(modalId)).show();
 
-            $('#tablaDetalles').DataTable({
+            // Inicializar DataTable
+            $(`#${tablaId}`).DataTable({
                 language: {
                     "sProcessing": "Procesando...",
                     "sLengthMenu": "Mostrar _MENU_ Registros",
@@ -221,28 +222,16 @@ const creditoPendienteMes = (mes) => {
                         extend: 'excelHtml5',
                         text: '<i class="fas fa-file-excel"></i> Exportar a Excel',
                         title: 'Créditos Pendientes Por Pagar',
-                        exportOptions: {
-                            columns: ':visible'
-                        },
-                        className: 'btn-success' // Aplicamos Bootstrap directamente
+                        exportOptions: { columns: ':visible' },
+                        className: 'btn-success'
                     }
                 ],
                 initComplete: function () {
-                    // Asegurarnos de que el botón tome el estilo correctamente
                     $('.dt-buttons button').removeClass('dt-button').addClass('btn btn-success btn-m text-white');
                 }
             });
         })
-        .catch(error => {
-            console.error('Error al obtener los detalles:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Ocurrió un problema al obtener los datos.',
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Cerrar'
-            });
-        });
+        .catch(error => console.error('Error:', error));
 };
 
 
