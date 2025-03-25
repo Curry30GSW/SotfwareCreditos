@@ -67,18 +67,18 @@ function mostrarAlertaSesionExpirada() {
 
 const mostrar = (creditos) => {
     let resultados = ''; // Asegúrate de inicializar resultados aquí
-    creditos.forEach(creditos => {
+    creditos.forEach((creditos, index) => {
         // Convertir fecha de registro a un formato legible
         const rawFecha = creditos.FECI13;
         const fechaCalculada = rawFecha + 19000000;
         const año = Math.floor(fechaCalculada / 10000);
         const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
         const dia = String(fechaCalculada % 100).padStart(2, '0');
-        const fechaFormateada = `${dia} de ${obtenerNombreMes(mesNumero)} de ${año}`;
+        const fechaFormateada = `${dia} ${obtenerNombreMes(mesNumero)} ${año}`;
         function obtenerNombreMes(mes) {
             const meses = [
-                'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-                'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+                'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
             ];
             return meses[mes - 1]; // Meses están indexados desde 0, así que restamos 1
         }
@@ -86,21 +86,20 @@ const mostrar = (creditos) => {
         let ordenSuministro = Number(creditos.ORSU13 || 0).toLocaleString("es-CO");
 
 
-        const tasaFormateada = creditos.TASA13 > 0 ? "Tasa > 0" : "Tasa = 0";
 
         resultados +=
             `<tr>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${index + 1}
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.AGOP13}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NCTA13}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NNIT05}</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.DESC05}</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td> 
+                <td style="color: #000 !important; font-weight: 525 !important">${creditos.DESC05}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important width: 50px; white-space: nowrap;">${fechaFormateada}</td> 
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.TCRE13}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.CPTO13}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NCRE13}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${ordenSuministro}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${capitalInicial}</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${tasaFormateada}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.TASA13} %</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.LAPI13}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.CIUD05}</td>
@@ -116,6 +115,10 @@ const mostrar = (creditos) => {
     }
 
     $('#tablaAS400').DataTable({
+
+        fixedHeader: true,
+        scrollY: "700px",
+
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ Registros",
@@ -130,7 +133,23 @@ const mostrar = (creditos) => {
                 "sPrevious": "Anterior"
             }
         },
-        "lengthMenu": [[10, 15, 20, 25], [10, 15, 20, 25]]
+        "lengthMenu": [[10, 15, 20, -1], [10, 15, 20, "Todos"]],
+        dom: '<"top"lfB>rtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                text: '<i class="fas fa-file-excel"></i> Exportar a Excel',
+                title: 'Creditos No Registrados En Sotfware',
+                exportOptions: {
+                    columns: ':visible'
+                },
+                className: 'btn-success text-dark fw-bold'
+            }
+        ],
+        initComplete: function () {
+            // Asegurarnos de que el botón tome el estilo correctamente
+            $('.dt-buttons button').removeClass('dt-button').addClass('btn btn-success btn-m text-white');
+        }
     });
 };
 

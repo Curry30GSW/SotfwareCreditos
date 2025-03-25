@@ -473,9 +473,9 @@ const mostraInfo = (mes, agencia) => {
                 responsive: true,
                 order: [[3, 'asc']],
 
-                // fixedHeader: true,  
-                // scrollY: "400px",   
-                // scrollX: true,
+                fixedHeader: true,
+                scrollY: "700px",
+                scrollX: true,
 
                 // fixedColumns: {
                 //     leftColumns: 2  
@@ -495,7 +495,8 @@ const mostraInfo = (mes, agencia) => {
                         "sPrevious": "Anterior"
                     }
                 },
-                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                "lengthMenu": [[10, 15, 20, 30, -1], [10, 15, 20, 30, "Todos"]],
+                "info": true,
                 dom: '<"top"lfB>rtip',
                 buttons: [
                     {

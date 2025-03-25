@@ -145,6 +145,11 @@ const mostrar = (creditos) => {
     }
 
     $('#tablaAS400').DataTable({
+
+        fixedHeader: true,
+        scrollY: "700px",
+        scrollX: true,
+
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ Registros",
@@ -159,7 +164,7 @@ const mostrar = (creditos) => {
                 "sPrevious": "Anterior"
             }
         },
-        "lengthMenu": [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]],
+        "lengthMenu": [[10, 15, 20, -1], [10, 15, 20, "Todos"]],
         dom: '<"top"lfB>rtip',
         buttons: [
             {

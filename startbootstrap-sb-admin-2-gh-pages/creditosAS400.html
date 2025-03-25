@@ -19,8 +19,8 @@
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <!-- DataTables con Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
 
 </head>
 
@@ -178,22 +178,22 @@
                                                             class="table table-bordered table-striped text-center">
                                                             <thead class="table-dark">
                                                                 <tr>
-                                                                    <th>Agencia</th>
-                                                                    <th>Cuenta</th>
-                                                                    <th>Cedula</th>
-                                                                    <th>Nombre</th>
-                                                                    <th>F. Crédito</th>
+                                                                    <th class="text-center">#</th>
+                                                                    <th class="text-center">Agencia</th>
+                                                                    <th class="text-center">Cuenta</th>
+                                                                    <th class="text-center">Cedula</th>
+                                                                    <th class="text-center">Nombre</th>
+                                                                    <th>F. Cred</th>
                                                                     <th>Linea</th>
                                                                     <th>RL</th>
                                                                     <th>Pagaré</th>
-                                                                    <th>Orden Sum.</th>
+                                                                    <th>Ord Sum.</th>
                                                                     <th>Capital Ini.</th>
                                                                     <th>Tasa</th>
-                                                                    <th>Tasa Int.</th>
-                                                                    <th>Lapso Cre.</th>
-                                                                    <th>Ciudad Res</th>
-                                                                    <th>Tipo Créd</th>
-                                                                    <th>Clase Créd</th>
+                                                                    <th>Lapso</th>
+                                                                    <th class="text-center">Ciudad Res</th>
+                                                                    <th class="text-center">Credito</th>
+                                                                    <th>Tipo</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -295,19 +295,32 @@
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- jQuery (necesario para DataTables) -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
     <!-- Page level plugins -->
     <script src="vendor/chart.js/Chart.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="./js/hora.js"></script>
     <script src="./js/creditosAS400.js"></script>
+    <!-- jQuery (necesario para DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <!-- DataTables Buttons -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <!-- JSZip (Necesario para exportar a Excel) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

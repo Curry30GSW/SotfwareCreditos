@@ -132,10 +132,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 });
 
-
-
-
-
 const creditoPendienteMes = (mes) => {
     fetch(`http://localhost:5000/api/creditos-pendientes/${mes}`, {
         method: 'GET',
@@ -171,7 +167,7 @@ const creditoPendienteMes = (mes) => {
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DIST03}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC03}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCTA26}</td>
-                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td> 
+                    <td  style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td> 
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TCRE26}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.CPTO26}</td>
                     <td class="text-center" style="color:${detalle.Score < 650 ? 'red' : '#007bff'}">
@@ -201,6 +197,9 @@ const creditoPendienteMes = (mes) => {
 
             // Inicializar DataTable
             $(`#${tablaId}`).DataTable({
+                scrollY: "480px",
+                scrollX: true,
+
                 language: {
                     "sProcessing": "Procesando...",
                     "sLengthMenu": "Mostrar _MENU_ Registros",
@@ -215,7 +214,8 @@ const creditoPendienteMes = (mes) => {
                         "sPrevious": "Anterior"
                     }
                 },
-                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                "lengthMenu": [[10, 15, 20, 30, -1], [10, 15, 20, 30, "Todos"]],
+                "info": true,
                 dom: '<"top"lfB>rtip',
                 buttons: [
                     {
@@ -233,10 +233,6 @@ const creditoPendienteMes = (mes) => {
         })
         .catch(error => console.error('Error:', error));
 };
-
-
-
-
 
 const contenedor = document.querySelector('#Resultadopendientes');
 
@@ -268,7 +264,6 @@ function obtenerMesAbreviado(mes) {
 setInterval(actualizarConcepto, 1000);
 
 
-actualizarConcepto();
 
 
 // Función auxiliar para obtener el nombre del mes
@@ -308,7 +303,7 @@ function updateMonths() {
         tdElement.appendChild(document.createTextNode(monthYear));
         tdElement.appendChild(button);
 
-        if (i === 7) {
+        if (i === 6) {
             document.getElementById("monthCinco").textContent = `${monthYear}`;
         }
     }
@@ -557,7 +552,7 @@ const creditosPendientesAS400 = async () => {
 
 
 //Mostrar Resultados
-fetch('http://localhost:5000/api/creditos-pendientes/6', {
+fetch('http://localhost:5000/api/creditos-pendientes/5', {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
@@ -636,6 +631,14 @@ const mostrar = (creditosPendientes) => {
     }
 
     $('#tablaPendientes').DataTable({
+        destroy: true,
+        responsive: true,
+        // order: [[3, 'asc']],
+
+        fixedHeader: true,
+        scrollY: "600px",
+        scrollX: true,
+
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ Registros",
@@ -650,7 +653,7 @@ const mostrar = (creditosPendientes) => {
                 "sPrevious": "Anterior"
             }
         },
-        "lengthMenu": [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]],
+        "lengthMenu": [[5, 10, 15, 25, -1], [5, 10, 15, 25, "Todos"]],
         dom: '<"top"lfB>rtip',
         buttons: [
             {
