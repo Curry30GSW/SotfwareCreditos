@@ -214,7 +214,7 @@ const creditoPendienteMes = (mes) => {
                         "sPrevious": "Anterior"
                     }
                 },
-                "lengthMenu": [[10, 15, 20, 30, -1], [10, 15, 20, 30, "Todos"]],
+                "lengthMenu": [[-1], ["Todos"]],
                 "info": true,
                 dom: '<"top"lfB>rtip',
                 buttons: [
@@ -283,7 +283,7 @@ actualizarConcepto();
 function updateMonths() {
     const currentDate = new Date();
 
-    for (let i = 1; i <= 7; i++) {
+    for (let i = 1; i <= 6; i++) {
         const date = new Date(currentDate);
         date.setMonth(currentDate.getMonth() - i);
 
@@ -471,13 +471,6 @@ const creditosPendientesAS400 = async () => {
     try {
 
         const responses = await Promise.all([
-            fetch('http://localhost:5000/api/creditos-pendientes/contar/6', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            }),
             fetch('http://localhost:5000/api/creditos-pendientes/contar/5', {
                 method: 'GET',
                 headers: {
@@ -527,13 +520,12 @@ const creditosPendientesAS400 = async () => {
         const data = await Promise.all(responses.map(response => response.json()));
 
         // Asignar los valores a cada celda
-        document.getElementById('pendientesSeptimoMes').textContent = data[0].total_cuentas || '0'; // mes=5
-        document.getElementById('pendientesSextoMes').textContent = data[1].total_cuentas || '0'; // mes=5
-        document.getElementById('pendientesQuintoMes').textContent = data[2].total_cuentas || '0'; // mes=4
-        document.getElementById('pendientesCuartoMes').textContent = data[3].total_cuentas || '0'; // mes=3
-        document.getElementById('pendientesTercerMes').textContent = data[4].total_cuentas || '0'; // mes=2
-        document.getElementById('pendientesTwoMes').textContent = data[5].total_cuentas || '0'; // mes=1
-        document.getElementById('pendientesPrimerMes').textContent = data[6].total_cuentas || '0'; // mes=0
+        document.getElementById('pendientesSextoMes').textContent = data[0].total_cuentas || '0'; // mes=5
+        document.getElementById('pendientesQuintoMes').textContent = data[1].total_cuentas || '0'; // mes=4
+        document.getElementById('pendientesCuartoMes').textContent = data[2].total_cuentas || '0'; // mes=3
+        document.getElementById('pendientesTercerMes').textContent = data[3].total_cuentas || '0'; // mes=2
+        document.getElementById('pendientesTwoMes').textContent = data[4].total_cuentas || '0'; // mes=1
+        document.getElementById('pendientesPrimerMes').textContent = data[5].total_cuentas || '0'; // mes=0
 
 
     } catch (error) {
@@ -544,7 +536,6 @@ const creditosPendientesAS400 = async () => {
         document.getElementById('pendientesCuartoMes').textContent = 'Error';
         document.getElementById('pendientesTercerMes').textContent = 'Error';
         document.getElementById('pendientesTwoMes').textContent = 'Error';
-        document.getElementById('pendientesSeptimoMes').textContent = 'Error';
     }
 };
 
@@ -637,7 +628,7 @@ const mostrar = (creditosPendientes) => {
 
         fixedHeader: true,
         scrollY: "600px",
-        scrollX: true,
+
 
         language: {
             "sProcessing": "Procesando...",
@@ -653,7 +644,7 @@ const mostrar = (creditosPendientes) => {
                 "sPrevious": "Anterior"
             }
         },
-        "lengthMenu": [[5, 10, 15, 25, -1], [5, 10, 15, 25, "Todos"]],
+        "lengthMenu": [[-1], ["Todos"]],
         dom: '<"top"lfB>rtip',
         buttons: [
             {
