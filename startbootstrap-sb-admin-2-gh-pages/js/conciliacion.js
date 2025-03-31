@@ -158,21 +158,26 @@ const creditoPendienteMes = (mes) => {
             data.forEach((detalle, index) => {
                 let saldoCapital = Number(detalle.SCAP26 || 0).toLocaleString("es-CO");
                 let fechaFormateada = formatearFecha(detalle.FECH23);
+                let fechaFeciFormateada = formatearFecha(detalle.FECI26);
                 contenido += `
                 <tr>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${index + 1}</td>
-                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
+                    <td  style="color: #000 !important; font-weight: 525 !important">${fechaFormateada}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NANA26}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DIRE03}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DIST03}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.DESC03}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCTA26}</td>
                     <td  style="color: #000 !important; font-weight: 525 !important">${detalle.DESC05}</td> 
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.NCRE26}</td>
+                    <td  Style="color: #000 !important; font-weight: 525 !important">${fechaFeciFormateada}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TCRE26}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.CPTO26}</td>
-                    <td class="text-center" style="color:${detalle.Score < 650 ? 'red' : '#007bff'}">
-                        ${detalle.Score}
-                    </td>
+                        <td class="text-center font-weight-bold" 
+                            style="${detalle.Score === 'F/D' ? 'color:#fd7e14' :
+                        detalle.Score < 650 ? 'color:red' : 'color:#007bff'}">
+                            ${detalle.Score}
+                        </td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${calcularEdad(detalle.FECN05)}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${saldoCapital}</td>
                     <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.TASA26} %</td>
@@ -197,7 +202,7 @@ const creditoPendienteMes = (mes) => {
 
             // Inicializar DataTable
             $(`#${tablaId}`).DataTable({
-                scrollY: "480px",
+                scrollY: "550px",
                 scrollX: true,
 
                 language: {
@@ -285,6 +290,7 @@ function updateMonths() {
 
     for (let i = 1; i <= 6; i++) {
         const date = new Date(currentDate);
+        date.setDate(1);
         date.setMonth(currentDate.getMonth() - i);
 
         const monthYear = getMonthYear(date);
@@ -396,6 +402,8 @@ function actualizarConcepto(fechaInicio, fechaFin) {
     document.getElementById('mesActual').innerText = `(${mesInicio})`;
     document.getElementById('mesActualFinal').innerText = `(${mesFin})`;
 }
+
+
 function actualizarHoraEnTiempoReal() {
     setInterval(() => {
         const fechaHoraActual = obtenerFechaHoraActual();
@@ -672,13 +680,14 @@ const formatearFecha = (fechaRaw) => {
     const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
     const dia = String(fechaCalculada % 100).padStart(2, '0');
 
-    return `${dia} ${obtenerNombreMes(mesNumero)} del ${año}`;
+    return `${dia} ${obtenerNombreMes(mesNumero)} ${año}`;
 };
+
 // Función para obtener el nombre del mes en español
 const obtenerNombreMes = (mes) => {
     const meses = [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        'Ene', 'Feb', 'Mar', 'AbR', 'May', 'Jun',
+        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
     ];
     return meses[mes - 1];
 };

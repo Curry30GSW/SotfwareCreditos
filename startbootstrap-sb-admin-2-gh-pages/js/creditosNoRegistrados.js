@@ -148,7 +148,6 @@ const mostrar = (creditos) => {
 
         fixedHeader: true,
         scrollY: "700px",
-        scrollX: true,
 
         language: {
             "sProcessing": "Procesando...",
@@ -164,7 +163,7 @@ const mostrar = (creditos) => {
                 "sPrevious": "Anterior"
             }
         },
-        "lengthMenu": [[10, 15, 20, -1], [10, 15, 20, "Todos"]],
+        "lengthMenu": [[-1], ["Todos"]],
         dom: '<"top"lfB>rtip',
         buttons: [
             {

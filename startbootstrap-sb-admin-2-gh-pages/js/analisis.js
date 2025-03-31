@@ -77,7 +77,7 @@ const verDetalleEstadoCero = (AGEN23) => {
                         "sPrevious": "Anterior"
                     }
                 },
-                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                "lengthMenu": [[3, 10, 15, 20], [3, 10, 15, 20]],
                 dom: '<"top"lfB>rtip',
                 buttons: [],
             });
@@ -173,7 +173,7 @@ const verDetalleEstadoUno = (AGEN23) => {
                         "sPrevious": "Anterior"
                     }
                 },
-                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                "lengthMenu": [[3, 10, 15, 20], [3, 10, 15, 20]],
                 dom: '<"top"lfB>rtip',
                 buttons: [],
             });
@@ -268,7 +268,7 @@ const verDetalleEstadoDos = (AGEN23) => {
                         "sPrevious": "Anterior"
                     }
                 },
-                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                "lengthMenu": [[3, 10, 15, 20], [3, 10, 15, 20]],
                 dom: '<"top"lfB>rtip',
                 buttons: [],
             });
@@ -363,7 +363,7 @@ const verDetalleEstadoTres = (AGEN23) => {
                         "sPrevious": "Anterior"
                     }
                 },
-                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                "lengthMenu": [[3, 10, 15, 20], [3, 10, 15, 20]],
                 dom: '<"top"lfB>rtip',
                 buttons: [],
             });
@@ -706,6 +706,7 @@ const mostrar = (analisis) => {
     }
 
     $('#tablaAnalisis').DataTable({
+        scrollY: "500px",
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ Registros",
@@ -720,7 +721,7 @@ const mostrar = (analisis) => {
                 "sPrevious": "Anterior"
             }
         },
-        "lengthMenu": [[10, 15, 20, 25], [10, 15, 20, 25]],
+        "lengthMenu": [[-1], ["Todos"]],
         dom: '<"top"lfB>rtip',
         buttons: [
             {
@@ -791,3 +792,7 @@ function confirmLogout() {
         }
     });
 }
+
+document.getElementById("refreshBtn").addEventListener("click", function () {
+    location.reload(); // Recarga la página
+});

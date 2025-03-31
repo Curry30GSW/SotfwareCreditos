@@ -219,7 +219,30 @@ const mostrar = (analisisResumenMes) => {
         resultados += `</tr>`;
 
     });
-    document.getElementById("totalAnalisis").textContent = totalAnalisisNacional.toLocaleString("es-CO");
+    // Obtener la fecha actual
+    let fechaActual = new Date();
+
+    // Obtener la fecha de inicio (7 meses atrás)
+    let fechaInicio = new Date(fechaActual);
+    fechaInicio.setDate(1);
+    fechaInicio.setMonth(fechaInicio.getMonth() - 6); // Restar 6 meses
+    // Función para formatear fechas como "01-Sep-24"
+    const formatearFecha = (fecha) => {
+        const mesesAbreviados = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+        let dia = fecha.getDate().toString().padStart(2, '0');
+        let mes = mesesAbreviados[fecha.getMonth()];
+        let año = fecha.getFullYear().toString().slice(-2);
+        return `${dia}-${mes}-${año}`;
+    };
+
+    let formatoFechaInicio = formatearFecha(fechaInicio);
+    let formatoFechaActual = formatearFecha(fechaActual);
+
+    // Actualizar el texto con el total y rango de fechas
+    document.getElementById("totalAnalisisParcial").textContent = totalAnalisisNacional.toLocaleString("es-CO");
+    document.getElementById("totalAnalisisParcial").style.color = "#007bff";
+    document.getElementById("rangoFechas").textContent = `Desde (${formatoFechaInicio}) Hasta (${formatoFechaActual})`;
+
     document.getElementById('resumenAnalisis').innerHTML = resultados;
 
     if ($.fn.DataTable.isDataTable('#tablaResumenAnalisis')) {
@@ -421,6 +444,241 @@ const verDetalleEstado = (mes, agencia) => {
         });
 };
 
+const verDetalleEstadoParcial = (agencia) => {
+    const estados = [0, 1, 2, 3];
+    const peticiones = estados.map(estado =>
+        fetch(`http://localhost:5000/api/conteo-analisis/${estado}/${agencia}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => response.ok ? response.json() : [])
+            .then(data => {
+
+                const dataFiltrada = data.filter(detalle => detalle.AGEN23 === agencia);
+                return {
+                    estado,
+                    data: dataFiltrada.length > 0
+                        ? dataFiltrada.map(item => ({
+                            AGEN23: item.AGEN23,
+                            DESC03: item.DESC03,
+                            ANALISIS: item.ANALISIS
+                        }))
+                        : [{ AGEN23: agencia, DESC03: "", ANALISIS: 0 }]
+                };
+
+            })
+            .catch(error => {
+                console.error(`Error con el estado ${estado}:`, error);
+                return { estado, data: [{ AGEN23: agencia, ANALISIS: 0 }] };
+            })
+    );
+    Promise.all(peticiones)
+        .then(resultados => {
+            let dataEstructurada = {};
+
+            // Organizar la data por agencia
+            resultados.forEach(({ estado, data }) => {
+                data.forEach(detalle => {
+                    const agencia = detalle.AGEN23;
+                    if (!dataEstructurada[agencia]) {
+                        dataEstructurada[agencia] = {
+                            NOMBRE: detalle.DESC03.trim(),
+                            PROYECCION: 0,
+                            PAGARE: 0,
+                            ANULADOS: 0,
+                            GRABADOS: 0
+                        };
+                    }
+                    if (estado === 0) dataEstructurada[agencia].PROYECCION = detalle.ANALISIS;
+                    if (estado === 1) dataEstructurada[agencia].PAGARE = detalle.ANALISIS;
+                    if (estado === 2) dataEstructurada[agencia].ANULADOS = detalle.ANALISIS;
+                    if (estado === 3) dataEstructurada[agencia].GRABADOS = detalle.ANALISIS;
+                });
+            });
+
+            if (Object.keys(dataEstructurada).length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Sin resultados',
+                    text: 'No hay análisis para la agencia seleccionada.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Entendido'
+                });
+                return;
+            }
+
+            if ($.fn.DataTable.isDataTable('#tablaDetallesAnalisis')) {
+                $('#tablaDetallesAnalisis').DataTable().clear().destroy();
+            }
+
+            let contenido = '';
+
+            // Recorrer la data organizada y llenar la tabla
+            Object.keys(dataEstructurada).forEach(agencia => {
+                const detalle = dataEstructurada[agencia];
+                contenido += `
+                    <tr>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.PROYECCION}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.PAGARE}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.ANULADOS}</td>
+                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.GRABADOS}</td>
+                    </tr>`;
+            });
+
+            document.getElementById('detalleContenidoResumen').innerHTML = contenido;
+            // Calcular el total de análisis
+            // Calcular el total de análisis
+            let totalAnalisis = Object.values(dataEstructurada).reduce((total, detalle) => {
+                return total + detalle.PROYECCION + detalle.PAGARE + detalle.ANULADOS + detalle.GRABADOS;
+            }, 0);
+
+            document.getElementById('totalAnalisis').textContent = `Total: ${totalAnalisis}`;
+
+            // Obtener el nombre y agencia (asumiendo que solo hay una agencia en dataEstructurada)
+            const agenciaKey = Object.keys(dataEstructurada)[0];
+            const nombreAgencia = dataEstructurada[agenciaKey]?.NOMBRE?.trim() || agenciaKey;
+
+
+            // Actualizar el título de la modal con el centro de costo y el nombre
+            document.getElementById('detalleModalLabel').innerHTML = `${agenciaKey} - ${nombreAgencia} / Cantidad de Análisis `;
+
+
+            $('#tablaDetalles').DataTable({
+                destroy: true,
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Datos del _START_ al _END_ para un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "oPaginate": {
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+                },
+                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                dom: '<"top"lfB>rtip',
+                buttons: [],
+            });
+
+            let modal = new bootstrap.Modal(document.getElementById('detalleModal'));
+            modal.show();
+        })
+        .catch(error => {
+            console.error('Error al obtener los detalles:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un problema al obtener los datos.',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Cerrar'
+            });
+        });
+};
+
+const verDetalleEstadoTotal = () => {
+    const estados = [0, 1, 2, 3];
+    const peticiones = estados.map(estado =>
+        fetch(`http://localhost:5000/api/conteo-total/${estado}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+            .then(response => response.ok ? response.json() : [])
+            .then(data => {
+                // Sumar todos los valores de ANALISIS en el estado actual
+                const totalAnalisis = data.reduce((sum, item) => sum + (item.ANALISIS || 0), 0);
+                return { estado, totalAnalisis };
+            })
+            .catch(error => {
+                console.error(`Error con el estado ${estado}:`, error);
+                return { estado, totalAnalisis: 0 };
+            })
+    );
+
+    Promise.all(peticiones)
+        .then(resultados => {
+            let totales = {
+                PROYECCION: 0,
+                PAGARE: 0,
+                ANULADOS: 0,
+                GRABADOS: 0
+            };
+
+            // Asignar los valores sumados a cada estado
+            resultados.forEach(({ estado, totalAnalisis }) => {
+                if (estado === 0) totales.PROYECCION = totalAnalisis;
+                if (estado === 1) totales.PAGARE = totalAnalisis;
+                if (estado === 2) totales.ANULADOS = totalAnalisis;
+                if (estado === 3) totales.GRABADOS = totalAnalisis;
+            });
+
+            // Calcular el total general
+            let totalAnalisisGeneral = totales.PROYECCION + totales.PAGARE + totales.ANULADOS + totales.GRABADOS;
+
+            // Mostrar en la tabla
+            let contenido = `
+                <tr>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${totales.PROYECCION}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${totales.PAGARE}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${totales.ANULADOS}</td>
+                    <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${totales.GRABADOS}</td>
+                </tr>`;
+
+            document.getElementById('detalleContenidoResumen').innerHTML = contenido;
+            document.getElementById('totalAnalisis').textContent = `Total: ${totalAnalisisGeneral}`;
+            document.getElementById('detalleModalLabel').innerHTML = `Total General de Análisis`;
+
+            // Inicializar DataTable
+            $('#tablaDetalles').DataTable({
+                destroy: true,
+                language: {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ Registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Datos del _START_ al _END_ para un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sSearch": "Buscar:",
+                    "oPaginate": {
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    }
+                },
+                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
+                dom: '<"top"lfB>rtip',
+                buttons: [],
+            });
+
+            let modal = new bootstrap.Modal(document.getElementById('detalleModal'));
+            modal.show();
+        })
+        .catch(error => {
+            console.error('Error al obtener los detalles:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ocurrió un problema al obtener los datos.',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Cerrar'
+            });
+        });
+};
+
+// Asignar la función al botón
+document.getElementById("parcialTotalAnalisis").addEventListener("click", verDetalleEstadoTotal);
+
+// Asignar evento al botón
+document.getElementById('parcialTotalAnalisis').addEventListener('click', verDetalleEstadoTotal);
 
 const mostraInfo = (mes, agencia) => {
     const estados = [0, 1, 2, 3];
@@ -690,143 +948,6 @@ const mostrarInfoParcial = (agencia) => {
 };
 
 
-const verDetalleEstadoParcial = (agencia) => {
-    const estados = [0, 1, 2, 3];
-    const peticiones = estados.map(estado =>
-        fetch(`http://localhost:5000/api/conteo-analisis/${estado}/${agencia}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then(response => response.ok ? response.json() : [])
-            .then(data => {
-
-                const dataFiltrada = data.filter(detalle => detalle.AGEN23 === agencia);
-                return {
-                    estado,
-                    data: dataFiltrada.length > 0
-                        ? dataFiltrada.map(item => ({
-                            AGEN23: item.AGEN23,
-                            DESC03: item.DESC03,
-                            ANALISIS: item.ANALISIS
-                        }))
-                        : [{ AGEN23: agencia, DESC03: "", ANALISIS: 0 }]
-                };
-
-            })
-            .catch(error => {
-                console.error(`Error con el estado ${estado}:`, error);
-                return { estado, data: [{ AGEN23: agencia, ANALISIS: 0 }] };
-            })
-    );
-    Promise.all(peticiones)
-        .then(resultados => {
-            let dataEstructurada = {};
-
-            // Organizar la data por agencia
-            resultados.forEach(({ estado, data }) => {
-                data.forEach(detalle => {
-                    const agencia = detalle.AGEN23;
-                    if (!dataEstructurada[agencia]) {
-                        dataEstructurada[agencia] = {
-                            NOMBRE: detalle.DESC03.trim(),
-                            PROYECCION: 0,
-                            PAGARE: 0,
-                            ANULADOS: 0,
-                            GRABADOS: 0
-                        };
-                    }
-                    if (estado === 0) dataEstructurada[agencia].PROYECCION = detalle.ANALISIS;
-                    if (estado === 1) dataEstructurada[agencia].PAGARE = detalle.ANALISIS;
-                    if (estado === 2) dataEstructurada[agencia].ANULADOS = detalle.ANALISIS;
-                    if (estado === 3) dataEstructurada[agencia].GRABADOS = detalle.ANALISIS;
-                });
-            });
-
-            if (Object.keys(dataEstructurada).length === 0) {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Sin resultados',
-                    text: 'No hay análisis para la agencia seleccionada.',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'Entendido'
-                });
-                return;
-            }
-
-            if ($.fn.DataTable.isDataTable('#tablaDetallesAnalisis')) {
-                $('#tablaDetallesAnalisis').DataTable().clear().destroy();
-            }
-
-            let contenido = '';
-
-            // Recorrer la data organizada y llenar la tabla
-            Object.keys(dataEstructurada).forEach(agencia => {
-                const detalle = dataEstructurada[agencia];
-                contenido += `
-                    <tr>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.PROYECCION}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.PAGARE}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.ANULADOS}</td>
-                        <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${detalle.GRABADOS}</td>
-                    </tr>`;
-            });
-
-            document.getElementById('detalleContenidoResumen').innerHTML = contenido;
-            // Calcular el total de análisis
-            // Calcular el total de análisis
-            let totalAnalisis = Object.values(dataEstructurada).reduce((total, detalle) => {
-                return total + detalle.PROYECCION + detalle.PAGARE + detalle.ANULADOS + detalle.GRABADOS;
-            }, 0);
-
-            document.getElementById('totalAnalisis').textContent = `Total: ${totalAnalisis}`;
-
-            // Obtener el nombre y agencia (asumiendo que solo hay una agencia en dataEstructurada)
-            const agenciaKey = Object.keys(dataEstructurada)[0];
-            const nombreAgencia = dataEstructurada[agenciaKey]?.NOMBRE?.trim() || agenciaKey;
-
-
-            // Actualizar el título de la modal con el centro de costo y el nombre
-            document.getElementById('detalleModalLabel').innerHTML = `${agenciaKey} - ${nombreAgencia} / Cantidad de Análisis `;
-
-
-            $('#tablaDetalles').DataTable({
-                destroy: true,
-                language: {
-                    "sProcessing": "Procesando...",
-                    "sLengthMenu": "Mostrar _MENU_ Registros",
-                    "sZeroRecords": "No se encontraron resultados",
-                    "sEmptyTable": "Ningún dato disponible en esta tabla",
-                    "sInfo": "Datos del _START_ al _END_ para un total de _TOTAL_ registros",
-                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                    "sSearch": "Buscar:",
-                    "oPaginate": {
-                        "sNext": "Siguiente",
-                        "sPrevious": "Anterior"
-                    }
-                },
-                "lengthMenu": [[5, 10, 15, 20], [5, 10, 15, 20]],
-                dom: '<"top"lfB>rtip',
-                buttons: [],
-            });
-
-            let modal = new bootstrap.Modal(document.getElementById('detalleModal'));
-            modal.show();
-        })
-        .catch(error => {
-            console.error('Error al obtener los detalles:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Ocurrió un problema al obtener los datos.',
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Cerrar'
-            });
-        });
-};
 
 
 
@@ -902,3 +1023,208 @@ const obtenerNombreMes = (mes) => {
     ];
     return meses[mes - 1];
 };
+
+document.getElementById("refreshBtn").addEventListener("click", function () {
+    location.reload(); // Recarga la página
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const nombreUsuario = sessionStorage.getItem('nombreUsuario');
+
+    document.getElementById('nombreUsuario').innerText = nombreUsuario;
+
+});
+
+
+//Exportar a excel analisis estado cero
+document.getElementById("exportarEstadoCero").addEventListener("click", async () => {
+    try {
+        const response = await fetch("http://localhost:5000/api/analisis-estado-cero", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) throw new Error("No se pudo obtener la data");
+
+        const data = await response.json();
+
+        // Función para obtener el nombre del mes en español
+        function obtenerNombreMes(mes) {
+            const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+            return meses[mes - 1] || "Mes inválido";
+        }
+
+        // Obtener la fecha actual formateada
+        const hoy = new Date();
+        const dia = hoy.getDate().toString().padStart(2, '0');
+        const mesNombre = obtenerNombreMes(hoy.getMonth()); // Obtener el nombre del mes
+        const fechaHoyFormato = `${dia}${mesNombre}`;
+
+        // Función para formatear la fecha
+        function formatearFecha(fechaRaw) {
+            if (!fechaRaw) return "Fecha inválida";
+
+            const fechaCalculada = fechaRaw + 19000000;
+            const año = Math.floor(fechaCalculada / 10000);
+            const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
+            const dia = String(fechaCalculada % 100).padStart(2, '0');
+
+            return `${dia} ${obtenerNombreMes(mesNumero)} ${año}`;
+        }
+
+        // Función para formatear el capital en pesos colombianos
+        function formatCapital(valor) {
+            return `$${parseInt(valor).toLocaleString("es-CO")}`;
+        }
+
+        // Mapear la data con los valores formateados
+        let dataFormateada = data.map((item) => ({
+            "CO": item.AGEN23,
+            "AGENCIA": item.DESC03.trim(),
+            "F.ANALISIS": formatearFecha(item.FECH23),
+            "ANALISIS": item.NANA23,
+            "CUENTA": item.NCTA23,
+            "NOMBRE": item.DESC05.trim(),
+            "CEDULA": item.NNIT05.trim(),
+            "CAPITAL": formatCapital(item.CAPI23),
+            "T.CRED": item.TCRE23,
+            "USUARIO": item.USER23.trim(),
+            "ESTADO": item.STAT23,
+            "NOMINA": item.DESC04.trim()
+        }));
+
+        // Ordenar la data por 'CO' (de menor a mayor)
+        dataFormateada.sort((a, b) => a.CO - b.CO);
+
+        // Crear la hoja de Excel
+        const ws = XLSX.utils.json_to_sheet(dataFormateada);
+
+        // Crear el libro y añadir la hoja
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Estado Cero");
+
+        const nombreArchivo = `Analisis_Estado_Cero-Corte-${fechaHoyFormato}.xlsx`;
+
+        // Descargar el archivo Excel
+        XLSX.writeFile(wb, nombreArchivo);
+
+        Swal.fire({
+            icon: "success",
+            title: "Descarga exitosa",
+            text: `El archivo ${nombreArchivo} ha sido generado correctamente.`,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Entendido"
+        });
+
+    } catch (error) {
+        console.error("Error al exportar:", error);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo descargar el archivo.",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Cerrar"
+        });
+    }
+});
+
+//Exportar a excel analisis estado uno
+document.getElementById("exportarEstadoUno").addEventListener("click", async () => {
+    try {
+        const response = await fetch("http://localhost:5000/api/analisis-estado-uno", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (!response.ok) throw new Error("No se pudo obtener la data");
+
+        const data = await response.json();
+
+        // Función para obtener el nombre del mes en español
+        function obtenerNombreMes(mes) {
+            const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+            return meses[mes];
+        }
+
+        // Obtener la fecha actual formateada
+        const hoy = new Date();
+        const dia = hoy.getDate().toString().padStart(2, '0');
+        const mesNombre = obtenerNombreMes(hoy.getMonth()); // Obtener el nombre del mes
+        const fechaHoyFormato = `${dia}${mesNombre}`;
+
+        // Función para formatear la fecha desde el formato numérico de la DB
+        function formatearFecha(fechaRaw) {
+            if (!fechaRaw) return "Fecha inválida";
+
+            const fechaCalculada = fechaRaw + 19000000;
+            const año = Math.floor(fechaCalculada / 10000);
+            const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
+            const dia = String(fechaCalculada % 100).padStart(2, '0');
+
+            return `${dia} ${obtenerNombreMes(mesNumero - 1)} ${año}`;
+        }
+
+        // Función para formatear el capital en pesos colombianos
+        function formatCapital(valor) {
+            return `$${parseInt(valor).toLocaleString("es-CO")}`;
+        }
+
+        // Mapear la data con los valores formateados
+        let dataFormateada = data.map((item) => ({
+            "CO": item.AGEN23,
+            "AGENCIA": item.DESC03.trim(),
+            "F.ANALISIS": formatearFecha(item.FECH23),
+            "ANALISIS": item.NANA23,
+            "CUENTA": item.NCTA23,
+            "NOMBRE": item.DESC05.trim(),
+            "CEDULA": item.NNIT05.trim(),
+            "PAGARÉ": item.NCRE26,
+            "F.PAGARÉ": formatearFecha(item.FECH26),
+            "CAPITAL": formatCapital(item.CAPI23),
+            "T.CRED": item.TCRE23,
+            "USUARIO": item.USER23.trim(),
+            "ESTADO": item.STAT23,
+            "NOMINA": item.DESC04.trim()
+        }));
+
+        // Ordenar la data por 'CO' (de menor a mayor)
+        dataFormateada.sort((a, b) => a.CO - b.CO);
+
+        // Crear la hoja de Excel
+        const ws = XLSX.utils.json_to_sheet(dataFormateada);
+
+        // Crear el libro y añadir la hoja
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Estado Uno");
+
+        // Nombre del archivo con la fecha dinámica
+        const nombreArchivo = `Analisis_Estado_Uno-Corte-${fechaHoyFormato}.xlsx`;
+
+        // Descargar el archivo Excel
+        XLSX.writeFile(wb, nombreArchivo);
+
+        Swal.fire({
+            icon: "success",
+            title: "Descarga exitosa",
+            text: `El archivo ${nombreArchivo} ha sido generado correctamente.`,
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Entendido"
+        });
+
+    } catch (error) {
+        console.error("Error al exportar:", error);
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "No se pudo descargar el archivo.",
+            confirmButtonColor: "#d33",
+            confirmButtonText: "Cerrar"
+        });
+    }
+});

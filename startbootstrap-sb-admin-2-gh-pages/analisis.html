@@ -164,10 +164,9 @@
                                 data-target="#infoModal">
                                 <i class="fas fa-info-circle text-dark fs-5"></i>
                             </button>
-                            <!-- <button class="btn btn-lg btn-warning px-3 py-2 ms-3 ml-3" type="button" data-toggle="modal"
-                                data-target="#fechaModal">
-                                <i class="fas fa-calendar-day text-white fs-2"></i>
-                            </button> -->
+                            <button id="refreshBtn" class="btn btn-lg btn-primary px-1 py-1 ms-3 ml-3" type="button">
+                                REFRESH <i class="fas fa-sync-alt fs-2"></i>
+                            </button>
                         </div>
                         <h3 class="p-3 mb-0 text-gray-800 text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
@@ -309,8 +308,8 @@
     </div>
 
     <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content" style="width: 110%;">
+        <div class="modal-dialog modal-xl modal-dialog-centered" style="width: 100%;">
+            <div class="modal-content">
                 <div class="modal-header justify-content-center">
                     <h5 class="modal-title text-dark font-weight-bold" id="detalleModalLabel">Análisis</h5>
                 </div>
@@ -494,8 +493,6 @@
 
 
     </script>
-
-
 
 </body>
 

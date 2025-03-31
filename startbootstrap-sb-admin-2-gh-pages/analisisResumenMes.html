@@ -164,10 +164,17 @@
                                 data-target="#infoModal">
                                 <i class="fas fa-info-circle text-dark fs-5"></i>
                             </button>
-                            <!-- <button class="btn btn-lg btn-warning px-3 py-2 ms-3 ml-3" type="button" data-toggle="modal"
-                                data-target="#fechaModal">
-                                <i class="fas fa-calendar-day text-white fs-2"></i>
-                            </button> -->
+                            <button id="refreshBtn" class="btn btn-lg btn-primary px-1 py-1 ms-3 ml-3" type="button">
+                                REFRESH <i class="fas fa-sync-alt fs-2"></i>
+                            </button>
+                            <button id="exportarEstadoCero"
+                                class="btn btn-lg btn-success px-1 py-1 ms-3 ml-3 text-dark fw-bold" type="button">
+                                Analisis Estado Cero <i class="fas fa-ghost fs-2"></i>
+                            </button>
+                            <button id="exportarEstadoUno"
+                                class="btn btn-lg btn-warning px-1 py-1 ms-3 ml-3 text-dark fw-bold" type="button">
+                                Analisis Estado Uno <i class="fas fa-business-time fs-2"></i>
+                            </button>
                         </div>
                         <h3 class="p-3 mb-0 text-gray-800 text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
@@ -269,8 +276,14 @@
                                             </table>
                                         </div>
                                         <div class="mt-3 text-end">
-                                            <h4 style="color: #000 !important; font-weight: 525 !important">Total de
-                                                Análisis Realizados a Nivel Nacional: <span id="totalAnalisis">0</span>
+                                            <h4 style="color: #000 !important; font-weight: 525 !important">
+                                                Total Análisis Realizados
+                                                <span id="rangoFechas"></span>
+                                                a Nivel Nacional:
+                                                <span id="totalAnalisisParcial" style="color: #007bff;">0</span>
+                                                <button id="parcialTotalAnalisis" class="btn btn-link text-primary p-0">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
                                             </h4>
                                         </div>
                                     </div>
@@ -594,6 +607,9 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <!-- <script src="https://cdn.datatables.net/fixedcolumns/4.2.2/js/dataTables.fixedColumns.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+
 
     <script src="./js/analisisResumen.js"></script>
     <script>

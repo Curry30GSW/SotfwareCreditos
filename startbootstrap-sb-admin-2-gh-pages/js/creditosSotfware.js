@@ -144,6 +144,7 @@ const mostrar = (creditosPagares) => {
     }
 
     $('#tablaPagares').DataTable({
+        scrollY: "500px",
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ Registros",
@@ -158,7 +159,7 @@ const mostrar = (creditosPagares) => {
                 "sPrevious": "Anterior"
             }
         },
-        "lengthMenu": [[5, 10, 15, 20, 25], [5, 10, 15, 20, 25]]
+        "lengthMenu": [[-1], ["Todos"]]
     });
 };
 
