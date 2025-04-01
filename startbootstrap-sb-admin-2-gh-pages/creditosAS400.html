@@ -148,9 +148,15 @@
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Créditos Plataforma</h1>
+                        <div class="d-flex align-items-center">
+                            <h1 class="h3 mb-0 text-gray-800">Créditos Grabados en la Plataforma</h1>
+                            <button id="refreshBtn" class="btn btn-lg btn-primary px-1 py-1 ms-3" type="button">
+                                REFRESH <i class="fas fa-sync-alt fs-2"></i>
+                            </button>
+                        </div>
                         <h3 class="p-3 mb-0 text-secondary text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
+
 
 
                     <!-- Content Row -->
@@ -164,7 +170,7 @@
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
-                                    <h4 class="m-0 font-weight-bold text-primary">Créditos Pagados Plataforma
+                                    <h4 class="m-0 font-weight-bold text-primary">Créditos Grabados Plataforma
                                         (AS400)</h4>
                                 </div>
                                 <!-- Card Body -->
@@ -175,30 +181,31 @@
                                                 <div class="container-fluid">
                                                     <div class="table-responsive">
                                                         <table id="tablaAS400"
-                                                            class="table table-bordered table-striped text-center">
+                                                            class="table table-bordered table-striped">
                                                             <thead class="table-dark">
                                                                 <tr>
-                                                                    <th class="text-center">#</th>
-                                                                    <th class="text-center">Agencia</th>
-                                                                    <th class="text-center">Cuenta</th>
-                                                                    <th class="text-center">Cedula</th>
-                                                                    <th class="text-center">Nombre</th>
-                                                                    <th>F. Cred</th>
-                                                                    <th>Linea</th>
+                                                                    <th class="text-center">COOR</th>
+                                                                    <th class="text-center">AGENCIA</th>
+                                                                    <th class="text-center">CUENTA</th>
+                                                                    <th class="text-center">CEDULA</th>
+                                                                    <th class="text-center">NOMBRE</th>
+                                                                    <th>SCORE</th>
+                                                                    <th>EDAD</th>
+                                                                    <th>ANALISIS</th>
+                                                                    <th>F.ANALISIS</th>
+                                                                    <th>ESTADO</th>
+                                                                    <th>PAGARÉ</th>
+                                                                    <th>F. CRED</th>
+                                                                    <th>LINEA</th>
                                                                     <th>RL</th>
-                                                                    <th>Pagaré</th>
-                                                                    <th>Ord Sum.</th>
-                                                                    <th>Capital Ini.</th>
-                                                                    <th>Tasa</th>
-                                                                    <th>Lapso</th>
-                                                                    <th class="text-center">Ciudad Res</th>
-                                                                    <th class="text-center">Credito</th>
-                                                                    <th>Tipo</th>
+                                                                    <th>CAPITAL</th>
+                                                                    <th>TASA</th>
+                                                                    <th class="text-center">NOMINA</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td colspan="16">No hay datos disponibles</td>
+                                                                    <td colspan="17">No hay datos disponibles</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>

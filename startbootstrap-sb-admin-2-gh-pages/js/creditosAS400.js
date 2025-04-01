@@ -67,7 +67,7 @@ function mostrarAlertaSesionExpirada() {
 
 const mostrar = (creditos) => {
     let resultados = ''; // Asegúrate de inicializar resultados aquí
-    creditos.forEach((creditos, index) => {
+    creditos.forEach((creditos) => {
         // Convertir fecha de registro a un formato legible
         const rawFecha = creditos.FECI13;
         const fechaCalculada = rawFecha + 19000000;
@@ -82,29 +82,40 @@ const mostrar = (creditos) => {
             ];
             return meses[mes - 1]; // Meses están indexados desde 0, así que restamos 1
         }
+        const rawFechaFECH23 = creditos.FECH23;
+        const fechaCalculadaFECH23 = rawFechaFECH23 + 19000000;
+        const añoFECH23 = Math.floor(fechaCalculadaFECH23 / 10000);
+        const mesNumeroFECH23 = Math.floor((fechaCalculadaFECH23 % 10000) / 100);
+        const diaFECH23 = String(fechaCalculadaFECH23 % 100).padStart(2, '0');
+        const fechaFormateadaFECH23 = `${diaFECH23} ${obtenerNombreMes(mesNumeroFECH23)} ${añoFECH23}`;
+
         let capitalInicial = Number(creditos.CAPI13 || 0).toLocaleString("es-CO");
-        let ordenSuministro = Number(creditos.ORSU13 || 0).toLocaleString("es-CO");
 
 
 
         resultados +=
             `<tr>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${index + 1}
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.AGOP13}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.DIRE03}</td>
+                <td style="color: #000 !important; font-weight: 525 !important">${creditos.AGOP13}-${creditos.DESC03}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NCTA13}</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NNIT05}</td>
-                <td style="color: #000 !important; font-weight: 525 !important">${creditos.DESC05}</td>
+                <td style="color: #000 !important; font-weight: 525 !important">${creditos.NNIT05}</td>
+                <td style="color: #000 !important; font-weight: 525 !important width: 50px; white-space: nowrap;"">${creditos.DESC05}</td>
+                 <td class="text-center font-weight-bold" 
+                            style="${creditos.Score === 'F/D' ? 'color:#fd7e14' :
+                creditos.Score < 650 ? 'color:red' : 'color:#007bff'}">
+                            ${creditos.Score}
+                        </td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${calcularEdad(creditos.FECN05)}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NANA13}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${fechaFormateadaFECH23}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.STAT23}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NCRE13}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important width: 50px; white-space: nowrap;">${fechaFormateada}</td> 
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.TCRE13}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.CPTO13}</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NCRE13}</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${ordenSuministro}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">$${capitalInicial}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.TASA13} %</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.LAPI13}</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.CIUD05}</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.DESC06}</td>
-                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.CLAS06}</td>
+                <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.DESC04}</td>
             </tr>`;
     });
     contenedor.innerHTML = resultados;
@@ -133,7 +144,7 @@ const mostrar = (creditos) => {
                 "sPrevious": "Anterior"
             }
         },
-        "lengthMenu": [[10, 15, 20, -1], [10, 15, 20, "Todos"]],
+        "lengthMenu": [[-1], ["Todos"]],
         dom: '<"top"lfB>rtip',
         buttons: [
             {
@@ -174,3 +185,42 @@ function confirmLogout() {
         }
     });
 }
+
+function calcularEdad(fechaNacimiento) {
+    if (!fechaNacimiento) return 'N/A'; // Validar si el dato es nulo o vacío
+
+    // Convertir a cadena y asegurarse de que tenga 8 caracteres
+    fechaNacimiento = fechaNacimiento.toString().trim();
+
+    if (fechaNacimiento.length !== 8) {
+        console.warn('Formato incorrecto de fecha:', fechaNacimiento);
+        return 'N/A';
+    }
+
+    const hoy = new Date();
+
+    // Extraer año, mes y día desde el formato YYYYMMDD
+    const año = parseInt(fechaNacimiento.substring(0, 4), 10);
+    const mes = parseInt(fechaNacimiento.substring(4, 6), 10) - 1; // Mes en JS va de 0 a 11
+    const dia = parseInt(fechaNacimiento.substring(6, 8), 10);
+
+    // Validar que los valores extraídos sean correctos
+    if (isNaN(año) || isNaN(mes) || isNaN(dia)) {
+        console.warn('Fecha con valores inválidos:', fechaNacimiento);
+        return 'N/A';
+    }
+
+    const fechaNac = new Date(año, mes, dia);
+    let edad = hoy.getFullYear() - fechaNac.getFullYear();
+
+    // Ajustar si aún no ha cumplido años en este año
+    if (hoy.getMonth() < mes || (hoy.getMonth() === mes && hoy.getDate() < dia)) {
+        edad--;
+    }
+
+    return edad >= 0 ? edad : 'N/A';
+}
+
+document.getElementById("refreshBtn").addEventListener("click", function () {
+    location.reload(); // Recarga la página
+});

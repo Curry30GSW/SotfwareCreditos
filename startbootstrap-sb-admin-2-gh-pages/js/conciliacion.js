@@ -67,9 +67,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Obtener la fecha actual
     const hoy = new Date();
+
+    // Obtener el primer día del mes actual
     const primerDiaMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
 
-    // Formatear las fechas en formato YYYY-MM-DD para los inputs
+    // Establecer las fechas de inicio y fin correctamente
     const formatoFecha = (fecha) => fecha.toISOString().split('T')[0];
 
     // Asignar fechas por defecto
@@ -107,6 +109,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             console.error('❌ Error al obtener los datos:', error);
         }
     }
+
 
     // Hacer la consulta con las fechas predeterminadas al cargar la página
     await obtenerDatos(formatoFecha(primerDiaMes), formatoFecha(hoy));
@@ -447,12 +450,12 @@ const obtenerConsecutivos = async (fechaInicio, fechaFin) => {
                 document.getElementById('rechazados').textContent = data.Rechazados;
                 document.getElementById('aprobados').textContent = data.Aprobados;
             } else {
-                document.getElementById('consecutivoInicial').textContent = 'No disponible';
-                document.getElementById('consecutivoFinal').textContent = 'No disponible';
-                document.getElementById('registradosPagares').textContent = 'No disponible';
-                document.getElementById('anulados').textContent = 'No disponible';
-                document.getElementById('rechazados').textContent = 'No disponible';
-                document.getElementById('aprobados').textContent = 'No disponible';
+                document.getElementById('consecutivoInicial').textContent = '0';
+                document.getElementById('consecutivoFinal').textContent = '0';
+                document.getElementById('registradosPagares').textContent = '0';
+                document.getElementById('anulados').textContent = '0';
+                document.getElementById('rechazados').textContent = '0';
+                document.getElementById('aprobados').textContent = '0';
             }
         } else {
             Swal.fire({
