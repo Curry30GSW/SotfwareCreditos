@@ -21,6 +21,7 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <!-- DataTables con Bootstrap 5 -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 </head>
 
@@ -69,7 +70,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Servicio a Consultar:</h6>
                         <a class="collapse-item" href="creditosSotfware.html">Créditos Sotfware Pagarés</a>
-                        <a class="collapse-item active" href="creditosAS400.html">Créditos Plataforma</a>
+                        <a class="collapse-item active" href="creditosAS400.html">Créditos Grabados Plataforma</a>
                         <a class="collapse-item" href="creditosNoRegistrados.html">Créditos NO Registrados</a>
                     </div>
                 </div>
@@ -150,9 +151,15 @@
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <div class="d-flex align-items-center">
                             <h1 class="h3 mb-0 text-gray-800">Créditos Grabados en la Plataforma</h1>
-                            <button id="refreshBtn" class="btn btn-lg btn-primary px-1 py-1 ms-3" type="button">
+                            <button class="btn btn-lg btn-warning px-3 py-2 ms-3 ml-3" type="button" data-toggle="modal"
+                                data-target="#fechaModal">
+                                <i class="fas fa-calendar-day text-white fs-2"></i>
+                            </button>
+
+                            <button id="refreshBtn" class="btn btn-lg btn-primary px-1 py-1 ms-3 ml-3" type="button">
                                 REFRESH <i class="fas fa-sync-alt fs-2"></i>
                             </button>
+
                         </div>
                         <h3 class="p-3 mb-0 text-secondary text-end"><b><span id="fechaActual"></span></b></h3>
                     </div>
@@ -298,6 +305,39 @@
         </div>
     </div>
 
+    <!-- Modal con Calendario Mejorado -->
+    <div class="modal fade" id="fechaModal" tabindex="-1" aria-labelledby="fechaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark" id="fechaModalLabel"><b>Ingresar Lapsos de Fechas</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formFechas">
+                        <div class="form-group">
+                            <label for="fechaInicio">Fecha de Inicio</label>
+                            <input type="text" class="form-control form-control-lg" id="fechaInicio" required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="fechaFin">Fecha de Fin</label>
+                            <input type="text" class="form-control form-control-lg" id="fechaFin" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="guardarFechas"
+                        data-dismiss="modal">Guardar</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -327,6 +367,28 @@
     <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <!-- JSZip (Necesario para exportar a Excel) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            flatpickr("#fechaInicio", {
+                dateFormat: "d-m-Y",
+                locale: "es",
+                altInput: true,
+                altFormat: "F j, Y",
+                disableMobile: true
+            });
+
+            flatpickr("#fechaFin", {
+                dateFormat: "d-m-Y",
+                locale: "es",
+                altInput: true,
+                altFormat: "F j, Y",
+                disableMobile: true
+            });
+        });
+    </script>
+
 
 
     <script>

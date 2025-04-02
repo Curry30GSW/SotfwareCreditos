@@ -11,36 +11,99 @@ Swal.fire({
         Swal.showLoading();
     }
 });
+setTimeout(() => {
+    Swal.close();
+}, 2500);
 
 if (!token) {
     window.location.href = '../../SotfwareCreditos/login-form-02/login.html';
 }
 
 
-setTimeout(() => {
-    Swal.close();
 
-    fetch('http://localhost:5000/api/creditos', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la solicitud');
-            }
-            return response.json();
-        })
-        .then(creditos => {
+document.addEventListener('DOMContentLoaded', async function () {
+    if (!token) {
+        window.location.href = '../../SotfwareCreditos/login-form-02/login.html';
+        return;
+    }
+
+    const hoy = new Date();
+    const primerDiaMes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+
+    function formatoFecha(fecha) {
+        const dia = String(fecha.getDate()).padStart(2, '0');
+        const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+        const año = fecha.getFullYear();
+        return `${dia}-${mes}-${año}`;
+    }
+
+    async function obtenerDatos(fechaInicio, fechaFin) {
+        try {
+            const url = `http://localhost:5000/api/creditos?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
+            console.log("📤 Enviando solicitud a:", url);
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+
+            if (!response.ok) throw new Error('Error en la solicitud');
+
+            const creditos = await response.json();
+            console.log("📥 Datos recibidos del backend:", creditos);
             mostrar(creditos);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
 
-}, 2500);
+        } catch (error) {
+            console.error('❌ Error:', error);
+            Swal.fire('Error', 'No se pudo obtener la información.', 'error');
+        }
+    }
+
+    // **1️⃣ Enviar fechas automáticamente cuando la página carga**
+    await obtenerDatos(formatoFecha(primerDiaMes), formatoFecha(hoy));
+
+    // **2️⃣ Evento de escucha al hacer clic en "Guardar"**
+    document.getElementById('guardarFechas').addEventListener('click', async function () {
+        const fechaInicioStr = document.getElementById('fechaInicio').value.trim();
+        const fechaFinStr = document.getElementById('fechaFin').value.trim();
+
+        if (!fechaInicioStr || !fechaFinStr) {
+            Swal.fire('Error', 'Por favor, selecciona ambas fechas antes de continuar.', 'error');
+            return;
+        }
+
+        // Convertir fechas a objetos Date
+        const fechaInicio = new Date(fechaInicioStr.split('-').reverse().join('-'));
+        const fechaFin = new Date(fechaFinStr.split('-').reverse().join('-'));
+
+        // **VALIDACIONES**
+        if (fechaInicio > hoy || fechaFin > hoy) {
+            Swal.fire('Error', 'Las fechas no pueden ser superiores al día de hoy.', 'error');
+            return;
+        }
+
+        if (fechaInicio > fechaFin) {
+            Swal.fire('Error', 'La fecha de inicio no puede ser mayor que la fecha final.', 'error');
+            return;
+        }
+
+        await obtenerDatos(fechaInicioStr, fechaFinStr);
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito ✅',
+            text: 'Fechas enviadas correctamente.',
+            confirmButtonColor: '#3085d6'
+        });
+    });
+});
+
+
+
+
 
 function manejarRespuesta(response, mensajeError) {
     if (response.status === 401) {
@@ -66,22 +129,21 @@ function mostrarAlertaSesionExpirada() {
 
 
 const mostrar = (creditos) => {
-    let resultados = ''; // Asegúrate de inicializar resultados aquí
+    let resultados = '';
     creditos.forEach((creditos) => {
-        // Convertir fecha de registro a un formato legible
         const rawFecha = creditos.FECI13;
         const fechaCalculada = rawFecha + 19000000;
         const año = Math.floor(fechaCalculada / 10000);
         const mesNumero = Math.floor((fechaCalculada % 10000) / 100);
         const dia = String(fechaCalculada % 100).padStart(2, '0');
         const fechaFormateada = `${dia} ${obtenerNombreMes(mesNumero)} ${año}`;
+
         function obtenerNombreMes(mes) {
-            const meses = [
-                'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
-                'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
-            ];
-            return meses[mes - 1]; // Meses están indexados desde 0, así que restamos 1
+            const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+                'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            return meses[mes - 1];
         }
+
         const rawFechaFECH23 = creditos.FECH23;
         const fechaCalculadaFECH23 = rawFechaFECH23 + 19000000;
         const añoFECH23 = Math.floor(fechaCalculadaFECH23 / 10000);
@@ -91,10 +153,7 @@ const mostrar = (creditos) => {
 
         let capitalInicial = Number(creditos.CAPI13 || 0).toLocaleString("es-CO");
 
-
-
-        resultados +=
-            `<tr>
+        resultados += `<tr>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.DIRE03}</td>
                 <td style="color: #000 !important; font-weight: 525 !important">${creditos.AGOP13}-${creditos.DESC03}</td>
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.NCTA13}</td>
@@ -118,18 +177,20 @@ const mostrar = (creditos) => {
                 <td class="text-center" style="color: #000 !important; font-weight: 525 !important">${creditos.DESC04}</td>
             </tr>`;
     });
-    contenedor.innerHTML = resultados;
 
-    // Inicializar DataTables
+    // Asegurar que la tabla se limpie antes de agregar nuevos datos
     if ($.fn.DataTable.isDataTable('#tablaAS400')) {
-        $('#tablaAS400').DataTable().destroy();
+        $('#tablaAS400').DataTable().clear().destroy();
     }
 
-    $('#tablaAS400').DataTable({
+    // Agregar los nuevos resultados
+    $("#tablaAS400 tbody").html(resultados);
 
+    // Volver a inicializar DataTables
+    $('#tablaAS400').DataTable({
+        order: [[1, 'asc']],
         fixedHeader: true,
         scrollY: "700px",
-
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ Registros",
@@ -150,19 +211,17 @@ const mostrar = (creditos) => {
             {
                 extend: 'excelHtml5',
                 text: '<i class="fas fa-file-excel"></i> Exportar a Excel',
-                title: 'Creditos No Registrados En Sotfware',
-                exportOptions: {
-                    columns: ':visible'
-                },
+                title: 'Creditos No Registrados En Software',
+                exportOptions: { columns: ':visible' },
                 className: 'btn-success text-dark fw-bold'
             }
         ],
         initComplete: function () {
-            // Asegurarnos de que el botón tome el estilo correctamente
             $('.dt-buttons button').removeClass('dt-button').addClass('btn btn-success btn-m text-white');
         }
     });
 };
+
 
 function confirmLogout() {
     Swal.fire({
