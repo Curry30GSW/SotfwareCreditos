@@ -33,3 +33,39 @@ document.addEventListener('DOMContentLoaded', function () {
     // Actualiza cada segundo
     setInterval(actualizarFechaHora, 1000);
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    let nombreCompleto = sessionStorage.getItem("nombreUsuario") || "Usuario Desconocido";
+    let partes = nombreCompleto.trim().split(" ");
+
+    let iniciales = "";
+    if (partes.length >= 2) {
+        iniciales = partes[0][0] + partes[1][0]; // Primera letra del primer nombre + primera letra del primer apellido
+    } else {
+        iniciales = partes[0][0]; // Si solo hay un nombre, tomar la primera letra
+    }
+
+    document.getElementById("userInitials").textContent = iniciales.toUpperCase();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Crear el elemento <style>
+    let style = document.createElement("style");
+    style.innerHTML = `
+        #userInitials {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 50%;
+            background-color: #ec8600ea; /* Color personalizado */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    `;
+    document.head.appendChild(style); // Agregar estilos al <head>
+});

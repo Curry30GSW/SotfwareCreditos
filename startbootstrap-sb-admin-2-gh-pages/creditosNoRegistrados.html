@@ -111,6 +111,8 @@
 
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <img src="img/coopserp.gif" alt="Logo" class="topbar-logo"
+                        style="height: 65px; margin-right: 10px;">
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -125,8 +127,16 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="nombreUsuario" class="mr-2 d-none d-lg-inline text-gray-600 small"></span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+
+                                <!-- Nombre más grande -->
+                                <span id="nombreUsuario" class="mr-2 d-none d-lg-inline text-gray-600 font-weight-bold"
+                                    style="font-size: 1.2rem;"></span>
+
+                                <!-- Círculo más grande -->
+                                <div id="userInitials"
+                                    class="img-profile rounded-circle text-white d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px; font-size: 1.5rem;">
+                                </div>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -327,6 +337,25 @@
             document.getElementById('nombreUsuario').innerText = nombreUsuario;
 
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const rolUsuario = sessionStorage.getItem('rol');
+
+            if (rolUsuario === 'Consultante') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Acceso Denegado',
+                    text: 'No tienes permiso para acceder a esta página.',
+                    timer: 1000,
+                    showConfirmButton: false
+                });
+
+                setTimeout(() => {
+                    window.location.href = '../../SotfwareCreditos/startbootstrap-sb-admin-2-gh-pages/creditosAS400.html';
+                }, 1000);
+            }
+        });
+
     </script>
 
 

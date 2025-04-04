@@ -32,22 +32,45 @@ document.getElementById('btnLogin').addEventListener('click', async function () 
 
         if (data.token) {
             const nombreUsuario = data.name.trim().toUpperCase();
+            const rolUsuario = data.rol;
+            const agenciau = data.agenciau;
 
             sessionStorage.setItem('nombreUsuario', nombreUsuario);
             sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('rol', rolUsuario);
+            sessionStorage.setItem('agenciau', agenciau);
 
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Bienvenido',
-                html: `Inicio de sesión exitoso, <b>${nombreUsuario}</b>.`,
-                timer: 2000,
-                showConfirmButton: false,
-            }).then(() => {
-                window.location.href = '../../../SotfwareCreditos/startbootstrap-sb-admin-2-gh-pages/index.html';
-            });
+            if (rolUsuario === 'Consultante') {
+                sessionStorage.setItem('hideOnbush', 'true'); // Ocultar módulos
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bienvenido',
+                    html: `Inicio de sesión exitoso, <b>${nombreUsuario}</b>.`,
+                    timer: 2000,
+                    showConfirmButton: false,
+                }).then(() => {
+                    window.location.href = 'http://127.0.0.1:5500/SotfwareCreditos/startbootstrap-sb-admin-2-gh-pages/creditosAS400.html';
+                });
+            } else if (['Gerencia', 'Coordinacion', 'Admin'].includes(rolUsuario)) {
+                sessionStorage.setItem('hideOnbush', 'false'); // No ocultar módulos
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bienvenido',
+                    html: `Inicio de sesión exitoso, <b>${nombreUsuario}</b>.`,
+                    timer: 2000,
+                    showConfirmButton: false,
+                }).then(() => {
+                    window.location.href = 'http://127.0.0.1:5500/SotfwareCreditos/startbootstrap-sb-admin-2-gh-pages/index.html';
+                });
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Acceso denegado',
+                    text: 'No tienes permiso para ingresar.',
+                });
+                return;
+            }
         }
-
     } catch (error) {
         console.error('Error en el login:', error);
         Swal.fire({
@@ -57,6 +80,7 @@ document.getElementById('btnLogin').addEventListener('click', async function () 
         });
     }
 });
+
 
 
 history.pushState(null, null, location.href);

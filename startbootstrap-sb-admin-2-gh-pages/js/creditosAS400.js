@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     async function obtenerDatos(fechaInicio, fechaFin) {
         try {
             const url = `http://localhost:5000/api/creditos?fechaInicio=${fechaInicio}&fechaFin=${fechaFin}`;
-            console.log("📤 Enviando solicitud a:", url);
 
             const response = await fetch(url, {
                 method: 'GET',
@@ -53,7 +52,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (!response.ok) throw new Error('Error en la solicitud');
 
             const creditos = await response.json();
-            console.log("📥 Datos recibidos del backend:", creditos);
             mostrar(creditos);
 
         } catch (error) {
@@ -189,8 +187,8 @@ const mostrar = (creditos) => {
     // Volver a inicializar DataTables
     $('#tablaAS400').DataTable({
         order: [[1, 'asc']],
-        fixedHeader: true,
         scrollY: "700px",
+        scrollX: true,
         language: {
             "sProcessing": "Procesando...",
             "sLengthMenu": "Mostrar _MENU_ Registros",
