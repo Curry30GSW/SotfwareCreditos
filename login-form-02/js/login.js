@@ -62,6 +62,17 @@ document.getElementById('btnLogin').addEventListener('click', async function () 
                 }).then(() => {
                     window.location.href = 'http://127.0.0.1:5500/SotfwareCreditos/startbootstrap-sb-admin-2-gh-pages/index.html';
                 });
+            } else if (rolUsuario === 'Jefatura') {
+                sessionStorage.setItem('hideOnbush', 'true'); // Según necesidad
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bienvenido',
+                    html: `Inicio de sesión exitoso, <b>${nombreUsuario}</b>.`,
+                    timer: 2000,
+                    showConfirmButton: false,
+                }).then(() => {
+                    window.location.href = 'http://127.0.0.1:5500/SotfwareCreditos/startbootstrap-sb-admin-2-gh-pages/creditosPagadosTesoreria.html';
+                });
             } else {
                 Swal.fire({
                     icon: 'warning',
@@ -70,6 +81,7 @@ document.getElementById('btnLogin').addEventListener('click', async function () 
                 });
                 return;
             }
+
         }
     } catch (error) {
         console.error('Error en el login:', error);
