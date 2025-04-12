@@ -11343,3 +11343,7 @@ body.sidebar-toggled footer.sticky-footer {
     color: #000 !important;
     font-weight: 525 !important;
 }
+
+body {
+  zoom: 75%;
+}
